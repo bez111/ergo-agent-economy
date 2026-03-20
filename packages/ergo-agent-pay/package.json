@@ -1,0 +1,77 @@
+{
+  "name": "ergo-agent-pay",
+  "version": "0.1.0",
+  "description": "SDK for autonomous AI agents to hold, move, and pay on the Ergo blockchain. Policy enforcement, acceptance predicates, LangChain adapter.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "typecheck": "tsc --noEmit",
+    "example:basic": "npx tsx examples/01-basic.ts",
+    "example:note": "npx tsx examples/02-note-payment.ts",
+    "example:policy": "npx tsx examples/03-policy-enforcement.ts",
+    "example:langchain": "npx tsx examples/04-langchain-agent.ts"
+  },
+  "keywords": [
+    "ergo",
+    "blockchain",
+    "agent",
+    "ai-agent",
+    "payments",
+    "autonomous",
+    "ergo-agent",
+    "fleet-sdk",
+    "langchain",
+    "openai",
+    "eUTXO",
+    "acceptance-predicate",
+    "bearer-instrument",
+    "note",
+    "reserve",
+    "agent-economy"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/ergo-agent-economy"
+  },
+  "homepage": "https://github.com/bez111/ergo-agent-economy/tree/main/packages/ergo-agent-pay",
+  "bugs": {
+    "url": "https://github.com/bez111/ergo-agent-economy/issues"
+  },
+  "dependencies": {
+    "@fleet-sdk/core": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "langchain": ">=0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "langchain": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -39,6 +39,35 @@ Payment rails built for humans assume the opposite.
 
 ---
 
+## SDK: ergo-agent-pay
+
+The [`ergo-agent-pay`](./packages/ergo-agent-pay/) package wraps the Ergo agent payment
+stack in a clean TypeScript API — with policy engine, LangChain adapter, and OpenAI
+function calling support.
+
+```bash
+npm install ergo-agent-pay
+```
+
+```typescript
+import { ErgoAgentPay } from "ergo-agent-pay"
+
+const agent = new ErgoAgentPay({ address: "YOUR_ADDRESS", network: "testnet" })
+
+await agent.pay(receiverAddress, "0.001 ERG")
+await agent.issueNote({ recipient, value: "0.005 ERG", reserveBoxId, deadline: "+100 blocks", taskHash })
+
+// LangChain integration
+const tools = [agent.asLangChainTool()]
+
+// OpenAI function calling
+const { definition, handler } = agent.asOpenAIFunction()
+```
+
+→ [Full SDK documentation](./packages/ergo-agent-pay/README.md)
+
+---
+
 ## Quick start — 5 minutes to first agent payment
 
 ```bash
