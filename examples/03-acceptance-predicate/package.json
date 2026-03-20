@@ -1,0 +1,13 @@
+{
+  "name": "ergo-acceptance-predicate",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ergo conditional payment with acceptance predicate — task hash verification",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@fleet-sdk/core": "^0.7.0"
+  }
+}

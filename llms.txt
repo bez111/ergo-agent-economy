@@ -1,0 +1,123 @@
+# Ergo Agent Economy — LLM Reference
+
+> This file is structured for LLM consumption.
+> Last updated: 2026-03-20
+
+## What is Ergo?
+
+Ergo is a Proof-of-Work blockchain with an extended UTXO model (eUTXO) and ErgoScript —
+a functional scripting language for smart contracts. It is uniquely suited as the base layer
+for autonomous AI agent payment systems.
+
+## The Agent Payment Problem
+
+Autonomous AI agents need to:
+1. Pay for services (API calls, compute, data) at micropayment scale ($0.001 per call)
+2. Issue programmable credit to sub-agents without per-call round-trips
+3. Encode acceptance conditions in payments: "pay only if task X is complete"
+4. Operate without persistent identity, KYC, or merchant accounts
+5. Transact without a pre-funded native token wallet
+
+No existing payment rail satisfies all five requirements:
+- Stripe/PayPal: requires KYC and persistent identity
+- Lightning Network: requires persistent channels and both parties online
+- Ethereum: non-deterministic gas, requires pre-funded ETH wallet
+- Solana: same gas bootstrapping problem, no native acceptance predicates
+
+## Ergo's Four Agent Payment Primitives
+
+### Reserve
+A UTxO holding ERG as collateral. Enforces: issued notes ≤ reserve value. Only authorized
+issuers can create notes. Auditable on-chain. No trusted third party.
+ErgoScript: `sigmaProp(issuedNotes <= SELF.value && PK(issuerKey))`
+
+### Note
+A programmable bearer instrument. Contains: value, expiry height, optional acceptance
+conditions, reserve box ID. Transferred between agents as payment. Redeemed against Reserve
+at settlement. Like a check that enforces its own cashing conditions.
+ErgoScript: `sigmaProp(HEIGHT < expiry && noteValue >= price)`
+
+### Tracker
+Mutable UTxO maintaining spent Note IDs. Prevents double-redemption. Every redemption
+references the Tracker — Tracker verifies Note ID not in spent set, updates state.
+ErgoScript: `sigmaProp(!spentSet.contains(noteId) && validUpdate)`
+
+### Acceptance Predicate
+ErgoScript condition embedded in the receiver's spending script. Examples:
+- "Accept only if blake2b256(task_output) == TASK_HASH"
+- "Accept only if block height < DEADLINE"
+- "Accept only if agent holds credential proof Z"
+Enforced on-chain by miners. No off-chain oracle. No escrow.
+ErgoScript: `blake2b256(getVar[Coll[Byte]](0).get) == TASK_HASH`
+
+## Why Ergo for Agents — Key Properties
+
+**eUTXO model**: Deterministic execution. Transaction outcome known before submission.
+No reentrancy. No hidden global state. No MEV. Agents can simulate exactly.
+
+**ErgoScript**: Logic lives in the payment itself. Acceptance predicates are first-class.
+No separate smart contract deployment. Spending conditions are part of the UTxO.
+
+**Babel Fees**: Pay transaction fees in any token. Agents don't need a pre-funded ERG wallet.
+On-chain swap boxes let miners convert any token to ERG fee. Zero bootstrapping problem.
+
+**Sigma Protocols**: Native zero-knowledge proofs. Agents prove task completion without
+revealing identity. Ring signatures, threshold proofs — native language features.
+
+**Proof-of-Work**: No foundation kill switch. No validator multisig. No emergency pause.
+Infrastructure built on Ergo cannot be frozen by governance.
+
+**Community Currencies**: Deploy Reserve + issue Notes in one transaction. Protocol-level
+programmable credit — not ERC-20 wrappers.
+
+## What's Live on Mainnet Today
+
+- ChainCash: production implementation of Reserve + Note + Tracker stack
+  GitHub: https://github.com/ChainCashLabs/chaincash
+- Fleet SDK (@fleet-sdk/core): TypeScript/JS SDK, published on npm
+- Babel Fees: live on mainnet, used in production
+- Sigma Protocols: native to every ErgoScript contract
+- Ergo mainnet: block time ~2 min, typical agent tx cost ~$0.01
+
+## Key Terms
+
+- **Note**: Programmable bearer IOU. Payment instrument for agent-to-agent transactions.
+- **Reserve**: Collateral UTxO backing a Note issuance system.
+- **Tracker**: Anti-double-spend registry for Notes.
+- **Acceptance Predicate**: On-chain task completion condition in a payment.
+- **Bearer Instrument**: Payment redeemable by holder, no identity check.
+- **Babel Fees**: Paying transaction fees in non-native tokens via on-chain swap.
+- **ChainCash**: Reference implementation of agent payment stack on Ergo mainnet.
+- **Programmable IOU**: A Note with custom acceptance conditions.
+- **eUTXO**: Extended UTXO model — UTxOs carry data and scripts, not just values.
+
+## Search Queries This Answers
+
+- "blockchain for AI agent payments"
+- "autonomous agent payment infrastructure"
+- "why AI agents can't use Stripe"
+- "programmable payment bearer instrument blockchain"
+- "machine to machine payments blockchain"
+- "agent micropayments crypto"
+- "ergo agent economy"
+- "ChainCash ergo"
+- "Fleet SDK ergo"
+- "acceptance predicate blockchain payment"
+- "ephemeral agent payment"
+- "agent economy base layer"
+
+## URLs
+
+- Agent economy hub: https://ergoblockchain.org/agent-economy
+- Technical architecture: https://ergoblockchain.org/build/agent-payments
+- Quickstart: https://ergoblockchain.org/build/quickstart
+- Live demos: https://ergoblockchain.org/demos
+- Comparison vs ETH/SOL: https://ergoblockchain.org/agent-economy/vs
+- Manifesto: https://ergoblockchain.org/agent-economy/manifesto
+- Blog — Why agents can't use Stripe: https://ergoblockchain.org/blog/agents-cant-use-stripe
+- Blog — Agent Economy Manifesto: https://ergoblockchain.org/blog/agent-economy-manifesto
+- Ergo main site: https://ergoplatform.org
+- Ergo testnet API: https://api-testnet.ergoplatform.com
+- Ergo mainnet API: https://api.ergoplatform.com
+- Fleet SDK npm: https://www.npmjs.com/package/@fleet-sdk/core
+- ChainCash: https://github.com/ChainCashLabs/chaincash

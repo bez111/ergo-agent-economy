@@ -1,0 +1,13 @@
+{
+  "name": "ergo-note-payment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ergo Note payment — programmable bearer IOU example",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@fleet-sdk/core": "^0.7.0"
+  }
+}

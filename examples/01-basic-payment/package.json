@@ -1,0 +1,13 @@
+{
+  "name": "ergo-basic-payment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Basic Ergo agent payment example — testnet",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@fleet-sdk/core": "^0.7.0"
+  }
+}
