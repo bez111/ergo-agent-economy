@@ -38,10 +38,10 @@ const EXPIRY_BLOCKS  = 100;
  */
 const EXPECTED_TASK_OUTPUT = "The answer to the question is 42.";
 const TASK_HASH = crypto
-  .createHash("blake2b512") // Note: ErgoScript uses blake2b256 — use correct lib in production
-  .update(EXPECTED_TASK_OUTPUT)
-  .digest("hex")
-  .slice(0, 64); // first 32 bytes for blake2b256 simulation
+  .createHash("blake2b512") // Placeholder: blake2b512 truncated to 32 bytes.
+  .update(EXPECTED_TASK_OUTPUT) // ErgoScript requires blake2b256 — Node.js crypto does NOT support it natively.
+  .digest("hex")             // In production use: import { blake2b } from "@noble/hashes/blake2b"
+  .slice(0, 64);             // and replace this block with: Buffer.from(blake2b(input, { dkLen: 32 })).toString("hex")
 
 async function getHeight() {
   const res = await fetch(`${TESTNET_API}/api/v1/info`);
