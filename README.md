@@ -119,6 +119,11 @@ End-to-end "agent pays for API call" demo. An Express server verifies a Note on-
 before serving the request, then redeems the Note to claim payment.
 Run `server.js` + `client.js` to see the full pay-per-request flow.
 
+### [06-python-agent](./examples/06-python-agent/)
+Python / LangChain agent that pays for API calls using Ergo Notes.
+Includes: Note info fetching from Ergo node API, register decoding in Python,
+LangChain `StructuredTool` wrapper, standalone demo (no LangChain required).
+
 ---
 
 ## The four primitives — technical reference
