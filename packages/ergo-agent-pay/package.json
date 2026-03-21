@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-pay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "SDK for autonomous AI agents to hold, move, and pay on the Ergo blockchain. Policy enforcement, acceptance predicates, LangChain adapter.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -21,6 +21,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts --clean",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts",
     "example:basic": "npx tsx examples/01-basic.ts",
     "example:note": "npx tsx examples/02-note-payment.ts",
     "example:policy": "npx tsx examples/03-policy-enforcement.ts",

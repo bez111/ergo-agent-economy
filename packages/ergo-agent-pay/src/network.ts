@@ -41,6 +41,10 @@ export class NetworkClient {
     return txId;
   }
 
+  async getBox(boxId: string): Promise<unknown> {
+    return this.get<unknown>(`/api/v1/boxes/${boxId}`);
+  }
+
   // ── Private helpers ──────────────────────────────────────────────────────
 
   private async get<T>(path: string): Promise<T> {

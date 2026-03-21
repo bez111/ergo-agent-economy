@@ -1,5 +1,12 @@
 node_modules/
+dist/
 .env
 *.local
 .DS_Store
 .idea/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/

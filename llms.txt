@@ -1,7 +1,7 @@
 # Ergo Agent Economy — LLM Reference
 
 > This file is structured for LLM consumption.
-> Last updated: 2026-03-20
+> Last updated: 2026-03-21
 
 ## What is Ergo?
 
@@ -70,10 +70,45 @@ Infrastructure built on Ergo cannot be frozen by governance.
 **Community Currencies**: Deploy Reserve + issue Notes in one transaction. Protocol-level
 programmable credit — not ERC-20 wrappers.
 
+## ergo-agent-pay SDK (v0.2.0)
+
+TypeScript/JavaScript SDK for AI agent payments on Ergo.
+GitHub: https://github.com/bez111/ergo-agent-economy
+npm: ergo-agent-pay
+
+### Core methods (v0.2.0)
+- `agent.pay(to, amount)` — send ERG
+- `agent.issueNote(opts)` — issue programmable bearer Note
+- `agent.checkNote(boxId)` — fetch + decode Note registers (returns NoteInfo)
+- `agent.redeemNote(opts)` — spend Note, release ERG to receiver
+- `agent.createReserve(config)` — deploy Reserve collateral box
+- `agent.deployTracker(config)` — deploy anti-double-spend Tracker
+- `agent.settleBatch(opts)` — redeem multiple Notes in one TX
+- `agent.asLangChainTool()` — wrap as LangChain tool
+- `agent.asOpenAIFunction()` — wrap as OpenAI function definition
+
+### Examples in repo
+- 01-basic-payment: "hello world" ERG transfer (30 lines, Fleet SDK)
+- 02-note-payment: issue a programmable bearer Note
+- 03-acceptance-predicate: conditional payment (taskHash verification)
+- 04-orchestrator-budget: multi-agent budget delegation (orchestrator + 3 sub-agents)
+- 05-api-payment-server: agent pays for API call (Express server + client)
+- 06-python-agent: Python / LangChain agent payments
+
+### Python usage pattern
+Python agents call the Ergo node API directly (requests library):
+- GET /api/v1/info → block height
+- GET /api/v1/boxes/unspent/byAddress/{address} → UTxOs
+- GET /api/v1/boxes/{boxId} → Note info
+- POST /api/v1/transactions → submit signed TX
+Register decode: R5 SInt = 04 prefix + zigzag. R6/R4 SColl[SByte] = 0e + length + bytes.
+
 ## What's Live on Mainnet Today
 
 - ChainCash: production implementation of Reserve + Note + Tracker stack
   GitHub: https://github.com/ChainCashLabs/chaincash
+- ergo-agent-pay v0.2.0: TypeScript SDK with full Note lifecycle
+  GitHub: https://github.com/bez111/ergo-agent-economy
 - Fleet SDK (@fleet-sdk/core): TypeScript/JS SDK, published on npm
 - Babel Fees: live on mainnet, used in production
 - Sigma Protocols: native to every ErgoScript contract
@@ -108,14 +143,16 @@ programmable credit — not ERC-20 wrappers.
 
 ## URLs
 
-- Agent economy hub: https://ergoblockchain.org/agent-economy
-- Technical architecture: https://ergoblockchain.org/build/agent-payments
-- Quickstart: https://ergoblockchain.org/build/quickstart
-- Live demos: https://ergoblockchain.org/demos
-- Comparison vs ETH/SOL: https://ergoblockchain.org/agent-economy/vs
-- Manifesto: https://ergoblockchain.org/agent-economy/manifesto
-- Blog — Why agents can't use Stripe: https://ergoblockchain.org/blog/agents-cant-use-stripe
-- Blog — Agent Economy Manifesto: https://ergoblockchain.org/blog/agent-economy-manifesto
+- Agent economy hub: https://www.ergoblockchain.org/agent-economy
+- Technical architecture: https://www.ergoblockchain.org/build/agent-payments
+- Quickstart: https://www.ergoblockchain.org/build/quickstart
+- Live demos: https://www.ergoblockchain.org/demos
+- Comparison vs ETH/SOL: https://www.ergoblockchain.org/agent-economy/vs
+- Manifesto: https://www.ergoblockchain.org/agent-economy/manifesto
+- Blog — Why agents can't use Stripe: https://www.ergoblockchain.org/blog/agents-cant-use-stripe
+- Blog — Agent Economy Manifesto: https://www.ergoblockchain.org/blog/agent-economy-manifesto
+- SDK GitHub: https://github.com/bez111/ergo-agent-economy
+- API reference: https://github.com/bez111/ergo-agent-economy/blob/main/docs/api-reference.md
 - Ergo main site: https://ergoplatform.org
 - Ergo testnet API: https://api-testnet.ergoplatform.com
 - Ergo mainnet API: https://api.ergoplatform.com

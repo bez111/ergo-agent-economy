@@ -54,7 +54,7 @@ export async function computeTaskHashAsync(
       ? output
       : new Uint8Array(output);
 
-  const hashBuffer = await globalThis.crypto.subtle.digest("SHA-256", data);
+  const hashBuffer = await globalThis.crypto.subtle.digest("SHA-256", data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer);
   return Array.from(new Uint8Array(hashBuffer))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
@@ -68,7 +68,7 @@ export async function computeTaskHashAsync(
  * resolveDeadline(1300000, 1200000)        // → 1300000
  */
 export function resolveDeadline(
-  deadline: number | `+${number} blocks`,
+  deadline: number | `+${number} blocks` | `+${number} block`,
   currentHeight: number
 ): number {
   if (typeof deadline === "number") return deadline;

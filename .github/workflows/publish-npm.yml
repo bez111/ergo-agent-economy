@@ -1,0 +1,70 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - "v*"          # triggers on: git tag v0.2.0 && git push --tags
+
+jobs:
+  publish-ergo-agent-pay:
+    name: Publish ergo-agent-pay to npm
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/ergo-agent-pay
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+          cache-dependency-path: packages/ergo-agent-pay/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-ergo-agent-mcp:
+    name: Publish ergo-agent-mcp to npm
+    runs-on: ubuntu-latest
+    needs: publish-ergo-agent-pay
+
+    defaults:
+      run:
+        working-directory: packages/ergo-agent-mcp
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

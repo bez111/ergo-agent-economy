@@ -1,0 +1,28 @@
+{
+  "name": "ergo-agent-mcp",
+  "version": "0.2.0",
+  "description": "MCP server exposing Ergo blockchain payment tools to AI agents",
+  "type": "module",
+  "bin": { "ergo-agent-mcp": "./dist/index.js" },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@fleet-sdk/core": "^0.7.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": ["mcp", "ergo", "blockchain", "agent", "payments", "ai-agent", "model-context-protocol"],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/bez111/ergo-agent-economy" },
+  "engines": { "node": ">=18" }
+}

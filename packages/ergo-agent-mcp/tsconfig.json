@@ -4,14 +4,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "lib": ["ES2022", "DOM"],
     "skipLibCheck": true
   },
-  "include": ["src", "src/__tests__"],
-  "exclude": ["node_modules", "dist", "examples"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
