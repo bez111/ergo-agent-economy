@@ -39,20 +39,57 @@ Payment rails built for humans assume the opposite.
 
 ---
 
-## SDKs
+## Packages
 
-### TypeScript / Node.js — [`ergo-agent-pay`](./packages/ergo-agent-pay/)
+| Package | Language | Install | Description |
+|---|---|---|---|
+| [`ergo-agent-pay`](./packages/ergo-agent-pay/) | TypeScript | `npm install ergo-agent-pay` | Full SDK: pay, issueNote, full lifecycle, policy engine, LangChain, OpenAI |
+| [`ergo-agent-mcp`](./packages/ergo-agent-mcp/) | TypeScript | `npm install ergo-agent-mcp` | MCP server — plug Ergo payments into Claude, Cursor, any MCP client |
+| [`ergo-agent-pay`](./packages/ergo-agent-py/) | Python | `pip install ergo-agent-pay` | Balance, UTxOs, check_note, LangChain tool, OpenAI function |
 
-Full transaction building, policy engine, LangChain adapter, OpenAI function calling.
+### MCP Server — Claude Desktop / Cursor / Windsurf
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "ergo-agent": {
+      "command": "npx",
+      "args": ["ergo-agent-mcp", "--address", "YOUR_ERGO_ADDRESS", "--network", "testnet"]
+    }
+  }
+}
+```
+
+Then ask Claude: *"What's my ERG balance?"*, *"Check Note box abc123"*, *"Build a payment TX"*
+
+### TypeScript SDK
 
 ```bash
 npm install ergo-agent-pay
 ```
 
-### Python — [`ergo-agent-pay`](./packages/ergo-agent-py/)
+```typescript
+import { ErgoAgentPay } from "ergo-agent-pay"
 
-Zero dependencies (stdlib only). Balance queries, Note inspection, LangChain tool, OpenAI function.
-Transaction building delegates to TypeScript server or external tools (ergpy, sigma-rust).
+const agent = new ErgoAgentPay({ address: "YOUR_ADDRESS", network: "testnet" })
+
+await agent.pay(receiverAddress, "0.001 ERG")
+await agent.issueNote({ recipient, value: "0.005 ERG", reserveBoxId, deadline: "+100 blocks", taskHash })
+
+// Full lifecycle (v0.2.0+)
+const note = await agent.checkNote(noteBoxId)
+await agent.redeemNote({ noteBoxId, taskOutput })
+await agent.createReserve({ collateral: "1 ERG" })
+await agent.settleBatch({ noteBoxIds: [...] })
+
+// AI framework adapters
+agent.asLangChainTool()
+agent.asOpenAIFunction()
+```
+
+### Python SDK
 
 ```bash
 pip install ergo-agent-pay
@@ -140,6 +177,24 @@ Run `server.js` + `client.js` to see the full pay-per-request flow.
 Python / LangChain agent that pays for API calls using Ergo Notes.
 Includes: Note info fetching from Ergo node API, register decoding in Python,
 LangChain `StructuredTool` wrapper, standalone demo (no LangChain required).
+
+### [07-streaming-pay](./examples/07-streaming-pay/)
+Pay-per-token streaming micropayments. A Note is issued for max budget; the server
+charges only for tokens actually generated; unused credit is refunded at stream close.
+The Ergo solution to: "how do you pay for exactly 247 tokens when you don't know in advance?"
+
+### [08-treasury-multisig](./examples/08-treasury-multisig/)
+Multi-agent treasury with Sigma threshold signatures. 2-of-3 agents must approve a payment.
+Uses ErgoScript `atLeast(2, Coll(PK(...), PK(...), PK(...)))` — no central authority,
+no multisig wallet service, enforced by miners.
+
+### [09-crewai-agents](./examples/09-crewai-agents/)
+CrewAI multi-agent system: Researcher → Analyst → Writer pipeline with Ergo payments at each
+handoff. Each agent pays the previous using a Note. Works standalone (mock) or with real CrewAI.
+
+### [10-autogen-agent](./examples/10-autogen-agent/)
+Microsoft AutoGen agent conversation with Ergo payment negotiation. Client agent requests
+a service, provider agent completes and collects Note payment. Mock + real AutoGen modes.
 
 ---
 

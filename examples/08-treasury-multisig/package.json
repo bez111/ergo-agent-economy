@@ -1,0 +1,11 @@
+{
+  "name": "ergo-treasury-multisig",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Multi-agent treasury demo — 2-of-3 Sigma threshold using ErgoScript atLeast()",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}

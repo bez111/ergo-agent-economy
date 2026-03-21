@@ -1,0 +1,11 @@
+{
+  "name": "ergo-streaming-pay",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Streaming micropayments demo — pay-per-token using Ergo Notes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}
