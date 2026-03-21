@@ -1,6 +1,6 @@
 # Ergo Agent Economy
 
-**The open source hub for building autonomous agent payment systems on Ergo.**
+**The open source hub for building autonomous agentic economic systems on Ergo.**
 
 > Every AI system will need to pay and be paid.
 > The question is not whether — but which chain.
@@ -12,7 +12,7 @@
 This repo contains working code examples, technical documentation, and resources for building
 autonomous agent payment systems on the [Ergo blockchain](https://ergoplatform.org).
 
-Ergo is the only blockchain with all four primitives agents need — at the **protocol level**:
+Ergo is the only blockchain with all four primitives agents need at the **protocol level**:
 
 | Primitive | What it does |
 |---|---|
