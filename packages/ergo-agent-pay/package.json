@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-pay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "SDK for autonomous AI agents to hold, move, and pay on the Ergo blockchain. Policy enforcement, acceptance predicates, LangChain adapter.",
   "type": "module",
   "main": "./dist/index.cjs",

@@ -54,8 +54,18 @@ import { ErgoAgentPay } from "ergo-agent-pay"
 
 const agent = new ErgoAgentPay({ address: "YOUR_ADDRESS", network: "testnet" })
 
+// Basic payment
 await agent.pay(receiverAddress, "0.001 ERG")
+
+// Issue a programmable Note (bearer IOU)
 await agent.issueNote({ recipient, value: "0.005 ERG", reserveBoxId, deadline: "+100 blocks", taskHash })
+
+// Full lifecycle (v0.2.0+)
+const note = await agent.checkNote(noteBoxId)          // fetch + decode Note registers
+await agent.redeemNote({ noteBoxId, taskOutput })       // spend Note, release ERG
+await agent.createReserve({ collateral: "1 ERG" })     // deploy Reserve collateral box
+await agent.deployTracker({ scriptErgoTree })           // deploy anti-double-spend Tracker
+await agent.settleBatch({ noteBoxIds: [...] })          // redeem multiple Notes in one TX
 
 // LangChain integration
 const tools = [agent.asLangChainTool()]
@@ -98,6 +108,16 @@ The payment instrument used in multi-agent pipelines.
 ### [03-acceptance-predicate](./examples/03-acceptance-predicate/)
 Conditional payment: the Note is redeemable only if `blake2b256(task_output) == TASK_HASH`.
 Task completion logic lives in the payment itself — enforced by miners, not your server.
+
+### [04-orchestrator-budget](./examples/04-orchestrator-budget/)
+Multi-agent budget delegation: an orchestrator issues Notes to 3 sub-agents (sentiment analysis,
+summarization, translation), each with a spending cap and acceptance predicate.
+Demonstrates the full issuance flow from a single funding source.
+
+### [05-api-payment-server](./examples/05-api-payment-server/)
+End-to-end "agent pays for API call" demo. An Express server verifies a Note on-chain
+before serving the request, then redeems the Note to claim payment.
+Run `server.js` + `client.js` to see the full pay-per-request flow.
 
 ---
 
@@ -195,13 +215,13 @@ Works in Node.js and browsers. Used in all examples in this repo.
 
 | Resource | URL |
 |---|---|
-| Agent economy hub | https://ergoblockchain.org/agent-economy |
-| Technical architecture | https://ergoblockchain.org/build/agent-payments |
-| 10-minute quickstart | https://ergoblockchain.org/build/quickstart |
-| Live testnet demos | https://ergoblockchain.org/demos |
-| Comparison vs ETH/SOL | https://ergoblockchain.org/agent-economy/vs |
-| Manifesto | https://ergoblockchain.org/agent-economy/manifesto |
-| Blog: Why agents can't use Stripe | https://ergoblockchain.org/blog/agents-cant-use-stripe |
+| Agent economy hub | https://ergo-agent-economy.vercel.app/agent-economy |
+| Technical architecture | https://ergo-agent-economy.vercel.app/build/agent-payments |
+| 10-minute quickstart | https://ergo-agent-economy.vercel.app/build/quickstart |
+| Live testnet demos | https://ergo-agent-economy.vercel.app/demos |
+| Comparison vs ETH/SOL | https://ergo-agent-economy.vercel.app/agent-economy/vs |
+| Manifesto | https://ergo-agent-economy.vercel.app/agent-economy/manifesto |
+| Blog: Why agents can't use Stripe | https://ergo-agent-economy.vercel.app/blog/agents-cant-use-stripe |
 | Ergo Explorer (testnet) | https://testnet.ergoplatform.com |
 | Ergo testnet API | https://api-testnet.ergoplatform.com |
 | Fleet SDK docs | https://fleet-sdk.github.io/docs |

@@ -1,0 +1,11 @@
+{
+  "name": "04-orchestrator-budget",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@fleet-sdk/core": "^0.7.0"
+  }
+}

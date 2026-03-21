@@ -36,3 +36,26 @@ export type {
 
 export { ErgoAgentPayError } from "./types.js";
 export type { ErgoAgentPayErrorCode } from "./types.js";
+
+// ── Lifecycle types ────────────────────────────────────────────────────────────
+export type {
+  NoteInfo,
+  ReserveConfig,
+  ReserveResult,
+  RedeemOptions,
+  RedeemResult,
+  BatchSettleOptions,
+  BatchSettleResult,
+  TrackerConfig,
+  TrackerResult,
+} from "./types.js";
+
+// ── Lifecycle builders (for advanced / custom signing flows) ──────────────────
+export {
+  buildCreateReserveTx,
+  buildRedeemNoteTx,
+  buildBatchSettleTx,
+  buildDeployTrackerTx,
+  decodeRegisterInt,
+  decodeRegisterBytes,
+} from "./lifecycle.js";

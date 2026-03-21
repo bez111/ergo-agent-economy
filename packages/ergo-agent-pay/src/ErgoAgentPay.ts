@@ -8,6 +8,15 @@ import type {
   PayResult,
   NoteOptions,
   NoteResult,
+  NoteInfo,
+  ReserveConfig,
+  ReserveResult,
+  RedeemOptions,
+  RedeemResult,
+  BatchSettleOptions,
+  BatchSettleResult,
+  TrackerConfig,
+  TrackerResult,
   PayContext,
   LangChainToolConfig,
   OpenAIFunctionConfig,
@@ -18,6 +27,14 @@ import { NetworkClient } from "./network.js";
 import { PolicyEngine } from "./policy.js";
 import { buildPayTx, buildNoteTx, parseAmount } from "./transactions.js";
 import { resolveDeadline } from "./predicates.js";
+import {
+  buildCreateReserveTx,
+  buildRedeemNoteTx,
+  buildBatchSettleTx,
+  buildDeployTrackerTx,
+  decodeRegisterInt,
+  decodeRegisterBytes,
+} from "./lifecycle.js";
 
 export class ErgoAgentPay {
   private readonly config: Required<Omit<ErgoAgentPayConfig, "signer" | "policy">> &
@@ -181,6 +198,230 @@ export class ErgoAgentPay {
    */
   resetSession(): void {
     this.policy.resetSession();
+  }
+
+  // ── Note lifecycle ────────────────────────────────────────────────────────
+
+  /**
+   * Fetch a Note box and decode its state: value, expiry, task hash, reserve ID.
+   *
+   * @example
+   * const info = await agent.checkNote(noteBoxId)
+   * if (info.isExpired) console.log("Note expired at block", info.expiryBlock)
+   * if (info.taskHash) console.log("Acceptance predicate:", info.taskHash)
+   */
+  async checkNote(noteBoxId: string): Promise<NoteInfo> {
+    let box: unknown;
+    try {
+      box = await this.network.getBox(noteBoxId);
+    } catch {
+      throw new ErgoAgentPayError(
+        `Note box ${noteBoxId} not found on ${this.config.network}.`,
+        "BOX_NOT_FOUND"
+      );
+    }
+
+    const currentBlock = await this.network.getHeight();
+    const b = box as {
+      boxId: string;
+      value: string | number;
+      additionalRegisters?: Record<string, string>;
+    };
+
+    const regs = b.additionalRegisters ?? {};
+    const expiryBlock = regs.R5 ? decodeRegisterInt(regs.R5) : 0;
+    const reserveBoxId = regs.R4 ? decodeRegisterBytes(regs.R4) : undefined;
+    const taskHash = regs.R6 ? decodeRegisterBytes(regs.R6) : undefined;
+    const credentialKey = regs.R7 ? decodeRegisterBytes(regs.R7) : undefined;
+
+    const valueNano = BigInt(b.value);
+
+    return {
+      boxId: noteBoxId,
+      value: valueNano,
+      ergs: (Number(valueNano) / 1e9).toFixed(9).replace(/\.?0+$/, ""),
+      expiryBlock,
+      currentBlock,
+      isExpired: currentBlock >= expiryBlock,
+      reserveBoxId,
+      taskHash: taskHash || undefined,
+      credentialKey: credentialKey || undefined,
+      raw: box,
+    };
+  }
+
+  /**
+   * Redeem a Note — spend it and release ERG to the receiver.
+   *
+   * For acceptance-predicate-protected Notes, provide `taskOutput` matching
+   * the hash stored in R6. The output bytes are injected as context variable 0.
+   * Miners run `blake2b256(getVar[Coll[Byte]](0).get)` and verify against R6.
+   *
+   * @example
+   * const result = await agent.redeemNote({
+   *   noteBoxId: "abc123...",
+   *   taskOutput: "The answer is 42",   // proves task completion on-chain
+   *   receiverAddress: myAddress,
+   * })
+   */
+  async redeemNote(opts: RedeemOptions): Promise<RedeemResult> {
+    const noteBox = await this.network.getBox(opts.noteBoxId).catch(() => {
+      throw new ErgoAgentPayError(
+        `Note box ${opts.noteBoxId} not found.`,
+        "BOX_NOT_FOUND"
+      );
+    });
+
+    const [feeInputs, height] = await Promise.all([
+      this.network.getUnspentBoxes(this.config.address),
+      this.network.getHeight(),
+    ]);
+
+    const receiver = opts.receiverAddress ?? this.config.address;
+    const unsignedTx = buildRedeemNoteTx(noteBox, feeInputs, height, this.config.address, opts);
+    const baseResult = await this.signAndMaybeSubmit(unsignedTx);
+
+    return {
+      ...baseResult,
+      redeemed: {
+        noteBoxId: opts.noteBoxId,
+        value: BigInt((noteBox as { value: string | number }).value).toString(),
+        receiver,
+      },
+    };
+  }
+
+  /**
+   * Deploy a Reserve box — the collateral backing a Note issuance system.
+   *
+   * For production: compile the ChainCash Reserve ErgoScript with ergo-lib-wasm
+   * and pass the ergoTree as `config.scriptErgoTree`. Without it, the collateral
+   * is locked in a P2PK box (suitable for development/testnet demos only).
+   *
+   * @example
+   * const reserve = await agent.createReserve({ collateral: "10 ERG" })
+   * console.log("Reserve TX:", reserve.unsignedTx)
+   * // Use the resulting boxId as `reserveBoxId` in issueNote()
+   */
+  async createReserve(config: ReserveConfig): Promise<ReserveResult> {
+    const [inputs, height] = await Promise.all([
+      this.network.getUnspentBoxes(this.config.address),
+      this.network.getHeight(),
+    ]);
+
+    if (!inputs.length) {
+      throw new ErgoAgentPayError(
+        `No UTxOs found for address ${this.config.address}.`,
+        "INSUFFICIENT_FUNDS"
+      );
+    }
+
+    const unsignedTx = buildCreateReserveTx(inputs, height, this.config.address, config);
+    const baseResult = await this.signAndMaybeSubmit(unsignedTx);
+    const collateral = parseAmount(config.collateral);
+
+    return {
+      ...baseResult,
+      reserve: {
+        value: collateral.toString(),
+        hasScript: !!config.scriptErgoTree,
+      },
+    };
+  }
+
+  /**
+   * Deploy a Tracker box — the on-chain anti-double-spend registry for Notes.
+   *
+   * Every Note redemption must reference this Tracker. The Tracker script
+   * verifies the Note has not been redeemed before and outputs an updated
+   * Tracker with the Note ID added to the spent set.
+   *
+   * Requires a compiled ErgoScript ergoTree (use ChainCash's Tracker script).
+   *
+   * @example
+   * const tracker = await agent.deployTracker({
+   *   scriptErgoTree: COMPILED_TRACKER_ERGOTREE,
+   * })
+   */
+  async deployTracker(config: TrackerConfig): Promise<TrackerResult> {
+    const [inputs, height] = await Promise.all([
+      this.network.getUnspentBoxes(this.config.address),
+      this.network.getHeight(),
+    ]);
+
+    if (!inputs.length) {
+      throw new ErgoAgentPayError(
+        `No UTxOs found for address ${this.config.address}.`,
+        "INSUFFICIENT_FUNDS"
+      );
+    }
+
+    const unsignedTx = buildDeployTrackerTx(inputs, height, this.config.address, config);
+    const baseResult = await this.signAndMaybeSubmit(unsignedTx);
+
+    return {
+      ...baseResult,
+      tracker: {
+        hasScript: true,
+      },
+    };
+  }
+
+  /**
+   * Settle multiple Notes in a single transaction — batch redemption.
+   *
+   * All Notes are spent as inputs. The total ERG (minus fee) goes to the receiver.
+   * Task outputs for predicate-protected Notes are injected per-input.
+   *
+   * Best practice: batch at the end of a work session to minimize on-chain fees.
+   *
+   * @example
+   * const result = await agent.settleBatch({
+   *   noteBoxIds: ["abc...", "def...", "ghi..."],
+   *   taskOutputs: {
+   *     "abc...": "result of task 1",
+   *     "def...": "result of task 2",
+   *   },
+   *   receiverAddress: providerAddress,
+   * })
+   * console.log(`Settled ${result.settlement.noteCount} notes, total ${result.settlement.totalValue} nanoERG`)
+   */
+  async settleBatch(opts: BatchSettleOptions): Promise<BatchSettleResult> {
+    if (!opts.noteBoxIds.length) {
+      throw new ErgoAgentPayError("noteBoxIds must not be empty.", "INVALID_AMOUNT");
+    }
+
+    // Fetch all Note boxes in parallel
+    const noteBoxes = await Promise.all(
+      opts.noteBoxIds.map((id) =>
+        this.network.getBox(id).catch(() => {
+          throw new ErgoAgentPayError(`Note box ${id} not found.`, "BOX_NOT_FOUND");
+        })
+      )
+    );
+
+    const [feeInputs, height] = await Promise.all([
+      this.network.getUnspentBoxes(this.config.address),
+      this.network.getHeight(),
+    ]);
+
+    const receiver = opts.receiverAddress ?? this.config.address;
+    const unsignedTx = buildBatchSettleTx(noteBoxes, feeInputs, height, this.config.address, opts);
+    const baseResult = await this.signAndMaybeSubmit(unsignedTx);
+
+    const totalValue = noteBoxes.reduce(
+      (sum, box) => sum + BigInt((box as { value: string | number }).value),
+      0n
+    );
+
+    return {
+      ...baseResult,
+      settlement: {
+        noteCount: opts.noteBoxIds.length,
+        totalValue: totalValue.toString(),
+        receiver,
+      },
+    };
   }
 
   // ── LangChain adapter ────────────────────────────────────────────────────
