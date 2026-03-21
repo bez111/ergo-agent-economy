@@ -148,13 +148,13 @@ export function buildBatchSettleTx(
   const receiver = opts.receiverAddress ?? agentAddress;
   const allInputs = [...noteBoxes, ...feeInputs];
 
-  const totalValue = noteBoxes.reduce((sum, box) => {
-    return sum + BigInt((box as { value: string | number | bigint }).value);
+  const totalValue = (noteBoxes as { value: string | number | bigint }[]).reduce<bigint>((sum, box) => {
+    return sum + BigInt(box.value);
   }, 0n);
 
   const unsignedTx = new TransactionBuilder(height)
     .from(allInputs as Parameters<typeof TransactionBuilder.prototype.from>[0])
-    .to(new OutputBuilder(totalValue, receiver))
+    .to(new OutputBuilder(totalValue.toString(), receiver))
     .sendChangeTo(agentAddress)
     .payMinFee()
     .build()

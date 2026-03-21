@@ -63,7 +63,7 @@ export interface NoteOptions {
   reserveBoxId: string;
 
   /** Expiry as absolute block height or "+N blocks" relative offset */
-  deadline: number | `+${number} blocks`;
+  deadline: number | `+${number} blocks` | `+${number} block`;
 
   /** Acceptance predicate: task hash (hex, 32 bytes) */
   taskHash?: string;

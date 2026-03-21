@@ -409,8 +409,8 @@ export class ErgoAgentPay {
     const unsignedTx = buildBatchSettleTx(noteBoxes, feeInputs, height, this.config.address, opts);
     const baseResult = await this.signAndMaybeSubmit(unsignedTx);
 
-    const totalValue = noteBoxes.reduce(
-      (sum, box) => sum + BigInt((box as { value: string | number }).value),
+    const totalValue = (noteBoxes as { value: string | number | bigint }[]).reduce<bigint>(
+      (sum, box) => sum + BigInt(box.value),
       0n
     );
 

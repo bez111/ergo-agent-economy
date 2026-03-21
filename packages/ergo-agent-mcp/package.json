@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@fleet-sdk/core": "^0.7.0",
-    "ergo-agent-pay": "^0.2.0"
+    "@fleet-sdk/core": "^0.7.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
