@@ -220,13 +220,13 @@ Works in Node.js and browsers. Used in all examples in this repo.
 
 | Resource | URL |
 |---|---|
-| Agent economy hub | https://ergo-agent-economy.vercel.app/agent-economy |
-| Technical architecture | https://ergo-agent-economy.vercel.app/build/agent-payments |
-| 10-minute quickstart | https://ergo-agent-economy.vercel.app/build/quickstart |
-| Live testnet demos | https://ergo-agent-economy.vercel.app/demos |
-| Comparison vs ETH/SOL | https://ergo-agent-economy.vercel.app/agent-economy/vs |
-| Manifesto | https://ergo-agent-economy.vercel.app/agent-economy/manifesto |
-| Blog: Why agents can't use Stripe | https://ergo-agent-economy.vercel.app/blog/agents-cant-use-stripe |
+| Agent economy hub | https://www.ergoblockchain.org/agent-economy |
+| Technical architecture | https://www.ergoblockchain.org/build/agent-payments |
+| 10-minute quickstart | https://www.ergoblockchain.org/build/quickstart |
+| Live testnet demos | https://www.ergoblockchain.org/demos |
+| Comparison vs ETH/SOL | https://www.ergoblockchain.org/agent-economy/vs |
+| Manifesto | https://www.ergoblockchain.org/agent-economy/manifesto |
+| Blog: Why agents can't use Stripe | https://www.ergoblockchain.org/blog/agents-cant-use-stripe |
 | Ergo Explorer (testnet) | https://testnet.ergoplatform.com |
 | Ergo testnet API | https://api-testnet.ergoplatform.com |
 | Fleet SDK docs | https://fleet-sdk.github.io/docs |

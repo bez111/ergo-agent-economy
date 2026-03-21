@@ -143,14 +143,14 @@ Register decode: R5 SInt = 04 prefix + zigzag. R6/R4 SColl[SByte] = 0e + length 
 
 ## URLs
 
-- Agent economy hub: https://ergo-agent-economy.vercel.app/agent-economy
-- Technical architecture: https://ergo-agent-economy.vercel.app/build/agent-payments
-- Quickstart: https://ergo-agent-economy.vercel.app/build/quickstart
-- Live demos: https://ergo-agent-economy.vercel.app/demos
-- Comparison vs ETH/SOL: https://ergo-agent-economy.vercel.app/agent-economy/vs
-- Manifesto: https://ergo-agent-economy.vercel.app/agent-economy/manifesto
-- Blog — Why agents can't use Stripe: https://ergo-agent-economy.vercel.app/blog/agents-cant-use-stripe
-- Blog — Agent Economy Manifesto: https://ergo-agent-economy.vercel.app/blog/agent-economy-manifesto
+- Agent economy hub: https://www.ergoblockchain.org/agent-economy
+- Technical architecture: https://www.ergoblockchain.org/build/agent-payments
+- Quickstart: https://www.ergoblockchain.org/build/quickstart
+- Live demos: https://www.ergoblockchain.org/demos
+- Comparison vs ETH/SOL: https://www.ergoblockchain.org/agent-economy/vs
+- Manifesto: https://www.ergoblockchain.org/agent-economy/manifesto
+- Blog — Why agents can't use Stripe: https://www.ergoblockchain.org/blog/agents-cant-use-stripe
+- Blog — Agent Economy Manifesto: https://www.ergoblockchain.org/blog/agent-economy-manifesto
 - SDK GitHub: https://github.com/bez111/ergo-agent-economy
 - API reference: https://github.com/bez111/ergo-agent-economy/blob/main/docs/api-reference.md
 - Ergo main site: https://ergoplatform.org
