@@ -17,7 +17,7 @@ Note on transaction building:
 
 from __future__ import annotations
 import hashlib
-from typing import Optional, Callable, Any
+from typing import Optional, Callable
 
 from .network import NetworkClient
 from .types import NoteInfo, ErgoAgentPayError
