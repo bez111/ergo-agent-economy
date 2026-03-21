@@ -1,0 +1,37 @@
+name: CI Python
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-py/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-py/**"
+
+jobs:
+  lint-typecheck:
+    name: Lint & typecheck
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/ergo-agent-py
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dev deps
+        run: pip install ruff mypy
+
+      - name: Ruff lint
+        run: ruff check ergo_agent_pay/
+
+      - name: Mypy typecheck
+        run: mypy ergo_agent_pay/ --ignore-missing-imports
