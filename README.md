@@ -88,7 +88,12 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-Then ask Claude: *"What's my ERG balance?"*, *"Check Note box abc123"*, *"Build a payment TX"*
+Then ask Claude: *"What's my ERG balance?"*, *"Check Note box abc123"*, *"Build a payment TX"*, *"Issue a Note for 0.005 ERG to 9X… backed by reserve abc… expiring in 100 blocks, conditional on the answer being '42'"*
+
+The MCP server now exposes the full Reserve / Note / Tracker lifecycle —
+`ergo_task_hash`, `ergo_create_reserve`, `ergo_issue_note`, `ergo_redeem_note`,
+`ergo_deploy_tracker`, `ergo_settle_batch` — alongside the read tools.
+See [`packages/ergo-agent-mcp/README.md`](./packages/ergo-agent-mcp/README.md).
 
 ### TypeScript SDK
 
