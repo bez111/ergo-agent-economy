@@ -100,12 +100,12 @@ export function encodeToHex(str: string): string {
  */
 export const TASK_HASH_PREDICATE_SCRIPT = `{
   // Acceptance predicate: task hash verification with deadline
-  // R5: expiry block height (SInt)
-  // R6: expected task output hash (SColl[SByte], 32 bytes)
+  // SELF.R5: expiry block height (SInt)
+  // SELF.R6: expected task output hash (SColl[SByte], 32 bytes)
   //
   // To redeem: provide task output as context variable 0
-  val expiry       = R5[Int].get
-  val expectedHash = R6[Coll[Byte]].get
+  val expiry       = SELF.R5[Int].get
+  val expectedHash = SELF.R6[Coll[Byte]].get
   val taskOutput   = getVar[Coll[Byte]](0).get
   val actualHash   = blake2b256(taskOutput)
   sigmaProp(HEIGHT < expiry && actualHash == expectedHash)
@@ -113,12 +113,12 @@ export const TASK_HASH_PREDICATE_SCRIPT = `{
 
 /**
  * ErgoScript for credential-gated acceptance predicate.
- * R5: expiry, R6: task hash, R7: authorized public key (GroupElement)
+ * SELF.R5: expiry, SELF.R6: task hash, SELF.R7: authorised public key (GroupElement)
  */
 export const CREDENTIAL_PREDICATE_SCRIPT = `{
-  val expiry       = R5[Int].get
-  val expectedHash = R6[Coll[Byte]].get
-  val authorizedPK = R7[GroupElement].get
+  val expiry       = SELF.R5[Int].get
+  val expectedHash = SELF.R6[Coll[Byte]].get
+  val authorizedPK = SELF.R7[GroupElement].get
   val taskOutput   = getVar[Coll[Byte]](0).get
   sigmaProp(
     HEIGHT < expiry &&

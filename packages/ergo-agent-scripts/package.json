@@ -1,0 +1,53 @@
+{
+  "name": "ergo-agent-scripts",
+  "version": "0.1.0",
+  "description": "Canonical ErgoScript sources for v0 predicates plus a typed registry for compiled ergoTrees. Ships sources only; the compile script populates trees via ergo-lib-wasm-nodejs.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./registry.json": "./data/predicates.json"
+  },
+  "files": ["dist", "data", "scripts", "README.md"],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts",
+    "compile-predicates": "node scripts/compile.mjs",
+    "verify-predicates": "node scripts/verify.mjs"
+  },
+  "keywords": [
+    "ergo",
+    "ergoscript",
+    "ergotree",
+    "agent-economy",
+    "compiled-scripts"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/bez111/ergo-agent-economy" },
+  "homepage": "https://github.com/bez111/ergo-agent-economy/tree/main/packages/ergo-agent-scripts",
+  "bugs": { "url": "https://github.com/bez111/ergo-agent-economy/issues" },
+  "dependencies": {
+    "@noble/hashes": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@fleet-sdk/compiler": ">=0.12.0"
+  },
+  "peerDependenciesMeta": {
+    "@fleet-sdk/compiler": { "optional": true }
+  },
+  "engines": { "node": ">=18" }
+}

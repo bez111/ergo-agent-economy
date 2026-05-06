@@ -116,16 +116,20 @@ The reference predicate is `TASK_HASH_PREDICATE_SCRIPT` from
 
 ```
 {
-  val expiry       = R5[Int].get
-  val expectedHash = R6[Coll[Byte]].get
+  val expiry       = SELF.R5[Int].get
+  val expectedHash = SELF.R6[Coll[Byte]].get
   val taskOutput   = getVar[Coll[Byte]](0).get
   val actualHash   = blake2b256(taskOutput)
   sigmaProp(HEIGHT < expiry && actualHash == expectedHash)
 }
 ```
 
-A credential-gated variant additionally checks `proveDlog(R7)` — see
-`CREDENTIAL_PREDICATE_SCRIPT`.
+The compiled ergoTree is published in
+[`packages/ergo-agent-scripts`](packages/ergo-agent-scripts/) as
+`task_hash_v0` with its BLAKE2b-256 hash recorded for tamper detection.
+
+A credential-gated variant additionally checks `proveDlog(SELF.R7)` —
+see `CREDENTIAL_PREDICATE_SCRIPT` and the `credential_v0` registry entry.
 
 v0 fixes the hash function (BLAKE2b-256), the register layout, and the
 context-variable index (0). v1 will add:
