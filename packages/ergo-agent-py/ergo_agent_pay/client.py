@@ -119,23 +119,16 @@ class ErgoAgentPay:
     @staticmethod
     def compute_task_hash(task_output: str | bytes) -> str:
         """
-        Compute a task hash for an acceptance predicate.
+        Compute the BLAKE2b-256 hash of a task output.
 
-        Uses SHA-256 (Python standard library).
-        For production on-chain verification, use blake2b-256:
-          pip install pyblake2
-          import pyblake2
-          h = pyblake2.blake2b(data, digest_size=32).hexdigest()
-
-        Or via cryptography package:
-          from cryptography.hazmat.primitives import hashes
-          from cryptography.hazmat.backends import default_backend
-          h = hashes.Hash(hashes.BLAKE2b(64), backend=default_backend())
-          ...
+        This matches ErgoScript's ``blake2b256(...)`` builtin and the TypeScript
+        SDK's ``computeTaskHash``. The hex string returned here is what goes
+        into a Note's R6 register and what an on-chain predicate compares
+        against. See SPEC.md for the formal definition and golden vectors.
         """
         if isinstance(task_output, str):
             task_output = task_output.encode()
-        return hashlib.sha256(task_output).hexdigest()
+        return hashlib.blake2b(task_output, digest_size=32).hexdigest()
 
     # ── LangChain adapter ──────────────────────────────────────────────────────
 

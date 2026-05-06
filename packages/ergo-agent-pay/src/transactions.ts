@@ -104,7 +104,14 @@ export function buildNoteTx(
     registers[opts.taskHash ? "R7" : "R6"] = opts.credentialKey;
   }
 
-  const output = new OutputBuilder(amountNanoErg.toString(), opts.recipient)
+  // If a compiled predicate ErgoTree is supplied, the Note is locked by it;
+  // otherwise it falls back to a P2PK at the recipient (dev/testnet only —
+  // the high-level SDK enforces this on mainnet via assertProductionSafety).
+  const lockingScript = opts.scriptErgoTree && opts.scriptErgoTree.length > 0
+    ? opts.scriptErgoTree
+    : opts.recipient;
+
+  const output = new OutputBuilder(amountNanoErg.toString(), lockingScript)
     .setAdditionalRegisters(registers as Parameters<typeof OutputBuilder.prototype.setAdditionalRegisters>[0]);
 
   return new TransactionBuilder(height)

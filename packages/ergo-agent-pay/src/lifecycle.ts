@@ -12,10 +12,16 @@
 //
 // Note on ErgoScript compilation:
 //   Full on-chain scripts (Reserve guard, Tracker update logic) must be compiled
-//   to ergoTree bytes using ergo-lib-wasm or AppKit.
-//   Pass the result as `scriptErgoTree` parameter.
-//   For development/testing, omitting scriptErgoTree creates P2PK boxes
-//   (semantics enforced off-chain only — fine for demos, not production).
+//   to ergoTree bytes using ergo-lib-wasm or AppKit. Pass the result as the
+//   `scriptErgoTree` parameter.
+//
+//   These are RAW builders. They do NOT enforce mainnet safety — omitting
+//   `scriptErgoTree` produces a P2PK box and the predicate stored in R6/R7
+//   becomes advisory only. The high-level `ErgoAgentPay` class wraps these
+//   builders with `assertProductionSafety()`; if you call them directly,
+//   call that helper yourself before signing on mainnet.
+//
+//   See SPEC.md for the formal Reserve / Note / Tracker v0 spec.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { TransactionBuilder, OutputBuilder, SByte, SColl } from "@fleet-sdk/core";

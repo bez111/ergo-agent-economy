@@ -15,6 +15,9 @@ export {
 
 export { parseAmount } from "./transactions.js";
 
+export { assertProductionSafety } from "./safety.js";
+export type { ProductionSafetyArgs } from "./safety.js";
+
 export type {
   ErgoAgentPayConfig,
   Network,

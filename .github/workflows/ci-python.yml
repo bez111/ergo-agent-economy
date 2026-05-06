@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "packages/ergo-agent-py/**"
+      - "test-vectors/**"
   pull_request:
     branches: [main]
     paths:
       - "packages/ergo-agent-py/**"
+      - "test-vectors/**"
 
 jobs:
   lint-typecheck:
@@ -35,3 +37,22 @@ jobs:
 
       - name: Mypy typecheck
         run: mypy ergo_agent_pay/ --ignore-missing-imports
+
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: packages/ergo-agent-py
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Run unittest
+        run: python -m unittest discover -s tests -v

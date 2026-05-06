@@ -27,6 +27,7 @@ import { NetworkClient } from "./network.js";
 import { PolicyEngine } from "./policy.js";
 import { buildPayTx, buildNoteTx, parseAmount } from "./transactions.js";
 import { resolveDeadline } from "./predicates.js";
+import { assertProductionSafety } from "./safety.js";
 import {
   buildCreateReserveTx,
   buildRedeemNoteTx,
@@ -37,8 +38,10 @@ import {
 } from "./lifecycle.js";
 
 export class ErgoAgentPay {
-  private readonly config: Required<Omit<ErgoAgentPayConfig, "signer" | "policy">> &
-    Pick<ErgoAgentPayConfig, "signer" | "policy">;
+  private readonly config: Required<
+    Omit<ErgoAgentPayConfig, "signer" | "policy" | "allowInsecureDevMode">
+  > &
+    Pick<ErgoAgentPayConfig, "signer" | "policy" | "allowInsecureDevMode">;
   private readonly network: NetworkClient;
   private readonly policy: PolicyEngine;
 
@@ -53,6 +56,7 @@ export class ErgoAgentPay {
       signer: config.signer,
       policy: config.policy,
       nodeUrl: config.nodeUrl ?? "",
+      allowInsecureDevMode: config.allowInsecureDevMode,
     };
 
     this.network = new NetworkClient(
@@ -128,6 +132,13 @@ export class ErgoAgentPay {
    * })
    */
   async issueNote(opts: NoteOptions): Promise<NoteResult> {
+    assertProductionSafety({
+      operation: "issueNote",
+      network: this.config.network,
+      scriptErgoTree: opts.scriptErgoTree,
+      allowInsecureDevMode: this.config.allowInsecureDevMode,
+    });
+
     const valueNanoErg = parseAmount(opts.value);
 
     const ctx: PayContext = {
@@ -304,6 +315,13 @@ export class ErgoAgentPay {
    * // Use the resulting boxId as `reserveBoxId` in issueNote()
    */
   async createReserve(config: ReserveConfig): Promise<ReserveResult> {
+    assertProductionSafety({
+      operation: "createReserve",
+      network: this.config.network,
+      scriptErgoTree: config.scriptErgoTree,
+      allowInsecureDevMode: this.config.allowInsecureDevMode,
+    });
+
     const [inputs, height] = await Promise.all([
       this.network.getUnspentBoxes(this.config.address),
       this.network.getHeight(),
@@ -344,6 +362,13 @@ export class ErgoAgentPay {
    * })
    */
   async deployTracker(config: TrackerConfig): Promise<TrackerResult> {
+    assertProductionSafety({
+      operation: "deployTracker",
+      network: this.config.network,
+      scriptErgoTree: config.scriptErgoTree,
+      allowInsecureDevMode: this.config.allowInsecureDevMode,
+    });
+
     const [inputs, height] = await Promise.all([
       this.network.getUnspentBoxes(this.config.address),
       this.network.getHeight(),

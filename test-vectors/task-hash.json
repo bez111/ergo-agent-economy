@@ -1,0 +1,67 @@
+{
+  "spec": "ergo-agent-economy/SPEC.md#hashing",
+  "version": "v0",
+  "algorithm": "BLAKE2b-256",
+  "digest_size_bytes": 32,
+  "description": "Golden vectors for task-hash computation. Every SDK MUST reproduce the listed expected_blake2b_256 output for the corresponding (kind, input) pair. Adding a new vector requires updating both TS and Python tests.",
+  "encoding": {
+    "utf8": "input is interpreted as a UTF-8 string and hashed byte-for-byte",
+    "hex": "input is a hex-encoded byte string; the bytes after decoding are hashed"
+  },
+  "cases": [
+    {
+      "name": "empty_string",
+      "input": "",
+      "kind": "utf8",
+      "expected_blake2b_256": "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8"
+    },
+    {
+      "name": "abc",
+      "input": "abc",
+      "kind": "utf8",
+      "expected_blake2b_256": "bddd813c634239723171ef3fee98579b94964e3bb1cb3e427262c8c068d52319"
+    },
+    {
+      "name": "the_answer_is_42",
+      "input": "the answer is 42",
+      "kind": "utf8",
+      "expected_blake2b_256": "549ead194a83140a8b12bc38bb74ba7e5b094a5749ea73a7e04156f91cc5260a"
+    },
+    {
+      "name": "unicode_emoji",
+      "input": "ergo 🦌",
+      "kind": "utf8",
+      "expected_blake2b_256": "c6721f73c13f25602a11e52c314c9538e087dd92d9be68df3c420414d7ad74e0"
+    },
+    {
+      "name": "json_payload",
+      "input": "{\"task\":\"summarize\",\"id\":7}",
+      "kind": "utf8",
+      "expected_blake2b_256": "8a8d8eb6d3fba1808ffd84f209a0a2e5c66c1db3c0ab56dc4e5263b90da40d16"
+    },
+    {
+      "name": "newline_text",
+      "input": "line1\nline2\n",
+      "kind": "utf8",
+      "expected_blake2b_256": "7ff67772c17b36793f45fdbd148702819e609411f0c2a221080ef7845cba4141"
+    },
+    {
+      "name": "binary_zero_bytes",
+      "input": "00",
+      "kind": "hex",
+      "expected_blake2b_256": "03170a2e7597b7b7e3d84c05391d139a62b157e78786d8c082f29dcf4c111314"
+    },
+    {
+      "name": "binary_ff_bytes",
+      "input": "ffffff",
+      "kind": "hex",
+      "expected_blake2b_256": "6bd599c8d4d3452adecc22922b07a699414605d7e7dd28e57310e9ad29ccf2cf"
+    },
+    {
+      "name": "binary_long",
+      "input": "0102030405060708090a0b0c0d0e0f10",
+      "kind": "hex",
+      "expected_blake2b_256": "d5db160a192e8f1cf0ccf40df6c205a502af7237242faec6c45741c385c32208"
+    }
+  ]
+}

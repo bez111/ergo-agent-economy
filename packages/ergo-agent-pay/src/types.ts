@@ -22,6 +22,17 @@ export interface ErgoAgentPayConfig {
 
   /** Custom API node URL. Defaults to the public Ergo API. */
   nodeUrl?: string;
+
+  /**
+   * Allow insecure dev-only flows on mainnet — specifically, creating a
+   * Reserve or issuing a Note without a compiled ErgoTree script. In that
+   * mode the box is a plain P2PK; the predicate stored in R6 is *not*
+   * enforced on-chain and Notes can be spent without revealing a valid
+   * task output. Safe for testnet/dev only. Defaults to ``false``.
+   *
+   * On testnet this flag has no effect — dev mode is always permitted there.
+   */
+  allowInsecureDevMode?: boolean;
 }
 
 export type SignerFn = (unsignedTx: EIP12UnsignedTx) => Promise<SignedTx>;
@@ -70,6 +81,18 @@ export interface NoteOptions {
 
   /** Acceptance predicate: required credential public key (GroupElement hex) */
   credentialKey?: string;
+
+  /**
+   * Compiled ErgoTree for the Note's spending condition.
+   *
+   * When set, the Note output enforces the predicate on-chain (typically
+   * ``TASK_HASH_PREDICATE_SCRIPT`` or ``CREDENTIAL_PREDICATE_SCRIPT``
+   * compiled with ergo-lib-wasm or AppKit). When omitted, the Note is a
+   * plain P2PK at ``recipient`` and the registers are advisory only —
+   * mainnet writes in this mode are blocked unless ``allowInsecureDevMode``
+   * is set on the agent config.
+   */
+  scriptErgoTree?: string;
 }
 
 export interface NoteResult extends PayResult {
@@ -165,7 +188,8 @@ export type ErgoAgentPayErrorCode =
   | "SUBMISSION_FAILED"
   | "BOX_NOT_FOUND"
   | "NOTE_EXPIRED"
-  | "NOTE_INVALID";
+  | "NOTE_INVALID"
+  | "INSECURE_MAINNET_MODE";
 
 // ── Reserve ───────────────────────────────────────────────────────────────────
 

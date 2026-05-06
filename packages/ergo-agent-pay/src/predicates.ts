@@ -1,63 +1,52 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // ergo-agent-pay — Acceptance Predicate Helpers
+//
+// All hashing here is BLAKE2b-256 — the same hash function used by ErgoScript's
+// `blake2b256(...)` builtin. Computing a different hash off-chain (e.g. SHA-256)
+// will silently break Note redemption: the on-chain predicate would reject every
+// task output. See SPEC.md for the formal definition and golden test vectors.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { blake2b } from "@noble/hashes/blake2b";
 import { ErgoAgentPayError } from "./types.js";
 
 /**
- * Compute the blake2b-256 hash of a task output (as Buffer/Uint8Array).
+ * Compute BLAKE2b-256 of `output`. The result is the hex string written to
+ * R6 of a Note when issuing a task-bound payment, and the value an on-chain
+ * predicate compares against.
  *
- * Use this when creating conditional Note payments:
- *   const hash = computeTaskHash(Buffer.from(apiResponse))
- *   await agent.issueNote(reserveId, '0.005 ERG', { taskHash: hash, ... })
+ * @example
+ *   const hash = computeTaskHash("the answer is 42")
+ *   await agent.issueNote({ ..., taskHash: hash })
  */
 export function computeTaskHash(output: Uint8Array | Buffer | string): string {
-  // In production: use the noble-hashes blake2b implementation
-  // npm install @noble/hashes
-  // import { blake2b } from "@noble/hashes/blake2b"
-  // return Buffer.from(blake2b(input, { dkLen: 32 })).toString("hex")
-  //
-  // For now: sha256 as a drop-in (replace with blake2b in production)
-  const crypto = globalThis.crypto;
-  if (!crypto?.subtle) {
-    throw new ErgoAgentPayError(
-      "Web Crypto API not available. Use Node.js 18+ or a browser.",
-      "NETWORK_ERROR"
-    );
-  }
-
-  const data =
-    typeof output === "string"
-      ? new TextEncoder().encode(output)
-      : output instanceof Uint8Array
-      ? output
-      : new Uint8Array(output);
-
-  // Return synchronously as hex — for async blake2b, use computeTaskHashAsync
-  // This is a placeholder — replace with @noble/hashes in production
-  return Array.from(data.slice(0, 32))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  const data = toBytes(output);
+  const digest = blake2b(data, { dkLen: 32 });
+  return toHex(digest);
 }
 
 /**
- * Compute blake2b-256 hash asynchronously using Web Crypto API (sha-256 fallback).
- * Replace with blake2b for full ErgoScript compatibility.
+ * Async variant — kept for API parity with the previous Web Crypto path.
+ * BLAKE2b is fast and synchronous, so this just wraps `computeTaskHash`.
  */
 export async function computeTaskHashAsync(
   output: Uint8Array | Buffer | string
 ): Promise<string> {
-  const data =
-    typeof output === "string"
-      ? new TextEncoder().encode(output)
-      : output instanceof Uint8Array
-      ? output
-      : new Uint8Array(output);
+  return computeTaskHash(output);
+}
 
-  const hashBuffer = await globalThis.crypto.subtle.digest("SHA-256", data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer);
-  return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+function toBytes(input: Uint8Array | Buffer | string): Uint8Array {
+  if (typeof input === "string") return new TextEncoder().encode(input);
+  if (input instanceof Uint8Array) return input;
+  return new Uint8Array(input);
+}
+
+function toHex(bytes: Uint8Array): string {
+  let out = "";
+  for (let i = 0; i < bytes.length; i++) {
+    out += bytes[i]!.toString(16).padStart(2, "0");
+  }
+  return out;
 }
 
 /**
@@ -100,9 +89,7 @@ export function validateTaskHash(hash: string): void {
  * Encode a UTF-8 string to a hex string for register storage.
  */
 export function encodeToHex(str: string): string {
-  return Array.from(new TextEncoder().encode(str))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  return toHex(new TextEncoder().encode(str));
 }
 
 /**

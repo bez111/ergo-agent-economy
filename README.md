@@ -25,6 +25,32 @@ No ERC-20 wrappers. No application-layer trust. Protocol primitives.
 
 ---
 
+## Status & production safety
+
+This is **alpha software**. The protocol is specified at v0 — see
+[**SPEC.md**](./SPEC.md) — and intended for **testnet** development. The
+ChainCash / Basis on-chain scripts that enforce the Reserve / Note / Tracker
+invariants have not been audited.
+
+What that means in practice:
+
+* On **testnet**, the SDK happily builds Reserves and Notes without a
+  compiled `scriptErgoTree`. The acceptance predicate stored in R6 is
+  advisory and the box behaves like a P2PK. That's fine for development.
+* On **mainnet**, the SDK refuses to issue a Note or create a Reserve
+  without a `scriptErgoTree` — the predicate would not be enforced
+  on-chain, which silently breaks the security model. To override, set
+  `allowInsecureDevMode: true` on the agent config (and read
+  [SECURITY.md](./SECURITY.md) first).
+* All hashing is **BLAKE2b-256**, identical to ErgoScript's `blake2b256`
+  builtin. TypeScript and Python SDKs share the same golden vectors at
+  [`test-vectors/task-hash.json`](./test-vectors/task-hash.json).
+
+Found a security issue? See [SECURITY.md](./SECURITY.md) — please don't
+open a public issue.
+
+---
+
 ## Why existing rails fail agents
 
 | Rail | Fatal flaw for agents |
