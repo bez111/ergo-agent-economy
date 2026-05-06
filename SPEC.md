@@ -86,8 +86,13 @@ form: `0x0e` type tag, length varint, raw bytes. v0 keeps task outputs short
 (< 256 bytes) and uses a single-byte length prefix; longer outputs require a
 proper varint and are reserved for v1.
 
-If R6 is unset, the predicate is satisfied trivially and the Note acts as a
-plain expiring bearer payment.
+A Note v0 MUST carry R6. The reference acceptance predicate
+(`task_hash_v0`) calls `SELF.R6[Coll[Byte]].get` unconditionally; an
+R6-less box compiled against this predicate is unspendable. To mint a
+"plain expiring bearer payment" with no task commitment, integrators
+need a separate predicate (e.g. an `expiry_only_v0` script that only
+checks `HEIGHT < SELF.R5.get`) and a manifest entry of its own. v0 does
+not ship one — every audited Note tree assumes R6 is populated.
 
 ### Holder ↔ Reserve binding (H-003)
 

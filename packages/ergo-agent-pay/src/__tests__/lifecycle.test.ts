@@ -28,6 +28,15 @@ describe("decodeRegisterInt", () => {
   it("decodes SInt(0) — zigzag(0)=0x00 → '0400'", () => {
     assert.equal(decodeRegisterInt("0400"), 0);
   });
+
+  it("throws when the decoded value exceeds Number.MAX_SAFE_INTEGER (L-003)", () => {
+    // zigzag-encoded value of (2^60) is large enough to be outside JS safe
+    // integer range. Hex of (2^60 << 1) = 2^61 = 0x2000000000000000.
+    assert.throws(
+      () => decodeRegisterInt("042000000000000000"),
+      /outside the JS safe-integer range/i
+    );
+  });
 });
 
 describe("decodeRegisterBytes", () => {

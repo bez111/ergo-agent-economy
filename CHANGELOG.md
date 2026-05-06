@@ -6,6 +6,46 @@ are kept in sync across the workspace; a single tag publishes the lot.
 
 ## [Unreleased]
 
+### Examples
+
+- **examples/13-paywalled-langchain** — LangChain `BaseTool` whose `_run`
+  is paywalled by an Ergo Note. Mirrors v2 PolicyEngine on the buyer side
+  (`pricing_policy.py`) with stub-bridge / stub-HTTP unit tests that don't
+  require LangChain installed. (PR #17)
+- **examples/14-paywalled-crewai** — CrewAI counterpart with a shared
+  `PaymentPolicy` instance gating the whole crew. Adds a regression test
+  asserting `max_session_spend` caps cumulative spend across multiple
+  agents using the same policy. (PR #17)
+
+### CI
+
+- `ci.yml`, `ci-mcp.yml`, `ci-scripts.yml` switched to root `npm install` +
+  `npm run X -w pkg`; the per-package `cd … && npm install` pattern broke
+  after npm-workspaces hoisting in PR #14. (PR #17)
+- `ci-mcp.yml` now builds `ergo-agent-api` before MCP typecheck (MCP
+  imports its types) and re-triggers on `packages/ergo-agent-api/**`. (PR #17)
+- `ci-python.yml` Unit-tests job dropped `cache: pip` (no install step,
+  cache action errored on the post-cleanup hook). (PR #17)
+- `ergo-agent-py` source annotated for `mypy --strict` — the strictness
+  was already declared in `pyproject.toml` but the source was lagging.
+  `bridge.py`, `client.py`, `network.py`, `types.py` now pass cleanly. (PR #17)
+
+### Audit follow-ups (low-hanging)
+
+- **I-002 / A-008** — `SPEC.md` corrected: a v0 Note MUST carry R6.
+  The reference predicate calls `SELF.R6.get` unconditionally, so an
+  R6-less box is unspendable; an unconditional bearer flow needs a
+  separate predicate (not shipped in v0).
+- **L-001** — `encodeSigmaCollByte` error message updated to match the
+  corrected SPEC (no more "issue without R6 instead" suggestion).
+- **L-003** — locked in with a regression test that asserts
+  `decodeRegisterInt` throws on values outside the JS safe-integer range.
+- **C-001** — locked in with two regression tests: `task_hash_v0` stays
+  `mainnetAllowed=false` in the manifest, and `verifyAuditedErgoTree`
+  with `requireMainnet: true` rejects it. The SDK's `assertProductionSafety`
+  calls this verifier, so promoting the manifest entry alone is no longer
+  enough to let `task_hash_v0` reach mainnet.
+
 ---
 
 ## [0.3.0] — 2026-05-06

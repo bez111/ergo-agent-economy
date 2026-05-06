@@ -32,11 +32,15 @@ export function encodeSigmaCollByte(bytes: Uint8Array | Buffer | readonly number
     // whose R6 is set to that constant + an empty taskOutput is semantically
     // a "redeem any time before expiry, no proof required" Note. Catching
     // empty payloads here forces the issuer to be deliberate about that.
+    // (SPEC.md §3 / I-002: v0 audited Notes always carry R6; an
+    // unconditional bearer flow needs a separate predicate, not an empty
+    // taskOutput.)
     throw new ErgoAgentPayError(
       "Task output is empty. An empty Coll[Byte] hashes to a known constant " +
         "(blake2b256(\"\") = 0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8) " +
-        "and produces a no-op predicate. If you intend an unconditional Note, " +
-        "issue it without R6 instead.",
+        "and produces a no-op predicate. v0 Notes are required to commit to " +
+        "a non-empty task output; an unconditional bearer flow needs a " +
+        "separate predicate (not yet shipped in v0).",
       "INVALID_ENCODING"
     );
   }

@@ -70,6 +70,20 @@ describe("AUDITED_ERGOTREES manifest shape", () => {
     const e = getAuditedEntry("task_hash_v0");
     assert.match(e.notes, /front-runn|bearer/i);
   });
+
+  it("task_hash_v0 stays mainnetAllowed=false (C-001 lock)", () => {
+    // Deep review C-001: task_hash_v0 is front-runnable after the task
+    // output is revealed in the mempool. The manifest entry must remain
+    // mainnetAllowed=false even when the manifest gets auditor-signed —
+    // a v0 receiver-bound replacement is the path forward, not promoting
+    // task_hash_v0.
+    const e = getAuditedEntry("task_hash_v0");
+    assert.equal(
+      e.mainnetAllowed,
+      false,
+      "task_hash_v0 must stay mainnetAllowed=false (C-001)",
+    );
+  });
 });
 
 describe("verifyAuditedErgoTree", () => {
@@ -114,6 +128,23 @@ describe("verifyAuditedErgoTree", () => {
     const v = verifyAuditedErgoTree("credential_v0", tree, { requireMainnet: true });
     if (v.ok === false) {
       assert.match(v.message ?? "", /signed/);
+    }
+  });
+
+  it("requireMainnet rejects task_hash_v0 even after manifest is signed (C-001)", () => {
+    // Re-state the C-001 invariant at the SDK boundary: the auditPolicy
+    // path used by ergo-agent-pay's `assertProductionSafety` calls
+    // verifyAuditedErgoTree under the hood. As long as the manifest
+    // entry stays mainnetAllowed=false, the SDK refuses task_hash_v0
+    // mainnet writes regardless of audit state.
+    const tree = tryGetErgoTree("task_hash_v0")!;
+    const v = verifyAuditedErgoTree("task_hash_v0", tree, { requireMainnet: true });
+    assert.equal(v.ok, false);
+    if (v.ok === false) {
+      assert.ok(
+        v.reason === "not-mainnet-allowed" || v.reason === "manifest-unsigned",
+        `expected task_hash_v0 to be rejected, got reason=${v.reason}`,
+      );
     }
   });
 });
