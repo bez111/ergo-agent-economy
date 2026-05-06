@@ -6,6 +6,7 @@ on:
     paths:
       - "packages/ergo-agent-mcp/**"
       - "packages/ergo-agent-pay/**"
+      - "packages/ergo-agent-api/**"
       - "test-vectors/**"
       - ".github/workflows/ci-mcp.yml"
       - "package.json"
@@ -15,6 +16,7 @@ on:
     paths:
       - "packages/ergo-agent-mcp/**"
       - "packages/ergo-agent-pay/**"
+      - "packages/ergo-agent-api/**"
       - "test-vectors/**"
       - ".github/workflows/ci-mcp.yml"
       - "package.json"
@@ -38,6 +40,9 @@ jobs:
 
       - name: Build ergo-agent-pay (MCP depends on its dist)
         run: npm run build -w ergo-agent-pay
+
+      - name: Build ergo-agent-api (MCP depends on its dist)
+        run: npm run build -w ergo-agent-api
 
       - name: Typecheck MCP
         run: npm run typecheck -w ergo-agent-mcp
