@@ -29,6 +29,8 @@ export type {
   BeforePayHook,
   AfterPayHook,
   ApprovalFn,
+  AuditLogEvent,
+  AuditLogFn,
   PayContext,
   SignerFn,
   LangChainToolConfig,
@@ -36,6 +38,8 @@ export type {
   EIP12UnsignedTx,
   SignedTx,
 } from "./types.js";
+
+export { PolicyEngine } from "./policy.js";
 
 export { ErgoAgentPayError } from "./types.js";
 export type { ErgoAgentPayErrorCode } from "./types.js";

@@ -126,7 +126,54 @@ export interface PolicyConfig {
 
   /** Approval callback — called when requireApprovalAbove is triggered */
   approvalFn?: ApprovalFn;
+
+  // ── v2 additions ────────────────────────────────────────────────────────────
+
+  /**
+   * Per-recipient single-payment caps (nanoERG). Overrides
+   * `maxSinglePayment` for the listed addresses; absent addresses fall back to
+   * the global `maxSinglePayment` if any.
+   */
+  perRecipientCap?: ReadonlyMap<string, bigint> | Readonly<Record<string, bigint>>;
+
+  /**
+   * Allowlist of recipient addresses. When set, payments to anything outside
+   * the allowlist are rejected with `POLICY_REJECTED`.
+   */
+  recipientAllowlist?: ReadonlyArray<string> | ReadonlySet<string>;
+
+  /**
+   * Blocklist of recipient addresses. Always rejected with `POLICY_REJECTED`,
+   * even if the address is also in the allowlist (blocklist wins).
+   */
+  recipientBlocklist?: ReadonlyArray<string> | ReadonlySet<string>;
+
+  /**
+   * Maximum total spend per UTC day in nanoERG. Resets at 00:00 UTC.
+   * Tracked across sessions only if the same `PolicyEngine` instance is used.
+   */
+  dailyBudget?: bigint;
+
+  /**
+   * Audit-log sink. Called for every policy decision (allow or reject) and
+   * after every successful payment. Errors thrown from the sink are
+   * swallowed so audit failures cannot break payment flow.
+   */
+  auditLog?: AuditLogFn;
+
+  /**
+   * Optional clock injection. Returns the current Unix epoch in ms.
+   * Defaults to `Date.now`. Useful for tests and deterministic replay.
+   */
+  now?: () => number;
 }
+
+export type AuditLogEvent =
+  | { kind: "before"; ctx: PayContext; allowed: true }
+  | { kind: "before"; ctx: PayContext; allowed: false; reason: string; code: ErgoAgentPayErrorCode }
+  | { kind: "after"; ctx: PayContext; result: PayResult };
+
+export type AuditLogFn = (event: AuditLogEvent) => void | Promise<void>;
 
 export type BeforePayHook = (ctx: PayContext) => boolean | Promise<boolean>;
 export type AfterPayHook = (ctx: PayContext, result: PayResult) => void | Promise<void>;
