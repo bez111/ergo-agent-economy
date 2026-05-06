@@ -6,20 +6,20 @@ on:
     paths:
       - "packages/ergo-agent-scripts/**"
       - ".github/workflows/ci-scripts.yml"
+      - "package.json"
+      - "package-lock.json"
   pull_request:
     branches: [main]
     paths:
       - "packages/ergo-agent-scripts/**"
       - ".github/workflows/ci-scripts.yml"
+      - "package.json"
+      - "package-lock.json"
 
 jobs:
   build:
     name: Build, typecheck, test, verify
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: packages/ergo-agent-scripts
 
     steps:
       - uses: actions/checkout@v4
@@ -27,20 +27,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install
+      - name: Install workspace
         run: npm install
 
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run typecheck -w ergo-agent-scripts
 
       - name: Test
-        run: npm test
+        run: npm test -w ergo-agent-scripts
 
       - name: Verify registry hashes (no compiler required)
-        run: npm run verify-predicates
+        run: npm run verify-predicates -w ergo-agent-scripts
 
       - name: Re-compile predicates (determinism check)
+        working-directory: packages/ergo-agent-scripts
         run: |
           npm install --no-save @fleet-sdk/compiler
           # Snapshot the committed ergoTreeHex values, then re-run the compiler
@@ -53,7 +55,7 @@ jobs:
             const snapshot = Object.fromEntries(reg.predicates.map(p => [p.name, p.ergoTreeHex]));
             fs.writeFileSync('/tmp/before.json', JSON.stringify(snapshot));
           "
-          npm run compile-predicates
+          node scripts/compile.mjs
           node -e "
             const fs = require('node:fs');
             const reg = JSON.parse(fs.readFileSync('data/predicates.json', 'utf-8'));
@@ -70,4 +72,4 @@ jobs:
           "
 
       - name: Build
-        run: npm run build
+        run: npm run build -w ergo-agent-scripts

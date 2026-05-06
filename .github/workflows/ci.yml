@@ -7,21 +7,21 @@ on:
       - "packages/ergo-agent-pay/**"
       - "test-vectors/**"
       - ".github/workflows/ci.yml"
+      - "package.json"
+      - "package-lock.json"
   pull_request:
     branches: [main]
     paths:
       - "packages/ergo-agent-pay/**"
       - "test-vectors/**"
       - ".github/workflows/ci.yml"
+      - "package.json"
+      - "package-lock.json"
 
 jobs:
   build:
     name: Build & typecheck
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: packages/ergo-agent-pay
 
     steps:
       - uses: actions/checkout@v4
@@ -30,19 +30,18 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: packages/ergo-agent-pay/package-lock.json
 
-      - name: Install dependencies
+      - name: Install workspace
         run: npm install
 
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run typecheck -w ergo-agent-pay
 
       - name: Build
-        run: npm run build
+        run: npm run build -w ergo-agent-pay
 
       - name: Test
-        run: npm test
+        run: npm test -w ergo-agent-pay
 
       - name: Check dist output
-        run: ls -la dist/
+        run: ls -la packages/ergo-agent-pay/dist/

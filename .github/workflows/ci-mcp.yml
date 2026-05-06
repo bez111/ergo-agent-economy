@@ -6,15 +6,21 @@ on:
     paths:
       - "packages/ergo-agent-mcp/**"
       - "packages/ergo-agent-pay/**"
+      - "packages/ergo-agent-api/**"
       - "test-vectors/**"
       - ".github/workflows/ci-mcp.yml"
+      - "package.json"
+      - "package-lock.json"
   pull_request:
     branches: [main]
     paths:
       - "packages/ergo-agent-mcp/**"
       - "packages/ergo-agent-pay/**"
+      - "packages/ergo-agent-api/**"
       - "test-vectors/**"
       - ".github/workflows/ci-mcp.yml"
+      - "package.json"
+      - "package-lock.json"
 
 jobs:
   build:
@@ -27,25 +33,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install ergo-agent-pay deps and build
-        working-directory: packages/ergo-agent-pay
-        run: |
-          npm install
-          npm run build
-
-      - name: Install ergo-agent-mcp deps
-        working-directory: packages/ergo-agent-mcp
+      - name: Install workspace
         run: npm install
 
+      - name: Build ergo-agent-pay (MCP depends on its dist)
+        run: npm run build -w ergo-agent-pay
+
+      - name: Build ergo-agent-api (MCP depends on its dist)
+        run: npm run build -w ergo-agent-api
+
       - name: Typecheck MCP
-        working-directory: packages/ergo-agent-mcp
-        run: npm run typecheck
+        run: npm run typecheck -w ergo-agent-mcp
 
       - name: Test MCP
-        working-directory: packages/ergo-agent-mcp
-        run: npm test
+        run: npm test -w ergo-agent-mcp
 
       - name: Build MCP
-        working-directory: packages/ergo-agent-mcp
-        run: npm run build
+        run: npm run build -w ergo-agent-mcp

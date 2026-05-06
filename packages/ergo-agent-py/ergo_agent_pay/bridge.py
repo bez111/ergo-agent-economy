@@ -44,7 +44,7 @@ class BridgeResponse:
     """Decoded JSON response plus HTTP status, for tests / debugging."""
 
     status: int
-    body: dict
+    body: dict[str, Any]
 
 
 class BridgeClient:
@@ -68,17 +68,17 @@ class BridgeClient:
 
     # ── Read endpoints ─────────────────────────────────────────────────────
 
-    def health(self) -> dict:
+    def health(self) -> dict[str, Any]:
         return self._get("/health")
 
-    def balance(self) -> dict:
+    def balance(self) -> dict[str, Any]:
         return self._get("/balance")
 
     def height(self) -> int:
         body = self._get("/height")
         return int(body["height"])
 
-    def check_note(self, box_id: str) -> dict:
+    def check_note(self, box_id: str) -> dict[str, Any]:
         return self._get(f"/notes/{box_id}")
 
     def task_hash(self, *, text: Optional[str] = None, hex: Optional[str] = None) -> str:
@@ -94,7 +94,7 @@ class BridgeClient:
 
     # ── Write endpoints ────────────────────────────────────────────────────
 
-    def pay(self, *, to: str, amount: str | int, memo: Optional[str] = None) -> dict:
+    def pay(self, *, to: str, amount: str | int, memo: Optional[str] = None) -> dict[str, Any]:
         body: dict[str, Any] = {"to": to, "amount": amount}
         if memo is not None:
             body["memo"] = memo
@@ -111,7 +111,7 @@ class BridgeClient:
         task_output: Optional[str] = None,
         credential_key: Optional[str] = None,
         script_ergo_tree: Optional[str] = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         if task_hash is not None and task_output is not None:
             raise ValueError("Pass either task_hash or task_output, not both")
         if task_output is not None:
@@ -137,7 +137,7 @@ class BridgeClient:
         *,
         task_output: Optional[str] = None,
         receiver_address: Optional[str] = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         body: dict[str, Any] = {}
         if task_output is not None:
             body["task_output"] = task_output
@@ -151,7 +151,7 @@ class BridgeClient:
         collateral: str | int,
         script_ergo_tree: Optional[str] = None,
         memo: Optional[str] = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         body: dict[str, Any] = {"collateral": collateral}
         if script_ergo_tree is not None:
             body["script_ergo_tree"] = script_ergo_tree
@@ -159,7 +159,7 @@ class BridgeClient:
             body["memo"] = memo
         return self._post("/reserves", body)
 
-    def deploy_tracker(self, *, script_ergo_tree: str) -> dict:
+    def deploy_tracker(self, *, script_ergo_tree: str) -> dict[str, Any]:
         return self._post("/trackers", {"script_ergo_tree": script_ergo_tree})
 
     def settle_batch(
@@ -168,7 +168,7 @@ class BridgeClient:
         note_box_ids: list[str],
         task_outputs: Optional[Mapping[str, str]] = None,
         receiver_address: Optional[str] = None,
-    ) -> dict:
+    ) -> dict[str, Any]:
         body: dict[str, Any] = {"note_box_ids": list(note_box_ids)}
         if task_outputs is not None:
             body["task_outputs"] = dict(task_outputs)
@@ -178,13 +178,13 @@ class BridgeClient:
 
     # ── HTTP plumbing ──────────────────────────────────────────────────────
 
-    def _get(self, path: str) -> dict:
+    def _get(self, path: str) -> dict[str, Any]:
         return self._request("GET", path, None)
 
-    def _post(self, path: str, body: dict) -> dict:
+    def _post(self, path: str, body: dict[str, Any]) -> dict[str, Any]:
         return self._request("POST", path, body)
 
-    def _request(self, method: str, path: str, body: Optional[dict]) -> dict:
+    def _request(self, method: str, path: str, body: Optional[dict[str, Any]]) -> dict[str, Any]:
         url = f"{self.base_url}{path}"
         headers = {"Accept": "application/json"}
         data: Optional[bytes] = None

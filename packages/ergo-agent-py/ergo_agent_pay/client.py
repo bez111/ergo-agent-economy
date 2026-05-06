@@ -17,11 +17,14 @@ Note on transaction building:
 
 from __future__ import annotations
 import hashlib
-from typing import Optional, Callable
+from typing import Any, Callable, Optional, TYPE_CHECKING
 
 from .network import NetworkClient
 from .types import NoteInfo, ErgoAgentPayError
 from .registers import decode_register_int, decode_register_bytes
+
+if TYPE_CHECKING:
+    from langchain.tools import StructuredTool
 
 
 class ErgoAgentPay:
@@ -44,23 +47,23 @@ class ErgoAgentPay:
         address: str,
         network: str = "mainnet",
         node_url: Optional[str] = None,
-        signer: Optional[Callable] = None,
-        policy: Optional[dict] = None,
+        signer: Optional[Callable[..., Any]] = None,
+        policy: Optional[dict[str, Any]] = None,
     ):
         self.address = address
         self.network = network
         self.signer = signer
-        self.policy = policy or {}
+        self.policy: dict[str, Any] = policy or {}
         self._client = NetworkClient(network=network, node_url=node_url)
         self._session_spend: int = 0
 
     # ── Balance & UTxOs ────────────────────────────────────────────────────────
 
-    def get_balance(self) -> dict:
+    def get_balance(self) -> dict[str, float]:
         """Return confirmed balance: {'nano_ergs': int, 'ergs': float}."""
         return self._client.get_address_balance(self.address)
 
-    def get_utxos(self, limit: int = 100) -> list[dict]:
+    def get_utxos(self, limit: int = 100) -> list[dict[str, Any]]:
         """Return unspent UTxOs for the agent address."""
         return self._client.get_unspent_boxes(self.address, limit=limit)
 
@@ -132,7 +135,7 @@ class ErgoAgentPay:
 
     # ── LangChain adapter ──────────────────────────────────────────────────────
 
-    def as_langchain_tool(self, server_url: str = "http://localhost:3000"):
+    def as_langchain_tool(self, server_url: str = "http://localhost:3000") -> "StructuredTool":
         """
         Return a LangChain StructuredTool that calls a running ergo-agent-pay server.
 
@@ -151,7 +154,7 @@ class ErgoAgentPay:
 
         agent_ref = self
 
-        class PayInput(BaseModel):
+        class PayInput(BaseModel):  # type: ignore[misc]
             to: str = Field(description="Receiver Ergo address")
             amount_erg: float = Field(description="Amount in ERG (e.g. 0.005)")
             memo: str = Field(default="", description="Optional payment memo")
@@ -190,7 +193,7 @@ class ErgoAgentPay:
 
     # ── OpenAI function definition ─────────────────────────────────────────────
 
-    def as_openai_function(self) -> dict:
+    def as_openai_function(self) -> dict[str, Any]:
         """
         Return an OpenAI function definition dict for function calling.
 

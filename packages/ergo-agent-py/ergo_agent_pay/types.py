@@ -25,8 +25,8 @@ class NoteInfo:
 @dataclass
 class PayResult:
     """Result of a payment operation."""
-    unsigned_tx: dict               # EIP-12 unsigned transaction
-    signed_tx: Optional[dict]
+    unsigned_tx: dict[str, Any]     # EIP-12 unsigned transaction
+    signed_tx: Optional[dict[str, Any]]
     tx_id: Optional[str]
     submitted: bool
 

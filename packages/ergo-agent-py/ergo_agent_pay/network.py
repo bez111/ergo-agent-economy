@@ -29,20 +29,23 @@ class NetworkClient:
         data = self._get("/api/v1/info")
         return int(data["fullHeight"])
 
-    def get_unspent_boxes(self, address: str, limit: int = 100) -> list[dict]:
+    def get_unspent_boxes(self, address: str, limit: int = 100) -> list[dict[str, Any]]:
         data = self._get(f"/api/v1/boxes/unspent/byAddress/{address}?limit={limit}&sortDirection=desc")
-        return data.get("items", [])
+        items: list[dict[str, Any]] = data.get("items", [])
+        return items
 
-    def get_address_balance(self, address: str) -> dict:
+    def get_address_balance(self, address: str) -> dict[str, float]:
         data = self._get(f"/api/v1/addresses/{address}/balance/confirmed")
         nano_ergs = int(data.get("confirmed", {}).get("nanoErgs", 0))
         return {"nano_ergs": nano_ergs, "ergs": nano_ergs / 1e9}
 
-    def get_box(self, box_id: str) -> dict:
-        return self._get(f"/api/v1/boxes/{box_id}")
+    def get_box(self, box_id: str) -> dict[str, Any]:
+        box: dict[str, Any] = self._get(f"/api/v1/boxes/{box_id}")
+        return box
 
-    def submit_transaction(self, signed_tx: dict) -> str:
-        return self._post("/api/v1/transactions", signed_tx)
+    def submit_transaction(self, signed_tx: dict[str, Any]) -> str:
+        result: str = self._post("/api/v1/transactions", signed_tx)
+        return result
 
     # ── Private helpers ────────────────────────────────────────────────────────
 
@@ -65,7 +68,7 @@ class NetworkClient:
                 e,
             ) from e
 
-    def _post(self, path: str, body: dict) -> Any:
+    def _post(self, path: str, body: dict[str, Any]) -> Any:
         url = f"{self.base_url}{path}"
         data = json.dumps(body).encode()
         req = urllib.request.Request(
