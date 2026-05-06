@@ -156,3 +156,23 @@ jobs:
         run: npm publish --workspace ergo-agent-rosen --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  agentpay-base:
+    name: agentpay-base
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: "https://registry.npmjs.org"
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build -w agentpay-base
+      - name: Test
+        run: npm test -w agentpay-base
+      - name: Publish
+        run: npm publish --workspace agentpay-base --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

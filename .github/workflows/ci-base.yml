@@ -1,0 +1,37 @@
+name: CI Base
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/agentpay-base/**"
+      - ".github/workflows/ci-base.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/agentpay-base/**"
+      - ".github/workflows/ci-base.yml"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install workspace
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck -w agentpay-base
+
+      - name: Test
+        run: npm test -w agentpay-base
+
+      - name: Build
+        run: npm run build -w agentpay-base

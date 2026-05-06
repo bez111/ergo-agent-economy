@@ -4,9 +4,14 @@
   "private": true,
   "description": "Monorepo root for ergo-agent-economy. Source for ergo-agent-pay (TS SDK), ergo-agent-cli, ergo-agent-api, ergo-agent-mcp, ergo-agent-server, ergo-agent-scripts, ergo-agent-rosen, and the Python ergo_agent_pay package. The root package.json is private and exists only to configure workspaces.",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/bez111/ergo-agent-economy" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/ergo-agent-economy"
+  },
   "homepage": "https://github.com/bez111/ergo-agent-economy",
-  "bugs": { "url": "https://github.com/bez111/ergo-agent-economy/issues" },
+  "bugs": {
+    "url": "https://github.com/bez111/ergo-agent-economy/issues"
+  },
   "workspaces": [
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
@@ -14,12 +19,15 @@
     "packages/ergo-agent-mcp",
     "packages/ergo-agent-server",
     "packages/ergo-agent-scripts",
-    "packages/ergo-agent-rosen"
+    "packages/ergo-agent-rosen",
+    "packages/agentpay-base"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }
