@@ -77,12 +77,33 @@ const hash = hashErgoTree(suspiciousTree);
 
 ## Predicates shipped in v0
 
+### Acceptance predicates (used by `ergo-agent-pay` directly)
+
 | name | purpose | registers |
 |---|---|---|
 | `task_hash_v0` | Note redemption requires `HEIGHT < R5` and `blake2b256(getVar[0]) == R6`. | R5 expiry (Int), R6 task hash (Coll[Byte]) |
 | `credential_v0` | As above, plus `proveDlog(R7)`. | R5, R6, R7 group element |
 
-The sources are committed verbatim to `data/predicates.json` and exported
+### ChainCash on-chain contracts (vendored from [kushti/ChainCash](https://github.com/kushti/ChainCash))
+
+| name | purpose |
+|---|---|
+| `chaincash_reserve_v0` | Reserve guard: owner-keyed collateral box. Three actions — redeem (#0), top up (#1), mint note (#2). Oracle-pegged redemption, 2% fee + 0.2% buyback. |
+| `chaincash_note_v0` | Bearer IOU with spend / redeem paths. Schnorr signature in R4 history tree. Redemption requires Reserve and Receipt boxes in the same TX. |
+| `chaincash_receipt_v0` | Ephemeral box created by note redemption; allows re-redemption against earlier reserves; self-burns 3 years after creation. |
+
+`chaincash_note_v0` and `chaincash_receipt_v0` reference the previous
+contract by hash — the registry's `dependsOn` field makes the compiler
+resolve the chain in topological order.
+
+### Basis offchain-credit reserves (vendored from [kushti/ChainCash/contracts/offchain](https://github.com/kushti/ChainCash/tree/main/contracts/offchain))
+
+| name | purpose |
+|---|---|
+| `basis_reserve_v0` | ERG-only Basis reserve. Owner key + AVL tree of `(owner, receiver) → (timestamp, redeemed)`. Owner sig + tracker sig (or 3-day emergency exit). |
+| `basis_token_reserve_v0` | Token-collateralised variant of the same scheme. |
+
+The sources are committed verbatim under `data/sources/*.es` and exported
 via `getPredicate(name).source` so a downstream auditor can confirm that
 the package shipped the source they reviewed.
 

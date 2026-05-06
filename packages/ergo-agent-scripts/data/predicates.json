@@ -1,7 +1,7 @@
 {
   "spec": "ergo-agent-economy/SPEC.md#5-acceptance-predicate-v0",
   "version": "v0",
-  "description": "Canonical ErgoScript sources and compiled ergoTrees for the v0 acceptance predicates. Sources are committed verbatim; trees are produced by `npm run compile-predicates` (via @fleet-sdk/compiler). The treeHashBlake2b256 field is BLAKE2b-256 of the raw ergoTree bytes — re-runnable via `npm run verify-predicates` without the compiler.",
+  "description": "Canonical ErgoScript sources and compiled ergoTrees. Sources are either inline (`source` field) or loaded from `data/sources/<file>` (`sourceFile` field — preferred for >20-line scripts). Some entries depend on a previously-compiled tree's hash; the compiler resolves `${name}_hash_base58` placeholders before compiling. Trees are produced by `npm run compile-predicates` (via @fleet-sdk/compiler); `treeHashBlake2b256` is BLAKE2b-256 of the raw ergoTree bytes — re-runnable via `npm run verify-predicates` without the compiler.",
   "predicates": [
     {
       "name": "task_hash_v0",
@@ -16,7 +16,7 @@
       },
       "ergoTreeHex": "191500d1ed8fa3e4c6a7050493cbe4e3000ee4c6a7060e",
       "treeHashBlake2b256": "30f45206206410d993fe9c25232c56e9f1eb7080291e00dcfbc5ec73b7c7d9e4",
-      "compiledAt": "2026-05-06T16:45:52.250Z",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
       "compiler": "@fleet-sdk/compiler 0.12.0"
     },
     {
@@ -33,7 +33,92 @@
       },
       "ergoTreeHex": "191d00ea02d1ed8fa3e4c6a7050493cbe4e3000ee4c6a7060ecde4c6a70707",
       "treeHashBlake2b256": "f22105b4dd9709e97fd1b0f455bdc79de791f89fa4f77ce8abfadefa4948d516",
-      "compiledAt": "2026-05-06T16:45:52.250Z",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
+      "compiler": "@fleet-sdk/compiler 0.12.0"
+    },
+    {
+      "name": "chaincash_reserve_v0",
+      "purpose": "ChainCash Reserve guard — owner-keyed collateral box. Three actions: redeem note (#0), top up (#1), mint note (#2). Verifies oracle-pegged redemption against AVL+ history, 2% fee + 0.2% buyback. Vendored from kushti/ChainCash/contracts/onchain/reserve.es.",
+      "sourceFile": "sources/reserve.es",
+      "registers": {
+        "R4": "reserve owner key (GroupElement)",
+        "R5": "tree of all note tokens issued (AvlTree)"
+      },
+      "tokens": {
+        "0": "identifying singleton NFT"
+      },
+      "ergoTreeHex": "19e20420041404140400040004000400040004420500040204000e203c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a0580897a05c40105c801050004040e20bf24ed4af7eb5a7839c43aa6b240697d81b196120c837e1a941832c266d3755c040404000400050405d00f0101044204000428010104020580a8d6b90704040100d806d6017ee4e3000204d6029d72017300d6039e72017301d604b2a5720300d605e4c6a70407d606eded93c27204c2a793db63087204db6308a793e4c6720404077205959372027302d80cd607b2db6501fe730300d60899c1a7c17204d609b2a4720300d60ab2db63087209730400d60b8c720a02d60ce4c672090464d60de4e30305d60e7a720dd60fe4dc640a720c02b3720e8cb2db6308a773050001e4e3010ed610b4720f73067307d611e4e3020ed612b2a5959372087308e4e30504730900d1ededededed7206938cb2db63087207730a0001730bed9072089d9c9c720b9de4c672070405730c730d730e95917208730fd803d613b2a4731000d6147311d615b2a5731200eded938cb2db63087213731300017214938cb2db630872157314000172149299c17215c172139d9c7208731573167317ed939fdb6a01dd7bb4720f7318b1720fa0ee72109f72057bcbb3b37210b3b3720e72118c720a01db0702720590720b7c7211ededededed93b2db63087212731900720a93e4c672120464720c93e4c672120505720d92e4c67212060499a3731a90e4c672120604a393e4c672120707720595e4e304018f720de4c672090505731b95937202731cd1ed72069299c17204c1a7731d95937202731ed17206d1731f",
+      "treeHashBlake2b256": "792efb003d3144bffd878591aaeb52374d6eeca76ebed2078bfe2e7960a716f3",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
+      "compiler": "@fleet-sdk/compiler 0.12.0"
+    },
+    {
+      "name": "chaincash_receipt_v0",
+      "purpose": "ChainCash Receipt — ephemeral box created by note redemption. Allows re-redemption against earlier reserves (chained debt) and self-burns 3 years after creation to dodge storage rent. Vendored from kushti/ChainCash/contracts/onchain/receipt.es.",
+      "sourceFile": "sources/receipt.es",
+      "registers": {
+        "R4": "ownership history for the redeemed note (AvlTree)",
+        "R5": "redeemed position (Long)",
+        "R6": "creation height (Int)",
+        "R7": "redeemer public key (GroupElement)"
+      },
+      "templateVariables": {
+        "reserveContractHash": "blake2b256 of chaincash_reserve_v0 ergoTree (version byte stripped), base58-encoded"
+      },
+      "dependsOn": [
+        "chaincash_reserve_v0"
+      ],
+      "ergoTreeHex": "197506040204e09e60040004020e20153b268bea5802505c6b19132e47960e9ca608ebc2b84bfe3bdc8601feac27b80402d801d601c2b2a4730000eb02d1ed91a39ae4c6a706047301afa5d901026393b1db630872027302ea02cde4c6a70707d1ed93cbb472017303b17201730493c2b2a5730500c2a7",
+      "treeHashBlake2b256": "18f0892c68df5a9e03d878bdf44403eb225fbde074d1d3022f90b6299a5362cb",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
+      "compiler": "@fleet-sdk/compiler 0.12.0"
+    },
+    {
+      "name": "chaincash_note_v0",
+      "purpose": "ChainCash Note — bearer IOU with two paths: spend (with optional change) and redeem. Schnorr signature in R4 history tree, AvlTree-tracked ownership chain. Redemption requires the Reserve and Receipt boxes to appear in the spending TX. Vendored from kushti/ChainCash/contracts/onchain/note.es.",
+      "sourceFile": "sources/note.es",
+      "registers": {
+        "R4": "history of ownership (AvlTree, reserveId → signature)",
+        "R5": "current holder (GroupElement)",
+        "R6": "current spend-chain length (Long)"
+      },
+      "tokens": {
+        "0": "note value token (1 token = 1 mg gold accounting unit)"
+      },
+      "templateVariables": {
+        "reserveContractHash": "blake2b256 of chaincash_reserve_v0 ergoTree, base58",
+        "receiptContractHash": "blake2b256 of chaincash_receipt_v0 ergoTree, base58"
+      },
+      "dependsOn": [
+        "chaincash_reserve_v0",
+        "chaincash_receipt_v0"
+      ],
+      "ergoTreeHex": "19eb030c0400040004000502040004000400040004020e20153b268bea5802505c6b19132e47960e9ca608ebc2b84bfe3bdc8601feac27b804020e201209907de8528b731db33a75285196d62b820a1261e4920df73bd1ba25309507d803d601e4e30002d6027e720104d603e4c6a70507959272027300d80cd604e4e3020ed605e4e30107d606db07027205d607e4c6a70605d6087a7207d609b2db6308a7730100d60a8c720902d60bb2db6501fe730200d60ce30402d60db2a5720200d60ee4c6a70464d60fd9010f63d801d611e4c6720f0464edededed93e4c6720f06059a72077303ed93db64017211db6401e4dc640c720e0283013c0e0e8602b372088cb2db6308720b73040001b372067204e4e3030e93db64027211db6402720e93c2720fc2a7e6c6720f050792c1720fc1a7ea02ea02ea02cd7203d1939fdb6a01dd7b7204a072059f72037bcbb3b37206b3b372087a720a8c720901db07027203d1937203e4c6720b0407d195e6720cd801d610b2a57ee4720c0400eded939a8cb2db6308720d730500028cb2db6308721073060002720ada720f01720dda720f017210ed93b2db6308720d7307007209da720f01720dd803d6047ef0720104d605c2b2a4720400d606c2b2a5720400ea02cd7203d1ed93cbb472057308b17205730993cbb47206730ab17206730b",
+      "treeHashBlake2b256": "3691ad8c682419a26080296d204941455d26716524713d78d0c04a46c83a6c91",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
+      "compiler": "@fleet-sdk/compiler 0.12.0"
+    },
+    {
+      "name": "basis_reserve_v0",
+      "purpose": "Basis offchain-credit reserve — ERG-only. Holds owner key + AVL tree of (owner, receiver) → (timestamp, cumulativeRedeemed). Redemption requires owner sig + tracker sig (or 3-day emergency exit). Vendored from kushti/ChainCash/contracts/offchain/basis.es. The Basis whitepaper variant for the agent-economy use case.",
+      "sourceFile": "sources/basis.es",
+      "registers": {
+        "R4": "reserve owner key (GroupElement)",
+        "R5": "redemption AVL tree: hash(owner||receiver) → (timestamp, redeemed)",
+        "R6": "tracker NFT id (Coll[Byte])"
+      },
+      "ergoTreeHex": "19a904180414041404000400041004200500040004420400040004000410050004420500040004420442010104e0210402058084af5f0100d805d6017ee4e3000204d6029d72017300d603b2a59e7201730100d604e4c6a70407d605ededed93c27203c2a793db63087203db6308a793e4c672030407720493e4c67203060ee4c6a7060e959372027302d813d606b2db6501fe730300d607db07027204d608e4e30107d609cbb37207db07027208d60ae4e30305d60be4e30405d60ce3070ed60de6720cd60e7a720bd60f95720d7cb4e4dc640ae4c6a70564027209e4720c730473057306d61099c1a7c17203d611db6a01ddd612e4e3020ed613b4721273077308d614b3b372097a720a720ed615e4e3060ed616b17215d6179172167309d618e4c672060407ea02d1edededededed7205938cb2db63087206730a0001e4c6a7060e937ce4dc640ae4c672060564027209e4e3080e720a91720b95720d7cb4e4dc640ae4c6a70564027209e4720c730b730c730d93e4dc640ce4c6a705640283013c0e0e86027209b3720e7a9a720f7210e4e3050ee4c672030564939f72117bb47212730eb17212a0ee72139f72047bcbb3b3721372147207eded917210730f90721099720a720f957217957217d801d619b4721573107311939f72117bb4721573127216a0ee72199f72187bcbb3b372197214db0702721873139199a38cc77206017314cd7208959372027315d1eded720593e4c672030564e4c6a705649299c17203c1a77316d17317",
+      "treeHashBlake2b256": "47612119e672f51884a8592e72aa3f442ed343dcc043eaa586caed4e42f6b409",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
+      "compiler": "@fleet-sdk/compiler 0.12.0"
+    },
+    {
+      "name": "basis_token_reserve_v0",
+      "purpose": "Token-collateralised Basis reserve — same scheme as basis_reserve_v0 but backed by an arbitrary token rather than ERG. Vendored from kushti/ChainCash/contracts/offchain/basis-token.es.",
+      "sourceFile": "sources/basis-token.es",
+      "ergoTreeHex": "19fc041f0414041404020404040004000402040004000410042005000402040004420400040004000410050004420500040004420442010104e0210402040205020100d80ad6017ee4e3000204d6029d72017300d603b2a59e7201730100d604db63087203d605db6308a7d606b27205730200d607eded93b172047303938cb27204730400018cb2720573050001938cb27204730600018c720601d608e4c6a70407d609eded93c27203c2a793e4c672030407720893e4c67203060ee4c6a7060ed60a8c720602959372027307d813d60bb2db6501fe730800d60cdb07027208d60de4e30107d60ecbb3720cdb0702720dd60fe4e30305d610e4e30405d611e3070ed612e67211d6137a7210d6149572127cb4e4dc640ae4c6a7056402720ee472117309730a730bd61599720a8cb27204730c0002d616db6a01ddd617e4e3020ed618b47217730d730ed619b3b3720e7a720f7213d61ae4e3060ed61bb1721ad61c91721b730fd61de4c6720b0407ea02d1ededededededed72097207938cb2db6308720b73100001e4c6a7060e937ce4dc640ae4c6720b056402720ee4e3080e720f9172109572127cb4e4dc640ae4c6a7056402720ee4721173117312731393e4dc640ce4c6a705640283013c0e0e8602720eb372137a9a72147215e4e3050ee4c672030564939f72167bb472177314b17217a0ee72189f72087bcbb3b372187219720ceded917215731590721599720f721495721c95721cd801d61eb4721a73167317939f72167bb4721a7318721ba0ee721e9f721d7bcbb3b3721e7219db0702721d73199199a38cc7720b01731acd720d95937202731bd1ededed7209720793e4c672030564e4c6a7056492998cb27204731c0002720a731dd1731e",
+      "treeHashBlake2b256": "d24c02cb168eb97bbc339e8f9eba75e93f275ac4056b48d618c4dfeb882e2746",
+      "compiledAt": "2026-05-06T17:00:33.039Z",
       "compiler": "@fleet-sdk/compiler 0.12.0"
     }
   ]

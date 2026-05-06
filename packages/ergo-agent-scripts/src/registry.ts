@@ -22,7 +22,19 @@ let cached: PredicateRegistry | null = null;
 export function loadRegistry(): PredicateRegistry {
   if (cached) return cached;
   const text = readFileSync(REGISTRY_PATH, "utf-8");
-  cached = JSON.parse(text) as PredicateRegistry;
+  const registry = JSON.parse(text) as PredicateRegistry;
+
+  // Resolve `sourceFile` → `source` so callers can rely on `source` always
+  // being a string when present. The file lives under data/ next to
+  // predicates.json.
+  const dataDir = dirname(REGISTRY_PATH);
+  for (const entry of registry.predicates) {
+    if (entry.sourceFile && !entry.source) {
+      entry.source = readFileSync(resolve(dataDir, entry.sourceFile), "utf-8");
+    }
+  }
+
+  cached = registry;
   return cached;
 }
 

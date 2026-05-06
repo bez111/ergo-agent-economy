@@ -15,19 +15,42 @@ describe("registry shape", () => {
     assert.match(r.spec, /SPEC\.md/);
   });
 
-  it("ships exactly the two v0 predicates", () => {
+  it("ships every v0 predicate (acceptance + ChainCash + Basis)", () => {
     const names = loadRegistry().predicates.map((p) => p.name).sort();
-    assert.deepEqual(names, ["credential_v0", "task_hash_v0"]);
+    assert.deepEqual(names, [
+      "basis_reserve_v0",
+      "basis_token_reserve_v0",
+      "chaincash_note_v0",
+      "chaincash_receipt_v0",
+      "chaincash_reserve_v0",
+      "credential_v0",
+      "task_hash_v0",
+    ]);
   });
 
-  it("every entry has source, registers, and (possibly null) tree fields", () => {
+  it("every entry has source, hex (or null), and stable tree-hash shape", () => {
     for (const p of loadRegistry().predicates) {
-      assert.ok(p.source.length > 0, `${p.name} source empty`);
-      assert.ok(typeof p.registers === "object" && p.registers !== null);
+      assert.ok(p.source && p.source.length > 0, `${p.name} source empty`);
       assert.ok(
         p.ergoTreeHex === null || /^[0-9a-fA-F]+$/.test(p.ergoTreeHex),
         `${p.name} ergoTreeHex must be null or hex`
       );
+      if (p.ergoTreeHex !== null) {
+        assert.equal(p.ergoTreeHex.length % 2, 0, `${p.name} ergoTreeHex odd length`);
+        assert.match(
+          p.treeHashBlake2b256!,
+          /^[0-9a-f]{64}$/,
+          `${p.name} treeHashBlake2b256 must be 64 hex chars when tree is set`
+        );
+      }
+    }
+  });
+
+  it("entries with sourceFile resolve to a non-empty source string", () => {
+    const withFiles = loadRegistry().predicates.filter((p) => p.sourceFile);
+    assert.ok(withFiles.length >= 5, "expected ChainCash + Basis entries to use sourceFile");
+    for (const p of withFiles) {
+      assert.ok((p.source ?? "").length > 0, `${p.name}: sourceFile did not load`);
     }
   });
 });
@@ -36,14 +59,22 @@ describe("getPredicate", () => {
   it("returns task_hash_v0 with the right register layout", () => {
     const p = getPredicate("task_hash_v0");
     assert.equal(p.name, "task_hash_v0");
-    assert.ok(p.registers["R5"]?.includes("expiry"));
-    assert.ok(p.registers["R6"]?.includes("hash"));
-    assert.ok(p.context_variables["0"]?.includes("Coll[Byte]"));
+    assert.ok(p.registers!["R5"]?.includes("expiry"));
+    assert.ok(p.registers!["R6"]?.includes("hash"));
+    assert.ok(p.context_variables!["0"]?.includes("Coll[Byte]"));
   });
 
   it("returns credential_v0 with R7 group element", () => {
     const p = getPredicate("credential_v0");
-    assert.ok(p.registers["R7"]?.toLowerCase().includes("groupelement"));
+    assert.ok(p.registers!["R7"]?.toLowerCase().includes("groupelement"));
+  });
+
+  it("returns chaincash_note_v0 with template-variable metadata", () => {
+    const p = getPredicate("chaincash_note_v0");
+    assert.ok(p.templateVariables);
+    assert.ok("reserveContractHash" in p.templateVariables!);
+    assert.ok("receiptContractHash" in p.templateVariables!);
+    assert.deepEqual(p.dependsOn, ["chaincash_reserve_v0", "chaincash_receipt_v0"]);
   });
 
   it("throws on an unknown name", () => {
@@ -56,36 +87,47 @@ describe("getPredicate", () => {
 });
 
 describe("tryGetErgoTree", () => {
-  it("returns the compiled task_hash_v0 tree", () => {
-    const tree = tryGetErgoTree("task_hash_v0");
-    assert.ok(tree, "task_hash_v0 ergoTreeHex must be populated");
-    assert.match(tree!, /^[0-9a-fA-F]+$/);
-    assert.equal(tree!.length % 2, 0);
-  });
+  const ALL: ReadonlyArray<Parameters<typeof tryGetErgoTree>[0]> = [
+    "task_hash_v0",
+    "credential_v0",
+    "chaincash_reserve_v0",
+    "chaincash_receipt_v0",
+    "chaincash_note_v0",
+    "basis_reserve_v0",
+    "basis_token_reserve_v0",
+  ];
 
-  it("returns the compiled credential_v0 tree", () => {
-    const tree = tryGetErgoTree("credential_v0");
-    assert.ok(tree, "credential_v0 ergoTreeHex must be populated");
-    assert.match(tree!, /^[0-9a-fA-F]+$/);
-  });
+  for (const name of ALL) {
+    it(`returns a non-null ergoTreeHex for ${name}`, () => {
+      const tree = tryGetErgoTree(name);
+      assert.ok(tree, `${name} ergoTreeHex must be populated`);
+      assert.match(tree!, /^[0-9a-fA-F]+$/);
+      assert.equal(tree!.length % 2, 0);
+    });
+  }
 
-  it("the two trees differ", () => {
-    assert.notEqual(tryGetErgoTree("task_hash_v0"), tryGetErgoTree("credential_v0"));
+  it("all seven trees are pairwise distinct", () => {
+    const trees = ALL.map((n) => tryGetErgoTree(n));
+    assert.equal(new Set(trees).size, ALL.length, "expected unique trees");
   });
 });
 
 describe("tree bytes match recorded BLAKE2b-256 hashes", () => {
-  it("task_hash_v0 hash matches", () => {
-    const tree = tryGetErgoTree("task_hash_v0")!;
-    const recorded = getPredicate("task_hash_v0").treeHashBlake2b256!;
-    assert.equal(hashErgoTree(tree), recorded);
-  });
-
-  it("credential_v0 hash matches", () => {
-    const tree = tryGetErgoTree("credential_v0")!;
-    const recorded = getPredicate("credential_v0").treeHashBlake2b256!;
-    assert.equal(hashErgoTree(tree), recorded);
-  });
+  for (const name of [
+    "task_hash_v0",
+    "credential_v0",
+    "chaincash_reserve_v0",
+    "chaincash_receipt_v0",
+    "chaincash_note_v0",
+    "basis_reserve_v0",
+    "basis_token_reserve_v0",
+  ] as const) {
+    it(`${name} hash matches`, () => {
+      const tree = tryGetErgoTree(name)!;
+      const recorded = getPredicate(name).treeHashBlake2b256!;
+      assert.equal(hashErgoTree(tree), recorded);
+    });
+  }
 });
 
 describe("hashErgoTree", () => {
