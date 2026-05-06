@@ -1,0 +1,51 @@
+name: CI MCP
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-mcp/**"
+      - "packages/ergo-agent-pay/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-mcp.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-mcp/**"
+      - "packages/ergo-agent-pay/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-mcp.yml"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ergo-agent-pay deps and build
+        working-directory: packages/ergo-agent-pay
+        run: |
+          npm install
+          npm run build
+
+      - name: Install ergo-agent-mcp deps
+        working-directory: packages/ergo-agent-mcp
+        run: npm install
+
+      - name: Typecheck MCP
+        working-directory: packages/ergo-agent-mcp
+        run: npm run typecheck
+
+      - name: Test MCP
+        working-directory: packages/ergo-agent-mcp
+        run: npm test
+
+      - name: Build MCP
+        working-directory: packages/ergo-agent-mcp
+        run: npm run build

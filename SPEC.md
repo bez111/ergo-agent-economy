@@ -160,6 +160,9 @@ The high-level `ErgoAgentPay` class enforces this with a guardrail:
 The same rule applies to `createReserve`, `issueNote`, and `deployTracker`.
 Implementations of v0 in other languages MUST reproduce this rule.
 
+The operational companion to this section is
+[`docs/dev-vs-production.md`](docs/dev-vs-production.md).
+
 ---
 
 ## 7. Conformance

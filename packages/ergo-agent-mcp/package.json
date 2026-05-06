@@ -9,14 +9,17 @@
     "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsup src/index.ts --format esm --watch",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "@fleet-sdk/core": "^0.7.0"
+    "@fleet-sdk/core": "^0.7.0",
+    "ergo-agent-pay": "file:../ergo-agent-pay"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.0.0",
     "@types/node": "^20.0.0"
   },

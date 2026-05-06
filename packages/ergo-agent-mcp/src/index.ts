@@ -15,6 +15,15 @@ import {
   SColl,
   SByte,
 } from "@fleet-sdk/core";
+import {
+  ergoTaskHash,
+  ergoCreateReserve,
+  ergoIssueNote,
+  ergoRedeemNote,
+  ergoDeployTracker,
+  ergoSettleBatch,
+} from "./lifecycle-tools.js";
+import type { LifecycleConfig } from "./lifecycle-tools.js";
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 
@@ -29,6 +38,7 @@ interface ServerConfig {
   address: string;
   network: Network;
   nodeUrl: string;
+  allowInsecureDevMode: boolean;
 }
 
 function parseArgs(): ServerConfig {
@@ -36,6 +46,9 @@ function parseArgs(): ServerConfig {
   let address = process.env["ERGO_ADDRESS"] ?? "";
   let network: Network = "mainnet";
   let nodeUrl = "";
+  let allowInsecureDevMode =
+    process.env["ERGO_ALLOW_INSECURE_DEV_MODE"] === "1" ||
+    process.env["ERGO_ALLOW_INSECURE_DEV_MODE"] === "true";
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--address" && args[i + 1]) {
@@ -47,6 +60,8 @@ function parseArgs(): ServerConfig {
       }
     } else if (args[i] === "--node-url" && args[i + 1]) {
       nodeUrl = args[++i]!;
+    } else if (args[i] === "--allow-insecure-dev-mode") {
+      allowInsecureDevMode = true;
     }
   }
 
@@ -54,7 +69,7 @@ function parseArgs(): ServerConfig {
     nodeUrl = process.env["ERGO_NODE_URL"] ?? NODE_URLS[network];
   }
 
-  return { address, network, nodeUrl };
+  return { address, network, nodeUrl, allowInsecureDevMode };
 }
 
 // ── Network helpers ────────────────────────────────────────────────────────────
@@ -506,6 +521,102 @@ const TOOLS = [
       required: ["signed_tx"],
     },
   },
+  // ── Lifecycle tools ────────────────────────────────────────────────────────
+  {
+    name: "ergo_task_hash",
+    description:
+      "Compute the BLAKE2b-256 hash of a task output. Use the hex digest as the 'task_hash' parameter when issuing a Note. Network-free utility.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        text: { type: "string", description: "UTF-8 text input. Mutually exclusive with 'hex'." },
+        hex: { type: "string", description: "Hex-encoded byte input. Mutually exclusive with 'text'." },
+      },
+    },
+  },
+  {
+    name: "ergo_create_reserve",
+    description:
+      "Build an unsigned EIP-12 transaction that creates a Reserve box (collateral backing a Note system). Returns JSON to sign. Refuses on mainnet without 'script_ergo_tree' unless --allow-insecure-dev-mode was set on the server.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        collateral: { type: "string", description: "Collateral amount, e.g. '1 ERG' or a nanoERG integer." },
+        script_ergo_tree: { type: "string", description: "Compiled Reserve ErgoTree (production). Optional for testnet." },
+        memo: { type: "string", description: "Optional memo stored in R4." },
+      },
+      required: ["collateral"],
+    },
+  },
+  {
+    name: "ergo_issue_note",
+    description:
+      "Build an unsigned EIP-12 transaction that issues a Note (programmable bearer IOU) against a Reserve. Either provide 'task_hash' (hex BLAKE2b-256) or 'task_output' (the SDK will hash it). Refuses on mainnet without 'script_ergo_tree' unless --allow-insecure-dev-mode was set.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        recipient: { type: "string", description: "Receiver Ergo address." },
+        value: { type: "string", description: "Note face value, e.g. '0.005 ERG'." },
+        reserve_box_id: { type: "string", description: "Box ID of the backing Reserve." },
+        deadline: { type: "string", description: "Expiry — absolute height integer or '+N blocks'." },
+        task_hash: { type: "string", description: "Optional 64-char hex BLAKE2b-256 digest. Mutually exclusive with 'task_output'." },
+        task_output: { type: "string", description: "Optional task output text; the server BLAKE2b-256 hashes it. Mutually exclusive with 'task_hash'." },
+        credential_key: { type: "string", description: "Optional GroupElement / hex public key for credential gating." },
+        script_ergo_tree: { type: "string", description: "Compiled predicate ErgoTree (production)." },
+      },
+      required: ["recipient", "value", "reserve_box_id", "deadline"],
+    },
+  },
+  {
+    name: "ergo_redeem_note",
+    description:
+      "Build an unsigned EIP-12 transaction that redeems a Note. For predicate-bound Notes, supply 'task_output' so the SDK injects it as context variable 0.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        note_box_id: { type: "string", description: "Box ID of the Note to redeem." },
+        task_output: { type: "string", description: "Task output string for predicate verification (R6-bound Notes)." },
+        receiver_address: { type: "string", description: "Receiver address. Defaults to the agent address." },
+      },
+      required: ["note_box_id"],
+    },
+  },
+  {
+    name: "ergo_deploy_tracker",
+    description:
+      "Build an unsigned EIP-12 transaction that deploys a Tracker box (anti-double-spend registry for Notes). Always requires 'script_ergo_tree' — a P2PK 'tracker' provides no on-chain enforcement, so v0 has no dev fallback for this primitive.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        script_ergo_tree: { type: "string", description: "Compiled Tracker ErgoTree." },
+      },
+      required: ["script_ergo_tree"],
+    },
+  },
+  {
+    name: "ergo_settle_batch",
+    description:
+      "Build an unsigned EIP-12 transaction that redeems multiple Notes at once. 'task_outputs' is an object mapping each predicate-bound boxId to its task output text.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        note_box_ids: {
+          oneOf: [
+            { type: "array", items: { type: "string" } },
+            { type: "string" },
+          ],
+          description: "Array of boxIds, or a comma-separated string.",
+        },
+        task_outputs: {
+          type: "object",
+          additionalProperties: { type: "string" },
+          description: "Map from boxId to task output text. Only needed for predicate-bound Notes.",
+        },
+        receiver_address: { type: "string", description: "Receiver address. Defaults to agent address." },
+      },
+      required: ["note_box_ids"],
+    },
+  },
 ];
 
 // ── Main ───────────────────────────────────────────────────────────────────────
@@ -521,6 +632,13 @@ async function main(): Promise<void> {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: TOOLS,
   }));
+
+  const lifecycleConfig: LifecycleConfig = {
+    address: config.address,
+    network: config.network,
+    nodeUrl: config.nodeUrl,
+    allowInsecureDevMode: config.allowInsecureDevMode,
+  };
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: rawArgs } = request.params;
@@ -545,6 +663,24 @@ async function main(): Promise<void> {
 
         case "ergo_submit_transaction":
           return await ergoSubmitTransaction(config, params);
+
+        case "ergo_task_hash":
+          return await ergoTaskHash(params);
+
+        case "ergo_create_reserve":
+          return await ergoCreateReserve(lifecycleConfig, params);
+
+        case "ergo_issue_note":
+          return await ergoIssueNote(lifecycleConfig, params);
+
+        case "ergo_redeem_note":
+          return await ergoRedeemNote(lifecycleConfig, params);
+
+        case "ergo_deploy_tracker":
+          return await ergoDeployTracker(lifecycleConfig, params);
+
+        case "ergo_settle_batch":
+          return await ergoSettleBatch(lifecycleConfig, params);
 
         default:
           return err(`Unknown tool: ${name}`);

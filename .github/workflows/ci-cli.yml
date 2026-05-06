@@ -1,0 +1,58 @@
+name: CI CLI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-cli/**"
+      - "packages/ergo-agent-pay/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-cli.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-cli/**"
+      - "packages/ergo-agent-pay/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-cli.yml"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ergo-agent-pay deps and build
+        working-directory: packages/ergo-agent-pay
+        run: |
+          npm install
+          npm run build
+
+      - name: Install ergo-agent-cli deps
+        working-directory: packages/ergo-agent-cli
+        run: npm install
+
+      - name: Typecheck CLI
+        working-directory: packages/ergo-agent-cli
+        run: npm run typecheck
+
+      - name: Test CLI
+        working-directory: packages/ergo-agent-cli
+        run: npm test
+
+      - name: Build CLI
+        working-directory: packages/ergo-agent-cli
+        run: npm run build
+
+      - name: Smoke-test built bin
+        working-directory: packages/ergo-agent-cli
+        run: |
+          node dist/index.js --version
+          node dist/index.js task-hash "the answer is 42" \
+            | grep -E "^549ead194a83140a8b12bc38bb74ba7e5b094a5749ea73a7e04156f91cc5260a$"
