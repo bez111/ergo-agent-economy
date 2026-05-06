@@ -89,6 +89,29 @@ proper varint and are reserved for v1.
 If R6 is unset, the predicate is satisfied trivially and the Note acts as a
 plain expiring bearer payment.
 
+### Holder ↔ Reserve binding (H-003)
+
+ChainCash Notes are not freely-transferable bearer instruments. The
+spending path requires `noteHolder.R5 == reserveDataInput.R4`, where
+`reserveDataInput` is `CONTEXT.dataInputs(0)`. In practice this means
+**every Note holder must reference an on-chain Reserve box whose owner
+key is their own**.
+
+* When Alice holds a Note minted from Reserve_A (R4 = Alice), Alice can
+  spend the note while referencing Reserve_A as data input.
+* When Alice transfers to Bob, R5 is updated to Bob. The new holder
+  Bob can subsequently spend the note only with a data input whose
+  `R4 == Bob` — i.e. Bob's own Reserve.
+* Bob is therefore required to deploy a Reserve before participating
+  in further note transfers. The Reserve does not need to be funded;
+  the script only checks `R4 == Bob`.
+
+This is intentional in upstream ChainCash: it ties every transferor to
+an on-chain identity reachable for redemption. ChainCash is not a
+bearer instrument in the cash sense; it is a chained bilateral IOU.
+Integrators must not assume notes circulate freely without a prior
+Reserve registration step for each holder.
+
 ---
 
 ## 4. Tracker v0

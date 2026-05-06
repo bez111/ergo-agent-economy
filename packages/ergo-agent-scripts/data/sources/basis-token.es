@@ -321,8 +321,16 @@
       val newRedeemed = redeemedDebt + redeemed
       val treeValue = longToByteArray(timestamp) ++ longToByteArray(newRedeemed)
       val redeemedKeyVal = (key, treeValue)  // key -> (timestamp, redeemed debt value)
-      val insertProof = getVar[Coll[Byte]](5).get // Merkle proof for tree insertion
-      val nextTree: AvlTree = SELF.R5[AvlTree].get.insert(Coll(redeemedKeyVal), insertProof).get // todo: insertOrUpdate after appkit update
+      // C-003: explicit insert vs update branch (lookupProofOpt is the
+      // existing "key already present" signal). @fleet-sdk/compiler does
+      // not expose insertOrUpdate yet; this branch is the cycle-free
+      // equivalent.
+      val mutationProof = getVar[Coll[Byte]](5).get
+      val nextTree: AvlTree = if (lookupProofOpt.isDefined) {
+        SELF.R5[AvlTree].get.update(Coll(redeemedKeyVal), mutationProof).get
+      } else {
+        SELF.R5[AvlTree].get.insert(Coll(redeemedKeyVal), mutationProof).get
+      }
       // Verify tree was properly updated in output
       val properRedemptionTree = nextTree == selfOut.R5[AvlTree].get
 

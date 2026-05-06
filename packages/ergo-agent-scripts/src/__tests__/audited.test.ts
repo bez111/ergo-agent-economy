@@ -4,6 +4,7 @@ import {
   loadAuditedManifest,
   getAuditedEntry,
   verifyAuditedErgoTree,
+  verifyManifestAgainstRegistry,
 } from "../audited.js";
 import { tryGetErgoTree } from "../registry.js";
 
@@ -114,5 +115,20 @@ describe("verifyAuditedErgoTree", () => {
     if (v.ok === false) {
       assert.match(v.message ?? "", /signed/);
     }
+  });
+});
+
+describe("M-005: registry / manifest consistency cross-check", () => {
+  it("verifyManifestAgainstRegistry passes on the shipped pair", () => {
+    assert.doesNotThrow(() => verifyManifestAgainstRegistry());
+  });
+
+  it("loadAuditedManifest invokes the cross-check (smoke test)", () => {
+    // If the cross-check is wired up, loadAuditedManifest runs it on first
+    // load. We can't easily corrupt the on-disk JSON in a unit test, so the
+    // test of last resort here is: the function returns successfully on
+    // the canonical pair, indicating the cross-check did not reject.
+    const m = loadAuditedManifest();
+    assert.equal(m.entries.length, 7);
   });
 });

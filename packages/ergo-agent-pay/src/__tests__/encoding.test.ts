@@ -4,8 +4,14 @@ import { encodeSigmaCollByte, MAX_TASK_OUTPUT_BYTES } from "../encoding.js";
 import { ErgoAgentPayError } from "../types.js";
 
 describe("encodeSigmaCollByte", () => {
-  it("encodes the empty string as 0e00", () => {
-    assert.equal(encodeSigmaCollByte(new Uint8Array()), "0e00");
+  it("L-001: rejects empty input with INVALID_ENCODING", () => {
+    assert.throws(
+      () => encodeSigmaCollByte(new Uint8Array()),
+      (e: unknown) =>
+        e instanceof ErgoAgentPayError &&
+        e.code === "INVALID_ENCODING" &&
+        /known constant/.test(e.message)
+    );
   });
 
   it("encodes one byte (0xff) as 0e01ff", () => {

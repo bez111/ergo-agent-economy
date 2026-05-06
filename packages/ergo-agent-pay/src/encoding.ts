@@ -27,6 +27,19 @@ export const MAX_TASK_OUTPUT_BYTES = 255;
  */
 export function encodeSigmaCollByte(bytes: Uint8Array | Buffer | readonly number[]): string {
   const length = (bytes as { length: number }).length;
+  if (length === 0) {
+    // L-001: an empty Coll[Byte] hashes to a publicly-known constant. A Note
+    // whose R6 is set to that constant + an empty taskOutput is semantically
+    // a "redeem any time before expiry, no proof required" Note. Catching
+    // empty payloads here forces the issuer to be deliberate about that.
+    throw new ErgoAgentPayError(
+      "Task output is empty. An empty Coll[Byte] hashes to a known constant " +
+        "(blake2b256(\"\") = 0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8) " +
+        "and produces a no-op predicate. If you intend an unconditional Note, " +
+        "issue it without R6 instead.",
+      "INVALID_ENCODING"
+    );
+  }
   if (length > MAX_TASK_OUTPUT_BYTES) {
     throw new ErgoAgentPayError(
       `Task output is ${length} bytes; v0 only supports up to ${MAX_TASK_OUTPUT_BYTES} bytes ` +

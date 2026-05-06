@@ -14,6 +14,7 @@ export {
   loadAuditedManifest,
   getAuditedEntry,
   verifyAuditedErgoTree,
+  verifyManifestAgainstRegistry,
 } from "./audited.js";
 
 export type {

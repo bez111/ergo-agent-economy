@@ -127,7 +127,23 @@ export async function assertProductionSafety(args: ProductionSafetyArgs): Promis
 
   // ── Gate 2: audit ────────────────────────────────────────────────────────
   if (args.auditPolicy) {
-    const verdict = await args.auditPolicy(scriptErgoTree!, scriptName);
+    let verdict: AuditPolicyVerdict;
+    try {
+      verdict = await args.auditPolicy(scriptErgoTree!, scriptName);
+    } catch (err) {
+      // M-004: a buggy auditPolicy must not leak its raw exception. Convert
+      // to a typed UNAUDITED_ERGOTREE error so the caller observes the same
+      // failure mode as a returned `{ ok: false }`.
+      const reason =
+        err instanceof Error ? err.message : String(err ?? "unknown error");
+      throw new ErgoAgentPayError(
+        `Refusing to ${operation} on mainnet — auditPolicy threw while ` +
+          `evaluating the supplied ergoTree. Treating as unaudited.\n` +
+          `Reason: ${reason}`,
+        "UNAUDITED_ERGOTREE",
+        err
+      );
+    }
     if (verdict.ok) return;
     throw new ErgoAgentPayError(
       `Refusing to ${operation} on mainnet — audit policy rejected the supplied ergoTree.\n` +

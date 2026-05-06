@@ -15,7 +15,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { hashErgoTree } from "./registry.js";
+import { hashErgoTree, loadRegistry } from "./registry.js";
 import type { PredicateName } from "./types.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -59,8 +59,53 @@ let cached: AuditedManifest | null = null;
 
 export function loadAuditedManifest(): AuditedManifest {
   if (cached) return cached;
-  cached = JSON.parse(readFileSync(MANIFEST_PATH, "utf-8")) as AuditedManifest;
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf-8")) as AuditedManifest;
+  // M-005: refuse to load if the registry's ergoTreeHex disagrees with the
+  // manifest's. Catches partial tampering where someone edits one file but
+  // not the other, regardless of whether the audit policy is invoked at
+  // runtime.
+  assertManifestMatchesRegistry(manifest);
+  cached = manifest;
   return cached;
+}
+
+/**
+ * Cross-check the manifest entries against the registry. Throws on mismatch.
+ * Run automatically when the manifest is first loaded; exposed so
+ * integrators can run it explicitly during boot/CI.
+ */
+export function verifyManifestAgainstRegistry(): void {
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf-8")) as AuditedManifest;
+  assertManifestMatchesRegistry(manifest);
+}
+
+function assertManifestMatchesRegistry(manifest: AuditedManifest): void {
+  const registry = loadRegistry();
+  for (const entry of manifest.entries) {
+    const reg = registry.predicates.find((p) => p.name === entry.name);
+    if (!reg) {
+      throw new Error(
+        `audited manifest references "${entry.name}" but the registry has no entry by that name.`
+      );
+    }
+    // The registry may legally carry null while the manifest carries the
+    // compiled hex (e.g. during a partial publish). The other direction —
+    // manifest null while registry filled, OR both filled but disagreeing —
+    // is a configuration error.
+    if (
+      reg.ergoTreeHex !== null &&
+      entry.ergoTreeHex !== null &&
+      reg.ergoTreeHex !== entry.ergoTreeHex
+    ) {
+      throw new Error(
+        `audit manifest is inconsistent with the registry for "${entry.name}":\n` +
+          `  registry ergoTreeHex: ${reg.ergoTreeHex.slice(0, 32)}...\n` +
+          `  manifest ergoTreeHex: ${entry.ergoTreeHex.slice(0, 32)}...\n` +
+          `One of the two files was edited without re-running compile-predicates ` +
+          `or refreshing the manifest. Refusing to load.`
+      );
+    }
+  }
 }
 
 export function getAuditedEntry(name: PredicateName): AuditedEntry {

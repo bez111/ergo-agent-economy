@@ -232,11 +232,26 @@ export function dangerouslyBuildDeployTrackerTx(
 export function decodeRegisterInt(hex: string): number {
   if (!hex || hex.length < 4) return 0;
   // Strip type prefix (first 2 hex chars = 1 byte)
-  // SInt type: 0x04 prefix, then zigzag-encoded value
+  // SInt type: 0x04 prefix, then zigzag-encoded value.
+  //
+  // L-003: parse via BigInt so values above 2^53 don't silently lose
+  // precision. Real registers we read here (R5 expiry block height) fit in
+  // 2^31, so the bigint path always converges back to a safe Number.
+  // Anything outside the safe range raises rather than silently truncates.
   const valueHex = hex.slice(2);
-  const zigzag = parseInt(valueHex, 16);
-  // Zigzag decode: n >> 1 XOR -(n & 1)
-  return (zigzag >>> 1) ^ -(zigzag & 1);
+  const zigzagBig = BigInt("0x" + valueHex);
+  const decoded = (zigzagBig >> 1n) ^ -(zigzagBig & 1n);
+  if (
+    decoded > BigInt(Number.MAX_SAFE_INTEGER) ||
+    decoded < BigInt(Number.MIN_SAFE_INTEGER)
+  ) {
+    throw new ErgoAgentPayError(
+      `Register integer ${decoded} is outside the JS safe-integer range. ` +
+        `Decode it as bigint manually or open an issue if this is hit on R5.`,
+      "INVALID_ENCODING"
+    );
+  }
+  return Number(decoded);
 }
 
 export function decodeRegisterBytes(hex: string): string {

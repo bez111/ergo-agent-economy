@@ -131,6 +131,18 @@ export interface NoteOptions {
    * audit policies require this to be set.
    */
   scriptName?: string;
+
+  /**
+   * Per-call override for `dangerouslyAllowUnauditedErgoTree`. Defaults
+   * to `false`; setting it to `true` here bypasses the audit gate for
+   * this call only. Useful for narrow integrations that audit most
+   * trees strictly but allow one experimental tree.
+   *
+   * The overall rule is: bypass happens only when **either** the agent
+   * config flag **or** this per-call flag is `true` — explicit opt-in
+   * is required at exactly one layer.
+   */
+  dangerouslyAllowUnauditedErgoTree?: boolean;
 }
 
 export interface NoteResult extends PayResult {
@@ -297,6 +309,9 @@ export interface ReserveConfig {
   /** Audited predicate name (e.g. `"chaincash_reserve_v0"`). See `NoteOptions.scriptName`. */
   scriptName?: string;
 
+  /** Per-call audit-gate bypass. See `NoteOptions.dangerouslyAllowUnauditedErgoTree`. */
+  dangerouslyAllowUnauditedErgoTree?: boolean;
+
   /** Metadata stored on-chain in R4 */
   memo?: string;
 }
@@ -409,6 +424,9 @@ export interface TrackerConfig {
 
   /** Audited predicate name. See `NoteOptions.scriptName`. */
   scriptName?: string;
+
+  /** Per-call audit-gate bypass. See `NoteOptions.dangerouslyAllowUnauditedErgoTree`. */
+  dangerouslyAllowUnauditedErgoTree?: boolean;
 }
 
 export interface TrackerResult extends PayResult {

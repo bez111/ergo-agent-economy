@@ -150,7 +150,9 @@ export class ErgoAgentPay {
       scriptName: opts.scriptName,
       allowInsecureDevMode: this.config.allowInsecureDevMode,
       dangerouslyAllowInsecureMainnetP2PK: this.config.dangerouslyAllowInsecureMainnetP2PK,
-      dangerouslyAllowUnauditedErgoTree: this.config.dangerouslyAllowUnauditedErgoTree,
+      dangerouslyAllowUnauditedErgoTree:
+        this.config.dangerouslyAllowUnauditedErgoTree === true ||
+        opts.dangerouslyAllowUnauditedErgoTree === true,
       auditPolicy: this.config.auditPolicy,
     });
 
@@ -337,7 +339,9 @@ export class ErgoAgentPay {
       scriptName: config.scriptName,
       allowInsecureDevMode: this.config.allowInsecureDevMode,
       dangerouslyAllowInsecureMainnetP2PK: this.config.dangerouslyAllowInsecureMainnetP2PK,
-      dangerouslyAllowUnauditedErgoTree: this.config.dangerouslyAllowUnauditedErgoTree,
+      dangerouslyAllowUnauditedErgoTree:
+        this.config.dangerouslyAllowUnauditedErgoTree === true ||
+        config.dangerouslyAllowUnauditedErgoTree === true,
       auditPolicy: this.config.auditPolicy,
     });
 
@@ -388,7 +392,9 @@ export class ErgoAgentPay {
       scriptName: config.scriptName,
       allowInsecureDevMode: this.config.allowInsecureDevMode,
       dangerouslyAllowInsecureMainnetP2PK: this.config.dangerouslyAllowInsecureMainnetP2PK,
-      dangerouslyAllowUnauditedErgoTree: this.config.dangerouslyAllowUnauditedErgoTree,
+      dangerouslyAllowUnauditedErgoTree:
+        this.config.dangerouslyAllowUnauditedErgoTree === true ||
+        config.dangerouslyAllowUnauditedErgoTree === true,
       auditPolicy: this.config.auditPolicy,
     });
 
