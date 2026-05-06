@@ -397,6 +397,15 @@ handoff. Each agent pays the previous using a Note. Works standalone (mock) or w
 Microsoft AutoGen agent conversation with Ergo payment negotiation. Client agent requests
 a service, provider agent completes and collects Note payment. Mock + real AutoGen modes.
 
+### [07-end-to-end-agent-economy](./examples/07-end-to-end-agent-economy/)
+The headline demo: composes every package in this repo into one runnable
+"agent pays agent" flow. Seller runs an Express API behind
+`ergo-agent-api` middleware with the compiled `task_hash_v0` ergoTree
+from `ergo-agent-scripts`; buyer issues a Note via `ergo-agent-pay`
+(TS) or via `BridgeClient` against `ergo-agent-server` (Python).
+Real on-chain predicate enforcement, replay protection, audit log,
+budget caps — all the safety properties from the open PRs in one place.
+
 ---
 
 ## The four primitives — technical reference
