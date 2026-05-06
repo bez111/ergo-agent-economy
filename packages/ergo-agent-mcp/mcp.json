@@ -1,0 +1,125 @@
+{
+  "$schema": "https://mcp.so/schema.json",
+  "name": "ergo-agent-mcp",
+  "displayName": "Ergo Agent",
+  "description": "Lets MCP-compatible AI agents (Claude Desktop, Cursor, Windsurf, …) hold ERG, check Note boxes on the Ergo blockchain, build payment transactions, and offer paywalled tools that gate execution behind a real on-chain Note. Built on the AgentPay v0 protocol from ergo-agent-economy.",
+  "version": "0.3.0",
+  "author": "bez111",
+  "license": "MIT",
+  "homepage": "https://github.com/bez111/ergo-agent-economy",
+  "repository": "https://github.com/bez111/ergo-agent-economy",
+  "categories": ["payments", "blockchain", "agent-economy"],
+  "tags": [
+    "ergo",
+    "ergo-blockchain",
+    "agent-payments",
+    "ai-agents",
+    "blockchain",
+    "stablecoin",
+    "rsUSDT",
+    "agent-economy",
+    "blake2b",
+    "eutxo"
+  ],
+  "command": "npx",
+  "args": [
+    "ergo-agent-mcp",
+    "--address",
+    "${ERGO_ADDRESS}",
+    "--network",
+    "${ERGO_NETWORK:-testnet}"
+  ],
+  "env": {
+    "ERGO_ADDRESS": {
+      "description": "Ergo address the agent operates from. Get one from any Ergo wallet (e.g. Nautilus). Testnet ERG free at https://testnet.ergofaucet.org.",
+      "required": true
+    },
+    "ERGO_NETWORK": {
+      "description": "`testnet` (default) or `mainnet`. Mainnet writes are blocked until the audited ergoTree manifest is signed externally.",
+      "required": false
+    },
+    "ERGO_NODE_URL": {
+      "description": "Override the default Ergo node URL.",
+      "required": false
+    }
+  },
+  "tools": [
+    {
+      "name": "ergo_get_balance",
+      "description": "Get the confirmed ERG balance for the agent address (or any other address)."
+    },
+    {
+      "name": "ergo_get_height",
+      "description": "Get the current Ergo blockchain height."
+    },
+    {
+      "name": "ergo_get_utxos",
+      "description": "List unspent UTxOs (boxes) for an address."
+    },
+    {
+      "name": "ergo_check_note",
+      "description": "Inspect a Note box: value, expiry, task hash, reserve reference; report whether the Note is expired."
+    },
+    {
+      "name": "ergo_build_payment",
+      "description": "Build an unsigned EIP-12 payment transaction from the agent's UTxOs."
+    },
+    {
+      "name": "ergo_submit_transaction",
+      "description": "Submit a signed EIP-12 transaction to the Ergo network."
+    },
+    {
+      "name": "ergo_task_hash",
+      "description": "Compute the BLAKE2b-256 hash of a task output for use as a Note acceptance predicate."
+    },
+    {
+      "name": "ergo_create_reserve",
+      "description": "Build an unsigned transaction that creates a Reserve collateral box."
+    },
+    {
+      "name": "ergo_issue_note",
+      "description": "Build an unsigned transaction that issues a Note backed by an existing Reserve."
+    },
+    {
+      "name": "ergo_redeem_note",
+      "description": "Build an unsigned transaction that redeems a Note (releases its ERG to the receiver)."
+    },
+    {
+      "name": "ergo_deploy_tracker",
+      "description": "Build an unsigned transaction that deploys a Tracker (anti-double-spend registry)."
+    },
+    {
+      "name": "ergo_settle_batch",
+      "description": "Build an unsigned transaction that redeems multiple Notes at once."
+    }
+  ],
+  "examples": [
+    {
+      "title": "Check your ERG balance",
+      "user": "What's my ERG balance?",
+      "tool": "ergo_get_balance"
+    },
+    {
+      "title": "Inspect a Note",
+      "user": "Check Note box abc123def456…",
+      "tool": "ergo_check_note"
+    },
+    {
+      "title": "Build a payment",
+      "user": "Build a payment of 0.001 ERG to 9f4QF8AD…",
+      "tool": "ergo_build_payment"
+    },
+    {
+      "title": "Compute a task hash",
+      "user": "Hash 'the answer is 42' for use as a Note predicate",
+      "tool": "ergo_task_hash"
+    }
+  ],
+  "links": {
+    "docs": "https://github.com/bez111/ergo-agent-economy/blob/main/packages/ergo-agent-mcp/README.md",
+    "spec": "https://github.com/bez111/ergo-agent-economy/blob/main/SPEC.md",
+    "security": "https://github.com/bez111/ergo-agent-economy/blob/main/SECURITY.md",
+    "audit": "https://github.com/bez111/ergo-agent-economy/blob/main/docs/audit/DEEP_REVIEW.md",
+    "issues": "https://github.com/bez111/ergo-agent-economy/issues"
+  }
+}

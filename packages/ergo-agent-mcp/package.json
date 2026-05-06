@@ -6,10 +6,22 @@
   "bin": {
     "ergo-agent-mcp": "./dist/index.js"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/lib.js",
+  "module": "./dist/lib.js",
+  "types": "./dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lib.js",
+      "types": "./dist/lib.d.ts"
+    },
+    "./paywall": {
+      "import": "./dist/lib.js",
+      "types": "./dist/lib.d.ts"
+    }
+  },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean",
-    "dev": "tsup src/index.ts --format esm --watch",
+    "build": "tsup src/index.ts src/lib.ts --format esm --dts --clean",
+    "dev": "tsup src/index.ts src/lib.ts --format esm --watch",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "test": "npx tsx --test src/__tests__/*.test.ts"
@@ -17,7 +29,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@fleet-sdk/core": "^0.7.0",
-    "ergo-agent-pay": "^0.3.0"
+    "ergo-agent-pay": "^0.3.0",
+    "ergo-agent-api": "^0.3.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

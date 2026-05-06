@@ -1,5 +1,16 @@
 # Ergo Agent Economy
 
+[![CI](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci.yml)
+[![CI Python](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-python.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-python.yml)
+[![CI API](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-api.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-api.yml)
+[![CI Server](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-server.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-server.yml)
+[![CI Scripts](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-scripts.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-scripts.yml)
+[![CI Rosen](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-rosen.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-rosen.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm: ergo-agent-pay](https://img.shields.io/npm/v/ergo-agent-pay.svg?label=ergo-agent-pay)](https://www.npmjs.com/package/ergo-agent-pay)
+[![PyPI: ergo-agent-pay](https://img.shields.io/pypi/v/ergo-agent-pay.svg?label=pypi)](https://pypi.org/project/ergo-agent-pay/)
+[![mainnet: not certified](https://img.shields.io/badge/mainnet-not%20certified-red.svg)](./SECURITY.md)
+
 **The open source hub for building autonomous agentic economic systems on Ergo.**
 
 > Every AI system will need to pay and be paid.
@@ -417,6 +428,15 @@ seller's API in rsUSDT-denominated Notes (audited
 `basis_token_reserve_v0`). Seller batches outbound bridges out of band.
 See [`docs/cross-chain.md`](./docs/cross-chain.md) for the architecture
 and trust assumptions.
+
+### [12-paywalled-mcp](./examples/12-paywalled-mcp/)
+MCP server that gates a tool behind an Ergo Note. The
+`createPaywalledTool({ pricing, agent, handler })` helper from
+`ergo-agent-mcp` injects `note_box_id` and `task_output` into the
+tool's input schema, verifies the Note on-chain, redeems it inline
+(when a signer is configured), and runs the user-supplied handler.
+Same audit / replay / pricing semantics as the HTTP middleware
+(`ergo-agent-api`) — one verifier, two transports.
 
 ---
 
