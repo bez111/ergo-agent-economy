@@ -199,8 +199,9 @@ for agents.
 
 | Package | Language | Install | Description |
 |---|---|---|---|
-| [`ergo-agent-pay`](./packages/ergo-agent-pay/) | TypeScript | `npm install ergo-agent-pay` | Full SDK: pay, issueNote, full lifecycle, policy engine, LangChain, OpenAI |
+| [`ergo-agent-pay`](./packages/ergo-agent-pay/) | TypeScript | `npm install ergo-agent-pay` | Full SDK: pay, issueNote, full lifecycle, policy engine v2, LangChain, OpenAI |
 | [`ergo-agent-cli`](./packages/ergo-agent-cli/) | TypeScript | `npm install -g ergo-agent-cli` | Command-line companion: `balance`, `note check/issue/redeem`, `reserve create`, `tracker deploy`, `settle`, `task-hash` |
+| [`ergo-agent-api`](./packages/ergo-agent-api/) | TypeScript | `npm install ergo-agent-api` | Pay-per-API middleware (Express/Connect/Fastify): 402 + Note verification + replay protection + inline redemption |
 | [`ergo-agent-mcp`](./packages/ergo-agent-mcp/) | TypeScript | `npm install ergo-agent-mcp` | MCP server — plug Ergo payments into Claude, Cursor, any MCP client |
 | [`ergo-agent-pay`](./packages/ergo-agent-py/) | Python | `pip install ergo-agent-pay` | Balance, UTxOs, check_note, LangChain tool, OpenAI function |
 

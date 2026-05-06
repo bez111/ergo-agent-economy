@@ -1,0 +1,49 @@
+name: CI API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-api/**"
+      - "packages/ergo-agent-pay/**"
+      - ".github/workflows/ci-api.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/ergo-agent-api/**"
+      - "packages/ergo-agent-pay/**"
+      - ".github/workflows/ci-api.yml"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ergo-agent-pay deps and build
+        working-directory: packages/ergo-agent-pay
+        run: |
+          npm install
+          npm run build
+
+      - name: Install ergo-agent-api deps
+        working-directory: packages/ergo-agent-api
+        run: npm install
+
+      - name: Typecheck API
+        working-directory: packages/ergo-agent-api
+        run: npm run typecheck
+
+      - name: Test API
+        working-directory: packages/ergo-agent-api
+        run: npm test
+
+      - name: Build API
+        working-directory: packages/ergo-agent-api
+        run: npm run build
