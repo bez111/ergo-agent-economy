@@ -1,33 +1,73 @@
-# Ergo Agent Economy
+# Accord Protocol
 
-[![CI](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci.yml)
-[![CI Python](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-python.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-python.yml)
-[![CI API](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-api.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-api.yml)
-[![CI Server](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-server.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-server.yml)
-[![CI Scripts](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-scripts.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-scripts.yml)
-[![CI Rosen](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-rosen.yml/badge.svg)](https://github.com/bez111/ergo-agent-economy/actions/workflows/ci-rosen.yml)
+[![CI](https://github.com/bez111/accord-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci.yml)
+[![CI Python](https://github.com/bez111/accord-protocol/actions/workflows/ci-python.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci-python.yml)
+[![CI API](https://github.com/bez111/accord-protocol/actions/workflows/ci-api.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci-api.yml)
+[![CI Server](https://github.com/bez111/accord-protocol/actions/workflows/ci-server.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci-server.yml)
+[![CI Scripts](https://github.com/bez111/accord-protocol/actions/workflows/ci-scripts.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci-scripts.yml)
+[![CI Rosen](https://github.com/bez111/accord-protocol/actions/workflows/ci-rosen.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci-rosen.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm: ergo-agent-pay](https://img.shields.io/npm/v/ergo-agent-pay.svg?label=ergo-agent-pay)](https://www.npmjs.com/package/ergo-agent-pay)
-[![PyPI: ergo-agent-pay](https://img.shields.io/pypi/v/ergo-agent-pay.svg?label=pypi)](https://pypi.org/project/ergo-agent-pay/)
 [![mainnet: not certified](https://img.shields.io/badge/mainnet-not%20certified-red.svg)](./SECURITY.md)
 
-**The open source hub for building autonomous agentic economic systems on Ergo.**
+**The agreement protocol for autonomous agent work.**
 
-> Every AI system will need to pay and be paid.
-> The question is not whether — but which chain.
+> x402 verifies payment. Accord verifies completion.
+
+Accord turns paid requests into **enforceable work agreements**: terms, escrow,
+verification, credit Notes and settlement across rails (Ergo, Rosen, Base/EVM,
+x402-compatible).
+
+> Built by [AgentAccord](https://agentaccord.com). Formerly `ergo-agent-economy`.
+> Open standard, commercial infrastructure on top.
+
+```text
+MCP        → how agents call tools.
+A2A        → how agents talk.
+x402 / AP2 → how a payment is authorized.
+Accord     → how the work agreement is recorded, verified and settled.
+```
+
+### Status
+
+```text
+Open-source reference implementation
+Testnet beta · Mainnet blocked until signed audit manifests
+Rails: Ergo · Rosen · Base/EVM · x402 compatibility (planned)
+Commercial layer (AgentAccord) lives elsewhere — this repo is the open standard
+```
+
+See [`docs/status.md`](./docs/status.md) for the full status table and
+[`docs/accord-protocol.md`](./docs/accord-protocol.md) for the positioning brief.
+
+---
+
+## The three core protocol objects
+
+| Object | Answers | Spec |
+|---|---|---|
+| **Accord Agreement** | What was promised, by whom, for how much, under which verification rules? | `specs/ACCORD-001` |
+| **Verification Receipt** | Did a verifier accept, reject, or partially-accept the work? | `specs/ACCORD-002` |
+| **Settlement Receipt** | Did the economic part settle, on which rail, with what tx? | `specs/ACCORD-003` |
+
+The protocol is rail-agnostic. Settlement plugs in via [rail adapters](./packages/);
+this repo ships an Ergo reference adapter (Note / Reserve / Tracker / Acceptance
+Predicate), with Rosen, Base/EVM, and x402-compatibility adapters in flight.
 
 ---
 
 ## What is this?
 
 This repo contains working code examples, technical documentation, and resources for building
-autonomous agent payment systems on the [Ergo blockchain](https://ergoplatform.org).
+autonomous agent **work-agreement** systems. The first reference rail is the
+[Ergo blockchain](https://ergoplatform.org); rail adapters for other chains and
+for x402-compatible HTTP gateways are part of the roadmap.
 
-Here's the thing: agents need to move money without asking permission. They spin up, do a job,
+Agents need to move money without asking permission. They spin up, do a job,
 get paid, and disappear. Traditional payment rails assume you're a human with a bank account,
 KYC documents, and persistent identity. Agents have none of that.
 
-Ergo is the only blockchain with all four primitives agents need at the **protocol level**:
+Ergo is the only blockchain with all four primitives agents need at the **protocol level** —
+which is why it's the first rail Accord Protocol implements end-to-end:
 
 | Primitive | What it does |
 |---|---|
@@ -339,8 +379,8 @@ const { definition, handler } = agent.asOpenAIFunction()
 You don't need much to get running. Clone the repo, grab some testnet ERG, and you're off.
 
 ```bash
-git clone https://github.com/bez111/ergo-agent-economy
-cd ergo-agent-economy/examples/01-basic-payment
+git clone https://github.com/bez111/accord-protocol
+cd accord-protocol/examples/01-basic-payment
 npm install
 # edit index.js: paste your testnet address
 node index.js
