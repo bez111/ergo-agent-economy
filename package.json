@@ -16,6 +16,7 @@
     "packages/accord-core",
     "packages/accord-mcp",
     "packages/accord-gateway",
+    "packages/accord-rails",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
     "packages/ergo-agent-api",

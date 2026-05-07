@@ -1,0 +1,62 @@
+{
+  "name": "@accord-protocol/rails",
+  "version": "0.4.0",
+  "description": "Shared Accord rail-adapter interface + a Mock adapter for tests/demos. Rail-specific implementations (Ergo, Rosen, Base, x402) re-export the interface from here. See specs/ACCORD-006-rails.md.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./mock": {
+      "import": "./dist/mock.js",
+      "require": "./dist/mock.cjs",
+      "types": "./dist/mock.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/mock.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts"
+  },
+  "keywords": [
+    "accord-protocol",
+    "rails",
+    "rail-adapter",
+    "agent-payments"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/accord-rails"
+  },
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/accord-rails",
+  "bugs": {
+    "url": "https://github.com/bez111/accord-protocol/issues"
+  },
+  "dependencies": {
+    "@accord-protocol/core": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
