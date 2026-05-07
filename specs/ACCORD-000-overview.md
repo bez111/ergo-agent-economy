@@ -151,13 +151,13 @@ The protocol is open. The operations are monetized.
 | [ACCORD-001](./ACCORD-001-agreement-object.md) | Agreement Object | draft |
 | [ACCORD-002](./ACCORD-002-verification-receipt.md) | Verification Receipt | draft |
 | [ACCORD-003](./ACCORD-003-settlement-receipt.md) | Settlement Receipt | draft |
-| ACCORD-004 | Accord/402 Transport | TBD |
-| ACCORD-005 | Accord/MCP Transport | TBD |
-| ACCORD-006 | Rails | TBD |
-| ACCORD-007 | Notes & Credit | TBD |
-| ACCORD-008 | Registry | TBD |
-| ACCORD-009 | Conformance | TBD |
-| ACCORD-010 | Security & Audit | TBD |
+| [ACCORD-004](./ACCORD-004-accord-402.md) | Accord/402 Transport | draft |
+| [ACCORD-005](./ACCORD-005-accord-mcp.md) | Accord/MCP Transport | draft |
+| [ACCORD-006](./ACCORD-006-rails.md) | Rails | draft |
+| [ACCORD-007](./ACCORD-007-notes-credit.md) | Notes & Credit | draft |
+| [ACCORD-008](./ACCORD-008-registry.md) | Registry | draft |
+| [ACCORD-009](./ACCORD-009-conformance.md) | Conformance | draft |
+| [ACCORD-010](./ACCORD-010-security-audit.md) | Security & Audit | draft |
 
 ## 11. Anchors
 
