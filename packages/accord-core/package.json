@@ -1,0 +1,60 @@
+{
+  "name": "@accord-protocol/core",
+  "version": "0.4.0",
+  "description": "Accord Protocol core SDK — canonicalize, hash, validate Agreement / Verification Receipt / Settlement Receipt v0 objects. Rail-agnostic. See specs/ACCORD-000-overview.md.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts"
+  },
+  "keywords": [
+    "accord-protocol",
+    "agent-payments",
+    "agreement",
+    "verification-receipt",
+    "settlement-receipt",
+    "canonical-json",
+    "blake2b256"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/accord-core"
+  },
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/accord-core",
+  "bugs": {
+    "url": "https://github.com/bez111/accord-protocol/issues"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
