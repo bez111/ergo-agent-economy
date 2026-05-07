@@ -19,6 +19,7 @@
     "packages/accord-rails",
     "packages/accord-rails-base",
     "packages/accord-rails-ergo",
+    "packages/accord-rails-x402",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
     "packages/ergo-agent-api",
