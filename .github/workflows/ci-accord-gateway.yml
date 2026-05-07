@@ -1,0 +1,47 @@
+name: CI Accord Gateway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/accord-gateway/**"
+      - "packages/accord-core/**"
+      - ".github/workflows/ci-accord-gateway.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/accord-gateway/**"
+      - "packages/accord-core/**"
+      - ".github/workflows/ci-accord-gateway.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install workspace
+        run: npm install
+
+      - name: Build accord-core (accord-gateway depends on its dist)
+        run: npm run build -w @accord-protocol/core
+
+      - name: Typecheck
+        run: npm run typecheck -w @accord-protocol/gateway
+
+      - name: Test
+        run: npm test -w @accord-protocol/gateway
+
+      - name: Build
+        run: npm run build -w @accord-protocol/gateway
