@@ -70,7 +70,7 @@ See [example 06](../../examples/06-python-agent/) for the HTTP delegation patter
 | Get balance | ✅ | ✅ |
 | Get UTxOs | ✅ | ✅ |
 | Check note (decode registers) | ✅ | ✅ |
-| Compute task hash | ✅ (sha256) | ✅ (blake2b256) |
+| Compute task hash | ✅ (BLAKE2b-256) | ✅ (BLAKE2b-256) |
 | LangChain tool | ✅ | ✅ |
 | OpenAI function | ✅ | ✅ |
 | Build TX (issueNote, pay) | Via HTTP server | ✅ native |

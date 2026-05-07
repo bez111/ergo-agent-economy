@@ -11,7 +11,7 @@
 Mainnet writes are blocked by the SDK until an external auditor signs the
 manifest and flips the flag. See
 [`packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json`](packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json)
-and [the auditor request](docs/AUDITOR_REQUEST.md).
+and [the auditor request](docs/audit/AUDITOR_REQUEST.md).
 
 Do not put more value at risk than you can afford to lose.
 
@@ -93,6 +93,11 @@ on the roadmap.
 * The Python SDK delegates transaction signing to either the TypeScript SDK
   or an external tool; it is read-side only for now. Apply the same
   guardrails wherever the actual signing happens.
-* The MCP server intentionally has a small, read-heavy tool surface.
-  Lifecycle tools (`create_reserve`, `issue_note`, `redeem_note`,
-  `settle_batch`, `deploy_tracker`) are tracked as v0.x follow-ups.
+* The MCP server exposes the full lifecycle tool surface
+  (`ergo_create_reserve`, `ergo_issue_note`, `ergo_redeem_note`,
+  `ergo_settle_batch`, `ergo_deploy_tracker`). These tools route through
+  the same `assertProductionSafety` gate as the SDK; mainnet writes still
+  require an audited `scriptErgoTree` plus an `auditPolicy` verdict.
+  Treat MCP host trust as an additional attack surface — anything that
+  can call the MCP server can attempt to issue Notes against the agent's
+  reserve, bounded only by the policy engine.

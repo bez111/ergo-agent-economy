@@ -174,26 +174,56 @@ These are explicitly out of scope for v0.
 
 ## 6. Production Safety
 
-The lifecycle builders in `ergo-agent-pay` accept an optional
-`scriptErgoTree`. Without one, the resulting box is a plain P2PK. On mainnet
-that means any predicate stored in R5/R6/R7 is advisory only — the box can
-be spent by the address holder without revealing a valid task output, which
-breaks the security model.
+Mainnet writes pass through a **two-gate guard**. Both gates are enforced
+by `ergo-agent-pay`'s `assertProductionSafety()`; v0-conformant SDKs in
+other languages MUST reproduce both.
 
-The high-level `ErgoAgentPay` class enforces this with a guardrail:
+### Gate 1 — Box-shape
+
+The lifecycle builders in `ergo-agent-pay` accept an optional
+`scriptErgoTree`. Without one, the resulting box is a plain P2PK and any
+predicate stored in R5/R6/R7 is advisory only — the box can be spent by
+the address holder without revealing a valid task output, breaking the
+security model.
 
 * **testnet** — always allowed (dev convenience).
-* **mainnet** + `scriptErgoTree` set — allowed (real on-chain enforcement).
-* **mainnet** + no `scriptErgoTree` + `allowInsecureDevMode: true` — allowed
-  (caller has explicitly accepted P2PK semantics).
+* **mainnet** + `scriptErgoTree` set — passes Gate 1.
+* **mainnet** + no `scriptErgoTree` + `dangerouslyAllowInsecureMainnetP2PK: true` — passes Gate 1
+  (caller has explicitly accepted P2PK semantics; the legacy alias
+  `allowInsecureDevMode: true` is deprecated but still honoured).
 * **mainnet** + no `scriptErgoTree` + no opt-in — rejected with
   `INSECURE_MAINNET_MODE`.
 
-The same rule applies to `createReserve`, `issueNote`, and `deployTracker`.
-Implementations of v0 in other languages MUST reproduce this rule.
+### Gate 2 — Audited identity
+
+A non-empty `scriptErgoTree` proves only that *some* on-chain script is
+attached. It does not prove the script is canonical, audited, or related
+to the intended source. Gate 2 closes that gap by requiring an
+`auditPolicy` callback on mainnet. The callback receives the supplied
+ergoTree and returns `{ ok: true }` only if the tree's hash is present
+in the audited manifest with `mainnetAllowed: true`.
+
+* **mainnet** + `auditPolicy` returns `{ ok: true }` — passes Gate 2.
+* **mainnet** + `auditPolicy` returns `{ ok: false }` or throws — rejected
+  with `UNAUDITED_ERGOTREE`.
+* **mainnet** + no `auditPolicy` configured + `dangerouslyAllowUnauditedErgoTree: true` —
+  passes Gate 2 (strongly discouraged; bypasses the audit-identity check).
+* **mainnet** + no `auditPolicy` and no opt-in — rejected with
+  `UNAUDITED_ERGOTREE`.
+
+The reference `auditPolicy` is `verifyAuditedErgoTree(...)` from
+`ergo-agent-scripts`, which loads `data/AUDITED_ERGOTREES.json` and
+checks both `treeHashBlake2b256` and `mainnetAllowed`. Mainnet writes
+are blocked end-to-end until an external auditor signs the manifest and
+flips the relevant entries.
+
+The same two gates apply to `createReserve`, `issueNote`, `redeemNote`,
+`deployTracker`, and `settleBatch`. The Base/EVM rail mirrors them via
+`AUDITED_CONTRACTS.json` (bytecode hash + `mainnetAllowed`).
 
 The operational companion to this section is
-[`docs/dev-vs-production.md`](docs/dev-vs-production.md).
+[`docs/dev-vs-production.md`](docs/dev-vs-production.md). For the wider
+status table see [`docs/status.md`](docs/status.md).
 
 ---
 

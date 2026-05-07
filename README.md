@@ -203,23 +203,36 @@ This enables complex economic relationships without touching the blockchain.
 
 This is **alpha software**. The protocol is specified at v0 — see
 [**SPEC.md**](./SPEC.md) — and intended for **testnet** development. The
-ChainCash / Basis on-chain scripts that enforce the Reserve / Note / Tracker
-invariants have not been audited.
+ChainCash / Basis on-chain scripts that enforce the Reserve / Note /
+Tracker invariants have not been audited; every entry in
+[`AUDITED_ERGOTREES.json`](./packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json)
+and [`AUDITED_CONTRACTS.json`](./packages/agentpay-base/data/AUDITED_CONTRACTS.json)
+is `mainnetAllowed: false` until an external auditor signs the relevant
+manifest.
 
-What that means in practice:
+Mainnet writes go through a **two-gate guard** in `assertProductionSafety()`
+([SPEC §6](./SPEC.md#6-production-safety)):
 
-* On **testnet**, the SDK happily builds Reserves and Notes without a
-  compiled `scriptErgoTree`. The acceptance predicate stored in R6 is
-  advisory and the box behaves like a P2PK. That's fine for development.
-* On **mainnet**, the SDK refuses to issue a Note or create a Reserve
-  without a `scriptErgoTree` — the predicate would not be enforced
-  on-chain, which silently breaks the security model. To override, set
-  `allowInsecureDevMode: true` on the agent config (and read
-  [SECURITY.md](./SECURITY.md) and
-  [`docs/dev-vs-production.md`](./docs/dev-vs-production.md) first).
-* All hashing is **BLAKE2b-256**, identical to ErgoScript's `blake2b256`
-  builtin. TypeScript and Python SDKs share the same golden vectors at
-  [`test-vectors/task-hash.json`](./test-vectors/task-hash.json).
+1. **Box-shape gate** — refuses mainnet writes whose box would be plain
+   P2PK (no `scriptErgoTree` / no contract address). Override with
+   `dangerouslyAllowInsecureMainnetP2PK: true` (the legacy
+   `allowInsecureDevMode: true` is deprecated but still honoured).
+2. **Audit-identity gate** — refuses any tree whose hash is not in the
+   audited manifest with `mainnetAllowed: true`. Override with
+   `dangerouslyAllowUnauditedErgoTree: true` (strongly discouraged).
+
+Net effect: mainnet writes are blocked end-to-end until an auditor signs
+the manifest and flips the entry, regardless of the override flags.
+Testnet has no gate — the SDK happily builds plain P2PK Reserves so dev
+flows work.
+
+All hashing is **BLAKE2b-256** on Ergo and **keccak256** on Base —
+identical to each chain's native primitive. TypeScript and Python SDKs
+share the same golden vectors at
+[`test-vectors/task-hash.json`](./test-vectors/task-hash.json).
+
+The full status table — what works, what's testnet, what blocks mainnet —
+lives in [`docs/status.md`](./docs/status.md).
 
 Found a security issue? See [SECURITY.md](./SECURITY.md) — please don't
 open a public issue.
