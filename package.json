@@ -18,6 +18,7 @@
     "packages/accord-gateway",
     "packages/accord-rails",
     "packages/accord-rails-ergo",
+    "packages/accord-rails-rosen",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
     "packages/ergo-agent-api",
