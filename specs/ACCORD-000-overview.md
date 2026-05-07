@@ -148,9 +148,9 @@ The protocol is open. The operations are monetized.
 | RFC | Title | Status |
 |---|---|---|
 | ACCORD-000 | Protocol Overview | this doc |
-| ACCORD-001 | Agreement Object | draft |
-| ACCORD-002 | Verification Receipt | draft |
-| ACCORD-003 | Settlement Receipt | draft |
+| [ACCORD-001](./ACCORD-001-agreement-object.md) | Agreement Object | draft |
+| [ACCORD-002](./ACCORD-002-verification-receipt.md) | Verification Receipt | draft |
+| [ACCORD-003](./ACCORD-003-settlement-receipt.md) | Settlement Receipt | draft |
 | ACCORD-004 | Accord/402 Transport | TBD |
 | ACCORD-005 | Accord/MCP Transport | TBD |
 | ACCORD-006 | Rails | TBD |
