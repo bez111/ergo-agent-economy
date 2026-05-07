@@ -161,12 +161,6 @@ describe("conformance L0 — schema-compatibility", () => {
 });
 
 describe("conformance — multi-level coordination", () => {
-  it("L2 stays inconclusive until PR-019 ships", async () => {
-    const result = await runConformance({ repoRoot: REPO_ROOT, levels: ["L0", "L2"] });
-    const l2 = result.levels.find((l) => l.level === "L2");
-    assert.equal(l2?.checks.every((c) => c.result === "inconclusive"), true);
-  });
-
   it("L3 / L4 are explicitly out of scope at v0", async () => {
     const result = await runConformance({ repoRoot: REPO_ROOT, levels: ["L0", "L3", "L4"] });
     const l3 = result.levels.find((l) => l.level === "L3");

@@ -41,11 +41,15 @@ jobs:
       - name: Build accord-core
         run: npm run build -w @accord-protocol/core
 
-      - name: Build accord-mcp / accord-gateway / accord-rails (conformance L1 runs them in-process)
+      - name: Build accord-mcp / accord-gateway / accord-rails / rails-* (conformance L1 + L2 run them in-process)
         run: |
           npm run build -w @accord-protocol/rails
           npm run build -w @accord-protocol/mcp
           npm run build -w @accord-protocol/gateway
+          npm run build -w @accord-protocol/rails-ergo
+          npm run build -w @accord-protocol/rails-rosen
+          npm run build -w @accord-protocol/rails-base
+          npm run build -w @accord-protocol/rails-x402
 
       - name: Typecheck
         run: npm run typecheck -w @accord-protocol/conformance
@@ -57,6 +61,6 @@ jobs:
         run: npm run build -w @accord-protocol/conformance
 
       # Run the CLI against this repo's own fixtures — the strongest
-      # possible self-conformance check. Fails CI if any L0 or L1 test drifts.
-      - name: Run conformance L0 + L1 against this repo
-        run: node packages/accord-conformance/dist/cli.js --levels L0,L1
+      # possible self-conformance check. Fails CI if any L0 / L1 / L2 test drifts.
+      - name: Run conformance L0 + L1 + L2 against this repo
+        run: node packages/accord-conformance/dist/cli.js --levels L0,L1,L2

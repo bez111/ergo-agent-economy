@@ -20,7 +20,7 @@ L3  Security-compatible     — production-safety gates fire on mainnet writes
 L4  Registry-certified      — listed in the public registry with passing conformance
 ```
 
-This package ships **L0 + L1 today** (PR-017 / PR-018). L2 lands in PR-019. L3 lives in the per-rail packages' tests; L4 is a registry-side claim.
+This package ships **L0 + L1 + L2 today** (PR-017 / PR-018 / PR-019). L3 lives in the per-rail packages' tests; L4 is a registry-side claim.
 
 ## L1 — what it checks
 
@@ -28,6 +28,29 @@ L1 exercises the **Accord/MCP** and **Accord/402** transports against the refere
 
 - **MCP** — `wrapAccordMcp` rejects calls without `accord_agreement_id`; happy path runs the handler; `_meta.accord_agreement_hash` is the canonical-bytes blake2b256; embedded Verification + Settlement Receipts pass core's validators.
 - **Accord/402** — no Accord-* request headers → 402 with the right response headers (`Accord-Version`, `Accord-Agreement-Required`, `WWW-Authenticate: Accord402`); valid request → 200 with `{ output, _meta }` body and `x-accord-agreement-hash` response header; embedded receipts validate; second use of the same `payment_id` is rejected with `REPLAY_DETECTED`.
+
+## L2 — what it checks
+
+L2 exercises each of the four reference rails (`rails-ergo`, `rails-rosen`, `rails-base`, `rails-x402`) with a stub backend, six checks per rail:
+
+- `verifyPayment(happy)` returns `ok=true`
+- `payment_id` is a non-empty string (suitable for replay protection)
+- `rail.settle()` is implemented and returns a Settlement Receipt
+- The Settlement Receipt passes core's `validateSettlementReceipt`
+- `receipt.mode` is in `RAIL_MODE_ALLOWLIST[rail]`
+- `verifyPayment(garbage)` does not return `ok=true`
+
+A third-party rail can be tested with the same harness by passing it via `runL2({ extraRails: [...] })`.
+
+```text
+$ npx accord-conformance --levels L0,L1,L2
+
+  L0 PASS  (20/20 pass, 0 fail, 0 inconclusive)
+  L1 PASS  (13/13 pass, 0 fail, 0 inconclusive)
+  L2 PASS  (24/24 pass, 0 fail, 0 inconclusive)
+
+Achieved: L2
+```
 
 ```text
 $ npx accord-conformance --levels L0,L1

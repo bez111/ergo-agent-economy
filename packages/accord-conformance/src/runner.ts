@@ -8,6 +8,7 @@
 import path from "node:path";
 import { runL0 } from "./l0-schema.js";
 import { runL1 } from "./l1-transport.js";
+import { runL2 } from "./l2-rail.js";
 import type {
   ConformanceLevel,
   ConformanceLevelResult,
@@ -40,22 +41,7 @@ export async function runConformance(
     } else if (level === "L1") {
       results.push(await runL1());
     } else if (level === "L2") {
-      results.push({
-        level,
-        passed: false,
-        passed_count: 0,
-        failed_count: 0,
-        inconclusive_count: 1,
-        checks: [
-          {
-            id: `${level}.not-implemented`,
-            level,
-            description: `${level} checks ship in a follow-up PR`,
-            result: "inconclusive",
-            detail: `${level} not implemented yet`,
-          },
-        ],
-      });
+      results.push(await runL2());
     } else {
       results.push({
         level,
