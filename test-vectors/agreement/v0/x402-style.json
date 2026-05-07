@@ -1,0 +1,39 @@
+{
+  "type": "accord.agreement.v0",
+  "version": "v0",
+  "agreement_id": "acc_01HX0000000000000000000401",
+  "created_at": "2026-05-07T01:00:00Z",
+  "buyer": {
+    "id": "agent://buyer-x402",
+    "wallet": "base:0xBuyerAddress00000000000000000000000000ab"
+  },
+  "seller": {
+    "id": "provider://x402-api",
+    "wallet": "base:0xSellerAddress0000000000000000000000000cd"
+  },
+  "task": {
+    "kind": "data_extraction",
+    "input_ref": "https://example.com/page.html",
+    "description": "Extract structured listings from the provided URL.",
+    "output_schema": "accord.listings.v0"
+  },
+  "price": {
+    "amount": "0.05",
+    "currency": "USDC",
+    "decimals": 6
+  },
+  "payment": {
+    "mode": "pay_before_response",
+    "rail": "x402",
+    "deadline": "+30 seconds"
+  },
+  "verification": {
+    "required": false,
+    "method": "none"
+  },
+  "settlement": {
+    "mode": "inline",
+    "refund_policy": "none",
+    "dispute_policy": "none"
+  }
+}

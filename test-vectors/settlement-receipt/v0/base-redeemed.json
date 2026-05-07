@@ -1,0 +1,20 @@
+{
+  "type": "accord.settlement_receipt.v0",
+  "version": "v0",
+  "settlement_id": "sr_01HX000000000000000000BS01",
+  "agreement_id": "acc_01HX0000000000000000000401",
+  "agreement_hash": "blake2b256:0x0000000000000000000000000000000000000000000000000000000000000000",
+  "rail": "base",
+  "mode": "redeemed",
+  "status": "settled",
+  "amount": "0.05",
+  "currency": "USDC",
+  "decimals": 6,
+  "tx": {
+    "network": "base-sepolia",
+    "tx_id": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "block_height": 4567890,
+    "confirmations": 6
+  },
+  "created_at": "2026-05-07T01:00:10Z"
+}
