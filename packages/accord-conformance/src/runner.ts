@@ -12,6 +12,7 @@ import { runL2 } from "./l2-rail.js";
 import { runL3 } from "./l3-security.js";
 import { runL4 } from "./l4-registry.js";
 import { runL1Network } from "./l1-network.js";
+import { runL1McpStdio } from "./l1-mcp-stdio.js";
 import type {
   ConformanceLevel,
   ConformanceLevelResult,
@@ -33,6 +34,15 @@ export interface RunConformanceOptions {
    * levels still run against `repoRoot` because they're filesystem-side.
    */
   targetUrl?: string;
+  /**
+   * Live MCP-stdio command to probe. Mutually exclusive with `targetUrl`.
+   * E.g. `./node_modules/.bin/my-mcp-server` or `node ./build/server.js`.
+   */
+  targetStdio?: { command: string; args?: string[]; env?: Record<string, string>; cwd?: string };
+  /** Optional buyer-supplied agreement_id for the network L1 happy-path probe. */
+  agreementId?: string;
+  /** Optional buyer-supplied payment payload (rail-specific) for the happy-path probe. */
+  paymentJson?: string;
 }
 
 export async function runConformance(
@@ -47,9 +57,19 @@ export async function runConformance(
     if (level === "L0") {
       results.push(await runL0({ repoRoot: opts.repoRoot }));
     } else if (level === "L1") {
-      results.push(
-        opts.targetUrl ? await runL1Network({ url: opts.targetUrl }) : await runL1(),
-      );
+      if (opts.targetStdio) {
+        results.push(await runL1McpStdio(opts.targetStdio));
+      } else if (opts.targetUrl) {
+        results.push(
+          await runL1Network({
+            url: opts.targetUrl,
+            agreementId: opts.agreementId,
+            paymentJson: opts.paymentJson,
+          }),
+        );
+      } else {
+        results.push(await runL1());
+      }
     } else if (level === "L2") {
       results.push(await runL2());
     } else if (level === "L3") {

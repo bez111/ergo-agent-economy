@@ -77,7 +77,45 @@ npx accord-conformance --levels L1 \
   --payment '{"value":"0.001"}'
 ```
 
-MCP-stdio probing is a v1 follow-up.
+### MCP-stdio mode
+
+`--target stdio:./build/mcp-server.js` spawns a child process and probes its JSON-RPC over stdin/stdout per the MCP spec:
+
+```bash
+npx accord-conformance run --levels L1 \
+  --target stdio:./build/mcp-server.js
+```
+
+Four checks:
+1. `initialize` → server returns `protocolVersion`
+2. `tools/list` → returns at least one tool whose `inputSchema` declares `accord_agreement_id` + `accord_payment`
+3. `tools/call` without `accord_agreement_id` → `_meta.accord_error_code == MISSING_AGREEMENT_ID`
+4. `tools/call` with agreement-id but no payment → `_meta.accord_error_code ∈ {MISSING_PAYMENT, UNKNOWN_AGREEMENT}`
+
+## Conformance-result signing
+
+Sign a conformance result so the registry / verifiers can confirm provenance:
+
+```bash
+# 1. Generate keypair (one-time setup)
+$ npx accord-conformance keygen
+
+# 2. Run + sign + submit
+$ npx accord-conformance run --levels L0,L1,L2,L3,L4 --json > result.json
+$ npx accord-conformance sign \
+    --key 0x<your private key> \
+    --signer 'verifier://your-id' \
+    -o signed.json \
+    result.json
+
+# 3. Anyone can verify
+$ npx accord-conformance verify signed.json
+$ npx accord-conformance verify --expected-key 0x<your public key> signed.json
+```
+
+The signing input is `BLAKE2b-256(canonical_json_bytes(object_without_signature))` — same algorithm as ACCORD-002 §5 receipts. Tampering with any field after signing breaks the signature; `verify` exits non-zero with code `BAD_SIGNATURE`.
+
+The same `sign`/`verify` subcommands work on **any** Accord JSON object — Agreement, Verification Receipt, audit manifest, registry record. The signature shape (`scheme: "ed25519"`, hex-encoded `public_key` + `signature` + ISO-8601 `signed_at`) is uniform across artifacts.
 
 ## L1 — what it checks
 
