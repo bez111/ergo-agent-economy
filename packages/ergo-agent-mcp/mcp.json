@@ -2,12 +2,12 @@
   "$schema": "https://mcp.so/schema.json",
   "name": "ergo-agent-mcp",
   "displayName": "Ergo Agent",
-  "description": "Lets MCP-compatible AI agents (Claude Desktop, Cursor, Windsurf, …) hold ERG, check Note boxes on the Ergo blockchain, build payment transactions, and offer paywalled tools that gate execution behind a real on-chain Note. Built on the AgentPay v0 protocol from ergo-agent-economy.",
+  "description": "Lets MCP-compatible AI agents (Claude Desktop, Cursor, Windsurf, …) hold ERG, check Note boxes on the Ergo blockchain, build payment transactions, and offer paywalled tools that gate execution behind a real on-chain Note. Built on the AgentPay v0 protocol from Accord Protocol.",
   "version": "0.3.0",
   "author": "bez111",
   "license": "MIT",
-  "homepage": "https://github.com/bez111/ergo-agent-economy",
-  "repository": "https://github.com/bez111/ergo-agent-economy",
+  "homepage": "https://github.com/bez111/accord-protocol",
+  "repository": "https://github.com/bez111/accord-protocol",
   "categories": ["payments", "blockchain", "agent-economy"],
   "tags": [
     "ergo",
@@ -116,10 +116,10 @@
     }
   ],
   "links": {
-    "docs": "https://github.com/bez111/ergo-agent-economy/blob/main/packages/ergo-agent-mcp/README.md",
-    "spec": "https://github.com/bez111/ergo-agent-economy/blob/main/SPEC.md",
-    "security": "https://github.com/bez111/ergo-agent-economy/blob/main/SECURITY.md",
-    "audit": "https://github.com/bez111/ergo-agent-economy/blob/main/docs/audit/DEEP_REVIEW.md",
-    "issues": "https://github.com/bez111/ergo-agent-economy/issues"
+    "docs": "https://github.com/bez111/accord-protocol/blob/main/packages/ergo-agent-mcp/README.md",
+    "spec": "https://github.com/bez111/accord-protocol/blob/main/SPEC.md",
+    "security": "https://github.com/bez111/accord-protocol/blob/main/SECURITY.md",
+    "audit": "https://github.com/bez111/accord-protocol/blob/main/docs/audit/DEEP_REVIEW.md",
+    "issues": "https://github.com/bez111/accord-protocol/issues"
   }
 }

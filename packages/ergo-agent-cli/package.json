@@ -31,11 +31,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/ergo-agent-economy"
+    "url": "https://github.com/bez111/accord-protocol"
   },
-  "homepage": "https://github.com/bez111/ergo-agent-economy/tree/main/packages/ergo-agent-cli",
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/ergo-agent-cli",
   "bugs": {
-    "url": "https://github.com/bez111/ergo-agent-economy/issues"
+    "url": "https://github.com/bez111/accord-protocol/issues"
   },
   "dependencies": {
     "ergo-agent-pay": "^0.3.0"

@@ -53,7 +53,7 @@ Uses OIDC Trusted Publishing (no API token needed):
 1. Go to https://pypi.org/manage/account/publishing/
 2. Add publisher:
    - Owner: `bez111`
-   - Repository: `ergo-agent-economy`
+   - Repository: `accord-protocol`
    - Workflow: `publish-pypi.yml`
    - Environment: (leave blank)
 

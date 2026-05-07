@@ -1,6 +1,6 @@
 {
-  "schema": "ergo-agent-economy/audited-ergotrees/v1",
-  "repo": "bez111/ergo-agent-economy",
+  "schema": "accord-protocol/audited-ergotrees/v1",
+  "repo": "bez111/accord-protocol",
   "commit": "4f4f75f32be52136a661592181bf09348493b1c9",
   "manifest_created_at": "2026-05-06T19:11:36.455Z",
   "status": "draft-pre-audit",

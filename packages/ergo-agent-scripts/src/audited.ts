@@ -34,7 +34,7 @@ export interface AuditedEntry {
 }
 
 export interface AuditedManifest {
-  schema: "ergo-agent-economy/audited-ergotrees/v1";
+  schema: "accord-protocol/audited-ergotrees/v1";
   repo: string;
   commit: string;
   manifest_created_at: string;

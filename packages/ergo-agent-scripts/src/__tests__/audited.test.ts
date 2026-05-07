@@ -11,7 +11,7 @@ import { tryGetErgoTree } from "../registry.js";
 describe("AUDITED_ERGOTREES manifest shape", () => {
   it("declares the v1 schema and matches the registry's canonical commit format", () => {
     const m = loadAuditedManifest();
-    assert.equal(m.schema, "ergo-agent-economy/audited-ergotrees/v1");
+    assert.equal(m.schema, "accord-protocol/audited-ergotrees/v1");
     assert.match(m.commit, /^[0-9a-f]{40}$/);
   });
 

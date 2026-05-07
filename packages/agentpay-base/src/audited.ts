@@ -42,7 +42,7 @@ export interface AuditedContractEntry {
 }
 
 export interface AuditedContractsManifest {
-  schema: "ergo-agent-economy/audited-contracts/v1";
+  schema: "accord-protocol/audited-contracts/v1";
   repo: string;
   package: "agentpay-base";
   manifest_created_at: string;

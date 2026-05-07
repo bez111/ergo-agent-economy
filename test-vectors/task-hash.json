@@ -1,5 +1,5 @@
 {
-  "spec": "ergo-agent-economy/SPEC.md#hashing",
+  "spec": "accord-protocol/SPEC.md#hashing",
   "version": "v0",
   "algorithm": "BLAKE2b-256",
   "digest_size_bytes": 32,

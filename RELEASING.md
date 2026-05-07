@@ -1,6 +1,6 @@
 # Releasing
 
-How a new version of `ergo-agent-economy` reaches npm and PyPI.
+How a new version of Accord Protocol reaches npm and PyPI.
 
 ## Versioning
 
@@ -102,7 +102,7 @@ PyPI uses Trusted Publishing instead of a static token. Configure once
 at https://pypi.org/manage/account/publishing/ with:
 
 * Owner: `bez111`
-* Repository name: `ergo-agent-economy`
+* Repository name: `accord-protocol`
 * Workflow filename: `publish-pypi.yml`
 * Environment name: leave blank or set to `pypi`
 

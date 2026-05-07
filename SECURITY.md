@@ -2,16 +2,23 @@
 
 ## Status
 
-**`ergo-agent-economy` is alpha software.** v0 of the protocol (see
+**Accord Protocol is alpha software.** v0 of the protocol (see
 [SPEC.md](SPEC.md)) is intended for **testnet development**.
 
-**`NOT CERTIFIED FOR MAINNET`.** The compiled ergoTrees in
-`packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json` are in
-`status: "draft-pre-audit"` and every entry is `mainnetAllowed: false`.
-Mainnet writes are blocked by the SDK until an external auditor signs the
-manifest and flips the flag. See
-[`packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json`](packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json)
-and [the auditor request](docs/audit/AUDITOR_REQUEST.md).
+**`NOT CERTIFIED FOR MAINNET`.** Two rail-specific audit manifests gate
+mainnet writes:
+
+| Rail | Manifest | Status | Mainnet entries |
+|---|---|---|---|
+| Ergo Note (`@accord-protocol/rails-ergo`, `@accord-protocol/rails-rosen`) | [`packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json`](packages/ergo-agent-scripts/data/AUDITED_ERGOTREES.json) | `draft-pre-audit` | every entry `mainnetAllowed: false` |
+| Base / EVM Note (`@accord-protocol/rails-base`) | [`packages/agentpay-base/data/AUDITED_CONTRACTS.json`](packages/agentpay-base/data/AUDITED_CONTRACTS.json) | `draft-pre-audit` | `entries: []` (audit gate refuses everything by default) |
+
+The x402 rail (`@accord-protocol/rails-x402`) does not carry an on-chain
+manifest — its trust derives from the facilitator's signed payment proof.
+
+Mainnet writes are blocked end-to-end by `assertProductionSafety()` until
+an external auditor signs the relevant manifest and flips entries to
+`mainnetAllowed: true`. See [the auditor request](docs/audit/AUDITOR_REQUEST.md).
 
 Do not put more value at risk than you can afford to lose.
 

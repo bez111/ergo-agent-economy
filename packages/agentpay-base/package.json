@@ -39,9 +39,9 @@
   ],
   "author": "bez111",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/bez111/ergo-agent-economy" },
-  "homepage": "https://github.com/bez111/ergo-agent-economy/tree/main/packages/agentpay-base",
-  "bugs": { "url": "https://github.com/bez111/ergo-agent-economy/issues" },
+  "repository": { "type": "git", "url": "https://github.com/bez111/accord-protocol" },
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/agentpay-base",
+  "bugs": { "url": "https://github.com/bez111/accord-protocol/issues" },
   "dependencies": {
     "viem": "^2.0.0"
   },

@@ -1,5 +1,5 @@
 {
-  "spec": "ergo-agent-economy/SPEC.md#5-acceptance-predicate-v0",
+  "spec": "accord-protocol/SPEC.md#5-acceptance-predicate-v0",
   "version": "v0",
   "description": "Canonical ErgoScript sources and compiled ergoTrees. Sources are either inline (`source` field) or loaded from `data/sources/<file>` (`sourceFile` field — preferred for >20-line scripts). Some entries depend on a previously-compiled tree's hash; the compiler resolves `${name}_hash_base58` placeholders before compiling. Trees are produced by `npm run compile-predicates` (via @fleet-sdk/compiler); `treeHashBlake2b256` is BLAKE2b-256 of the raw ergoTree bytes — re-runnable via `npm run verify-predicates` without the compiler.",
   "predicates": [

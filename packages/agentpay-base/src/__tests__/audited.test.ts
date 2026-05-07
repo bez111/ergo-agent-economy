@@ -18,7 +18,7 @@ describe("AUDITED_CONTRACTS manifest", () => {
   it("ships in draft-pre-audit state", () => {
     const m = loadAuditedContracts();
     assert.equal(m.status, "draft-pre-audit");
-    assert.equal(m.schema, "ergo-agent-economy/audited-contracts/v1");
+    assert.equal(m.schema, "accord-protocol/audited-contracts/v1");
   });
 
   it("ships zero entries on the first publish (no signed audit yet)", () => {

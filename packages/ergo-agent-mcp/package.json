@@ -51,7 +51,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/ergo-agent-economy"
+    "url": "https://github.com/bez111/accord-protocol"
   },
   "engines": {
     "node": ">=18"

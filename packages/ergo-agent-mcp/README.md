@@ -248,7 +248,7 @@ predicate-bound boxIds to their task output text.
 ## Development
 
 ```bash
-git clone https://github.com/bez111/ergo-agent-economy
+git clone https://github.com/bez111/accord-protocol
 cd packages/ergo-agent-mcp
 
 npm install
