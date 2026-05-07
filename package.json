@@ -21,6 +21,7 @@
     "packages/accord-rails-ergo",
     "packages/accord-rails-rosen",
     "packages/accord-rails-x402",
+    "packages/accord-conformance",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
     "packages/ergo-agent-api",

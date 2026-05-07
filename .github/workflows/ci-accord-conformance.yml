@@ -1,0 +1,56 @@
+name: CI Accord Conformance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/accord-conformance/**"
+      - "packages/accord-core/**"
+      - "schemas/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-accord-conformance.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/accord-conformance/**"
+      - "packages/accord-core/**"
+      - "schemas/**"
+      - "test-vectors/**"
+      - ".github/workflows/ci-accord-conformance.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  build:
+    name: Build, typecheck, test, run CLI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install workspace
+        run: npm install --include=optional
+
+      - name: Build accord-core
+        run: npm run build -w @accord-protocol/core
+
+      - name: Typecheck
+        run: npm run typecheck -w @accord-protocol/conformance
+
+      - name: Test
+        run: npm test -w @accord-protocol/conformance
+
+      - name: Build
+        run: npm run build -w @accord-protocol/conformance
+
+      # Run the CLI against this repo's own fixtures — the strongest
+      # possible self-conformance check. Fails CI if any L0 test drifts.
+      - name: Run conformance L0 against this repo
+        run: node packages/accord-conformance/dist/cli.js --levels L0

@@ -1,0 +1,65 @@
+{
+  "name": "@accord-protocol/conformance",
+  "version": "0.4.0",
+  "description": "Accord Protocol conformance suite. Library + CLI that exercises every level (L0 schema, L1 transport, L2 rail) against an Accord implementation. The output is the source of truth for 'Accord-compatible (L*)' badge claims.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "accord-conformance": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts"
+  },
+  "keywords": [
+    "accord-protocol",
+    "conformance",
+    "compatibility",
+    "test-suite",
+    "agent-payments",
+    "accord-compatible"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/accord-conformance"
+  },
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/accord-conformance",
+  "bugs": {
+    "url": "https://github.com/bez111/accord-protocol/issues"
+  },
+  "dependencies": {
+    "@accord-protocol/core": "^0.4.0",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
