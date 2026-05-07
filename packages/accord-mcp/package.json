@@ -1,0 +1,59 @@
+{
+  "name": "@accord-protocol/mcp",
+  "version": "0.4.0",
+  "description": "Accord/MCP transport wrapper. Turn any MCP tool into a paid, verifiable Accord engagement: validate Agreement, verify payment via rail adapter, emit Verification + Settlement Receipts. Rail-agnostic. See specs/ACCORD-005-accord-mcp.md.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "npx tsx --test src/__tests__/*.test.ts"
+  },
+  "keywords": [
+    "accord-protocol",
+    "mcp",
+    "model-context-protocol",
+    "paid-tools",
+    "agent-payments",
+    "agreement"
+  ],
+  "author": "bez111",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/accord-mcp"
+  },
+  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/accord-mcp",
+  "bugs": {
+    "url": "https://github.com/bez111/accord-protocol/issues"
+  },
+  "dependencies": {
+    "@accord-protocol/core": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
