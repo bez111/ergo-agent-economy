@@ -1,0 +1,42 @@
+name: CI Accord Core
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/accord-core/**"
+      - ".github/workflows/ci-accord-core.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "packages/accord-core/**"
+      - ".github/workflows/ci-accord-core.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  build:
+    name: Build, typecheck & test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install workspace
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck -w @accord-protocol/core
+
+      - name: Test
+        run: npm test -w @accord-protocol/core
+
+      - name: Build
+        run: npm run build -w @accord-protocol/core
