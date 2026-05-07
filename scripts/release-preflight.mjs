@@ -35,8 +35,12 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const REPO_ROOT = path.resolve(import.meta.dirname, "..");
+// Use fileURLToPath instead of import.meta.dirname so this script runs on
+// Node 18 (the package.json minimum) as well as Node 20+ (publish workflow).
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = path.resolve(__dirname, "..");
 const RUN_PACK = process.argv.includes("--pack");
 
 const ACCORD_PACKAGES = [
