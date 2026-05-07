@@ -17,6 +17,7 @@
     "packages/accord-mcp",
     "packages/accord-gateway",
     "packages/accord-rails",
+    "packages/accord-rails-base",
     "packages/accord-rails-ergo",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
