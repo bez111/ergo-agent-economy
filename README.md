@@ -261,17 +261,38 @@ for agents.
 
 ## Packages
 
-| Package | Language | Install | Description |
-|---|---|---|---|
-| [`ergo-agent-pay`](./packages/ergo-agent-pay/) | TypeScript | `npm install ergo-agent-pay` | Full SDK: pay, issueNote, full lifecycle, policy engine v2, LangChain, OpenAI |
-| [`ergo-agent-cli`](./packages/ergo-agent-cli/) | TypeScript | `npm install -g ergo-agent-cli` | Command-line companion: `balance`, `note check/issue/redeem`, `reserve create`, `tracker deploy`, `settle`, `task-hash` |
-| [`ergo-agent-api`](./packages/ergo-agent-api/) | TypeScript | `npm install ergo-agent-api` | Pay-per-API middleware (Express/Connect/Fastify): 402 + Note verification + replay protection + inline redemption |
-| [`ergo-agent-server`](./packages/ergo-agent-server/) | TypeScript | `npm install -g ergo-agent-server` | Local HTTP bridge — exposes the SDK over REST so any language can drive it (Python, Go, Rust...) |
-| [`ergo-agent-rosen`](./packages/ergo-agent-rosen/) | TypeScript | `npm install ergo-agent-rosen` | Cross-chain payments via Rosen Bridge — agents pay in rsUSDT/rsUSDC/rsBTC bridged from Ethereum/Bitcoin/Cardano. Reuses the audited `basis_token_reserve_v0` ergoTree. |
-| [`agentpay-base`](./packages/agentpay-base/) | TypeScript + Solidity | `npm install agentpay-base` | **Native Base / EVM** implementation of the same protocol. ERC-20 reserves (USDC, USDT), keccak256 acceptance predicates, audited-bytecode-hash gate. Same SPEC, different settlement chain. |
-| [`ergo-agent-scripts`](./packages/ergo-agent-scripts/) | TypeScript | `npm install ergo-agent-scripts` | Canonical ErgoScript sources for v0 predicates + ChainCash + Basis contracts; compiled ergoTree registry |
-| [`ergo-agent-mcp`](./packages/ergo-agent-mcp/) | TypeScript | `npm install ergo-agent-mcp` | MCP server — plug Ergo payments into Claude, Cursor, any MCP client |
-| [`ergo-agent-pay`](./packages/ergo-agent-py/) | Python | `pip install ergo-agent-pay` | Balance, UTxOs, check_note, LangChain tool, OpenAI function, BridgeClient (talks to ergo-agent-server) |
+The canonical public API lives in the **Accord Protocol layer** (`@accord-protocol/*`, version 0.4.0). New integrations should target these packages directly. The `ergo-agent-*` and `agentpay-base` packages remain published as **reference / legacy rail packages** — the Accord rail adapters delegate transaction-building to them.
+
+### Accord Protocol packages (canonical)
+
+| Package | Install | Description |
+|---|---|---|
+| [`@accord-protocol/core`](./packages/accord-core/) | `npm install @accord-protocol/core` | Canonicalize / hash / validate the v0 protocol objects (Agreement, Verification Receipt, Settlement Receipt). Rail-agnostic. |
+| [`@accord-protocol/mcp`](./packages/accord-mcp/) | `npm install @accord-protocol/mcp` | Accord/MCP wrapper: turns any MCP tool into a paid, verifiable Accord engagement. |
+| [`@accord-protocol/gateway`](./packages/accord-gateway/) | `npm install @accord-protocol/gateway` | Accord/402 HTTP middleware (Connect / Express). 402 challenge, replay-protected payment verification, structured error envelope. |
+| [`@accord-protocol/rails`](./packages/accord-rails/) | `npm install @accord-protocol/rails` | Shared `AccordRailAdapter` interface + `MockRailAdapter` for tests/demos. |
+| [`@accord-protocol/rails-ergo`](./packages/accord-rails-ergo/) | `npm install @accord-protocol/rails-ergo` | Ergo Note rail: blake2b256 task-hash, R6 binding, redeemNote. Wraps `ergo-agent-pay`. |
+| [`@accord-protocol/rails-rosen`](./packages/accord-rails-rosen/) | `npm install @accord-protocol/rails-rosen` | Rosen-bridged stablecoins on Ergo (rsUSDT / rsUSDC / rsBTC). |
+| [`@accord-protocol/rails-base`](./packages/accord-rails-base/) | `npm install @accord-protocol/rails-base` | Base/EVM Note rail: keccak256 acceptance predicate, AgentPayReserveV0. Wraps `agentpay-base`. |
+| [`@accord-protocol/rails-x402`](./packages/accord-rails-x402/) | `npm install @accord-protocol/rails-x402` | x402-compatible rail. Wraps any facilitator (Coinbase / self-hosted / custom). |
+| [`@accord-protocol/conformance`](./packages/accord-conformance/) | `npm install @accord-protocol/conformance` | Conformance suite + CLI. Levels L0–L4. Network mode (HTTP + MCP-stdio). ed25519 signing. |
+
+### Reference / legacy rail packages (testnet / Ergo-focused)
+
+These power the Ergo, Rosen, and Base rail adapters above. They keep their own
+release line at `0.3.0` and remain maintained.
+
+| Package | Install | Description |
+|---|---|---|
+| [`ergo-agent-pay`](./packages/ergo-agent-pay/) | `npm install ergo-agent-pay` | Full Ergo SDK: pay, issueNote, full lifecycle, policy engine v2 |
+| [`ergo-agent-cli`](./packages/ergo-agent-cli/) | `npm install -g ergo-agent-cli` | Command-line companion: balance, note lifecycle, settle, task-hash |
+| [`ergo-agent-api`](./packages/ergo-agent-api/) | `npm install ergo-agent-api` | Legacy 402 middleware (predates Accord/402; new code should use `@accord-protocol/gateway`) |
+| [`ergo-agent-server`](./packages/ergo-agent-server/) | `npm install -g ergo-agent-server` | Local HTTP bridge — exposes the SDK over REST so any language can drive it |
+| [`ergo-agent-rosen`](./packages/ergo-agent-rosen/) | `npm install ergo-agent-rosen` | Rosen Bridge cross-chain glue. Reuses the audited `basis_token_reserve_v0` ergoTree |
+| [`agentpay-base`](./packages/agentpay-base/) | `npm install agentpay-base` | Native Base / EVM SDK: ERC-20 reserves (USDC, USDT), keccak256 acceptance predicates |
+| [`ergo-agent-scripts`](./packages/ergo-agent-scripts/) | `npm install ergo-agent-scripts` | Canonical ErgoScript sources + audited tree registry + manifest verifier |
+| [`ergo-agent-mcp`](./packages/ergo-agent-mcp/) | `npm install ergo-agent-mcp` | Legacy MCP server (predates Accord/MCP; new code should use `@accord-protocol/mcp`) |
+| [`ergo-agent-pay` (Python)](./packages/ergo-agent-py/) | `pip install ergo-agent-pay` | Balance, UTxOs, check_note, LangChain tool, OpenAI function, BridgeClient |
 
 ### CLI — `ergo-agent`
 
