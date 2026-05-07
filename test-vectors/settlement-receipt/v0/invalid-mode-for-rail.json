@@ -1,0 +1,20 @@
+{
+  "_comment": "Must be rejected — mode 'redeemed' is the EVM-rail allow-list value, not a valid mode for the Ergo rail.",
+  "type": "accord.settlement_receipt.v0",
+  "version": "v0",
+  "settlement_id": "sr_01HX0000000000000000000000",
+  "agreement_id": "acc_01HX0000000000000000000000",
+  "agreement_hash": "blake2b256:0x0000000000000000000000000000000000000000000000000000000000000000",
+  "rail": "ergo",
+  "mode": "redeemed",
+  "status": "settled",
+  "amount": "25",
+  "currency": "ERG",
+  "decimals": 9,
+  "tx": {
+    "network": "testnet",
+    "tx_id": "0x33333333333333333333333333333333333333333333333333333333333333aa",
+    "box_id": "0x44444444444444444444444444444444444444444444444444444444444444bb"
+  },
+  "created_at": "2026-05-07T00:00:20Z"
+}

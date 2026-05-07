@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://accordprotocol.ai/schemas/verification-receipt.v0.schema.json",
+  "title": "Accord Verification Receipt v0",
+  "description": "Verifier's signed verdict on whether a seller's work meets the Agreement terms. See specs/ACCORD-002-verification-receipt.md.",
+  "type": "object",
+  "required": [
+    "type",
+    "version",
+    "receipt_id",
+    "agreement_id",
+    "agreement_hash",
+    "verifier",
+    "result",
+    "evidence",
+    "created_at",
+    "signature"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "type": { "const": "accord.verification_receipt.v0" },
+    "version": { "const": "v0" },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^vr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "agreement_id": {
+      "type": "string",
+      "pattern": "^acc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "agreement_hash": { "$ref": "#/$defs/blake2b256_hash" },
+    "verifier": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(verifier|agent|human)://"
+        },
+        "wallet": {
+          "type": "string",
+          "pattern": "^(ergo|eth|base|rosen):"
+        }
+      }
+    },
+    "result": {
+      "type": "string",
+      "enum": ["accepted", "rejected", "partial", "disputed"]
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["output_hash"],
+      "additionalProperties": true,
+      "properties": {
+        "output_hash": {
+          "type": "string",
+          "pattern": "^(blake2b256|keccak256|sha256):0x[0-9a-f]{64}$"
+        },
+        "output_ref": { "type": "string" },
+        "schema": { "type": "string" }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "result"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "result": {
+            "type": "string",
+            "enum": ["pass", "fail", "skip", "inconclusive"]
+          },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "created_at": { "$ref": "#/$defs/iso8601_utc" },
+    "signature": { "$ref": "#/$defs/signature" }
+  },
+  "$defs": {
+    "iso8601_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "blake2b256_hash": {
+      "type": "string",
+      "pattern": "^blake2b256:0x[0-9a-f]{64}$"
+    },
+    "signature": {
+      "type": "object",
+      "required": ["scheme", "public_key", "signature"],
+      "additionalProperties": false,
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "enum": ["ed25519", "secp256k1", "ergo-sigma"]
+        },
+        "public_key": { "type": "string", "pattern": "^0x[0-9a-f]+$" },
+        "signature": { "type": "string", "pattern": "^0x[0-9a-f]+$" }
+      }
+    }
+  }
+}

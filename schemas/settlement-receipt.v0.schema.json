@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://accordprotocol.ai/schemas/settlement-receipt.v0.schema.json",
+  "title": "Accord Settlement Receipt v0",
+  "description": "Rail-anchored proof that the economic side of an Accord engagement has resolved. See specs/ACCORD-003-settlement-receipt.md.",
+  "type": "object",
+  "required": [
+    "type",
+    "version",
+    "settlement_id",
+    "agreement_id",
+    "agreement_hash",
+    "rail",
+    "mode",
+    "status",
+    "amount",
+    "currency",
+    "decimals",
+    "tx",
+    "created_at"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "type": { "const": "accord.settlement_receipt.v0" },
+    "version": { "const": "v0" },
+    "settlement_id": {
+      "type": "string",
+      "pattern": "^sr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "agreement_id": {
+      "type": "string",
+      "pattern": "^acc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "agreement_hash": { "$ref": "#/$defs/blake2b256_hash" },
+    "verification_receipts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/blake2b256_hash" }
+    },
+    "rail": {
+      "type": "string",
+      "enum": ["ergo", "rosen", "base", "x402"]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "note_redeemed",
+        "reserve_refunded",
+        "batch_settled",
+        "redeemed",
+        "refund_expired",
+        "paid_before_response"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["settled", "partial", "refunded", "failed", "pending"]
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["ERG", "USDC", "USDT", "rsUSDT", "rsUSDC", "rsBTC"]
+    },
+    "decimals": { "type": "integer", "minimum": 0, "maximum": 18 },
+    "tx": {
+      "type": "object",
+      "required": ["network", "tx_id"],
+      "additionalProperties": true,
+      "properties": {
+        "network": {
+          "type": "string",
+          "enum": ["mainnet", "testnet", "sepolia", "base-sepolia"]
+        },
+        "tx_id": { "type": "string", "pattern": "^(0x)?[0-9a-fA-F]+$" },
+        "box_id": { "type": "string", "pattern": "^(0x)?[0-9a-fA-F]+$" },
+        "block_height": { "type": "integer", "minimum": 0 },
+        "confirmations": { "type": "integer", "minimum": 0 },
+        "proof": { "type": "string" }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["scheme", "public_key", "signature"],
+      "additionalProperties": true,
+      "properties": {
+        "scheme": {
+          "type": "string",
+          "enum": ["ed25519", "secp256k1", "ergo-sigma"]
+        },
+        "public_key": { "type": "string", "pattern": "^0x[0-9a-f]+$" },
+        "signature": { "type": "string", "pattern": "^0x[0-9a-f]+$" },
+        "signer_role": {
+          "type": "string",
+          "enum": ["gateway", "provider", "verifier", "registry"]
+        }
+      }
+    },
+    "created_at": { "$ref": "#/$defs/iso8601_utc" }
+  },
+  "allOf": [
+    {
+      "description": "Ergo / Rosen mode allow-list",
+      "if": {
+        "properties": { "rail": { "enum": ["ergo", "rosen"] } }
+      },
+      "then": {
+        "properties": {
+          "mode": {
+            "enum": ["note_redeemed", "reserve_refunded", "batch_settled"]
+          }
+        },
+        "required": ["mode"]
+      }
+    },
+    {
+      "description": "Ergo / Rosen require box_id in tx",
+      "if": {
+        "properties": { "rail": { "enum": ["ergo", "rosen"] } }
+      },
+      "then": {
+        "properties": {
+          "tx": {
+            "required": ["network", "tx_id", "box_id"]
+          }
+        }
+      }
+    },
+    {
+      "description": "Base mode allow-list",
+      "if": {
+        "properties": { "rail": { "const": "base" } }
+      },
+      "then": {
+        "properties": {
+          "mode": { "enum": ["redeemed", "refund_expired"] }
+        }
+      }
+    },
+    {
+      "description": "x402 mode allow-list",
+      "if": {
+        "properties": { "rail": { "const": "x402" } }
+      },
+      "then": {
+        "properties": {
+          "mode": { "const": "paid_before_response" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "iso8601_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "blake2b256_hash": {
+      "type": "string",
+      "pattern": "^blake2b256:0x[0-9a-f]{64}$"
+    }
+  }
+}

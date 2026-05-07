@@ -1,0 +1,20 @@
+{
+  "type": "accord.verification_receipt.v0",
+  "version": "v0",
+  "receipt_id": "vr_01HX0000000000000000000000",
+  "agreement_id": "acc_01HX0000000000000000000000",
+  "agreement_hash": "blake2b256:0x0000000000000000000000000000000000000000000000000000000000000000",
+  "verifier": {
+    "id": "verifier://security-v0"
+  },
+  "result": "accepted",
+  "evidence": {
+    "output_hash": "blake2b256:0x1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "created_at": "2026-05-07T00:00:10Z",
+  "signature": {
+    "scheme": "ed25519",
+    "public_key": "0xdeadbeef",
+    "signature": "0xcafebabe"
+  }
+}

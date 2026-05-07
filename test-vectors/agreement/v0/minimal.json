@@ -1,0 +1,38 @@
+{
+  "type": "accord.agreement.v0",
+  "version": "v0",
+  "agreement_id": "acc_01HX0000000000000000000000",
+  "created_at": "2026-05-07T00:00:00Z",
+  "buyer": {
+    "id": "agent://buyer"
+  },
+  "seller": {
+    "id": "provider://repo-audit-agent"
+  },
+  "task": {
+    "kind": "repo_audit",
+    "input_ref": "github:https://github.com/org/repo",
+    "description": "Audit repository for critical security issues."
+  },
+  "price": {
+    "amount": "25",
+    "currency": "ERG",
+    "decimals": 9
+  },
+  "payment": {
+    "mode": "note",
+    "rail": "ergo",
+    "reserve_ref": "ergo:box:abc",
+    "deadline": "+480 blocks"
+  },
+  "verification": {
+    "required": true,
+    "method": "verifier_receipt",
+    "verifier": "verifier://security-v0"
+  },
+  "settlement": {
+    "mode": "batchable",
+    "refund_policy": "expiry",
+    "dispute_policy": "verifier_panel"
+  }
+}
