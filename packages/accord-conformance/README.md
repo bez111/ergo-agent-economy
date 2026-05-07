@@ -1,14 +1,25 @@
 # `@accord-protocol/conformance`
 
-Accord Protocol conformance suite. Library + CLI that exercises every level (L0 schema, L1 transport, L2 rail) against an Accord implementation. **The output is the source of truth for "Accord-compatible (L*)" badge claims** per [TRADEMARK.md](../../TRADEMARK.md).
+Accord Protocol conformance suite. Library + CLI that exercises **all five levels** (L0 schema, L1 transport, L2 rail, L3 security, L4 registry) against an Accord implementation. **The output is the source of truth for "Accord-compatible (L*)" badge claims** per [TRADEMARK.md](../../TRADEMARK.md).
 
 ## Install
 
 ```bash
 npm install --save-dev @accord-protocol/conformance @accord-protocol/core
 # or run on the fly:
-npx accord-conformance
+npx accord-conformance run
 ```
+
+## CLI subcommands
+
+```bash
+accord-conformance run     [flags]              # default if no subcommand (back-compat)
+accord-conformance keygen                       # generate ed25519 keypair
+accord-conformance sign    --key 0x... <input.json>     # sign any Accord JSON object
+accord-conformance verify  [--expected-key 0x...] <signed.json>
+```
+
+`run` is invoked by default if no subcommand is given, so prior usage like `npx accord-conformance --levels L0,L1` still works.
 
 ## Levels
 
