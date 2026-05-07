@@ -1,0 +1,26 @@
+{
+  "type": "accord.verification_receipt.v0",
+  "version": "v0",
+  "receipt_id": "vr_01HX000000000000000000RJ01",
+  "agreement_id": "acc_01HX0000000000000000000000",
+  "agreement_hash": "blake2b256:0x5ae8b7cf913863e0b3c81f53714b72b0a8cf07b384e8a9c136664494aebc873c",
+  "verifier": {
+    "id": "verifier://security-v0"
+  },
+  "result": "rejected",
+  "evidence": {
+    "output_hash": "blake2b256:0x9999999999999999999999999999999999999999999999999999999999999999",
+    "schema": "accord.audit_report.v0"
+  },
+  "checks": [
+    { "name": "schema_valid",            "result": "pass" },
+    { "name": "severity_present",        "result": "fail", "detail": "no severity field on any finding" },
+    { "name": "file_references_present", "result": "skip" }
+  ],
+  "created_at": "2026-05-07T00:00:30Z",
+  "signature": {
+    "scheme": "ed25519",
+    "public_key": "0xdeadbeef",
+    "signature": "0xfeedface"
+  }
+}

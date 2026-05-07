@@ -40,3 +40,10 @@ jobs:
 
       - name: Build
         run: npm run build -w @accord-protocol/core
+
+      - name: Check test-vector fixtures (no drift)
+        # Re-derives canonical bytes + hash for every test-vectors/**/v0/<name>.json
+        # and fails if the pinned .canonical.txt / .hash.txt files differ. This is
+        # the cross-language conformance gate: a Python/Go/Rust implementation
+        # must reproduce the same canonical bytes + accord_hash_v0 byte-for-byte.
+        run: node scripts/derive-fixture-hashes.mjs --check
