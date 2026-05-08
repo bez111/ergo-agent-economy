@@ -21,6 +21,8 @@ accord-conformance verify  [--expected-key 0x...] <signed.json>
 
 `run` is invoked by default if no subcommand is given, so prior usage like `npx accord-conformance --levels L0,L1` still works.
 
+For an end-to-end keygen / run / sign / verify walkthrough with a working signed artifact, see [`docs/conformance-signed-example.md`](../../docs/conformance-signed-example.md).
+
 ## Levels
 
 ```text

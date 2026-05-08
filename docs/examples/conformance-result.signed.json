@@ -1,0 +1,558 @@
+{
+  "target": "local:ergo-agent-economy",
+  "started_at": "2026-05-08T14:48:02Z",
+  "finished_at": "2026-05-08T14:48:02Z",
+  "levels": [
+    {
+      "level": "L0",
+      "passed": true,
+      "passed_count": 20,
+      "failed_count": 0,
+      "inconclusive_count": 0,
+      "checks": [
+        {
+          "id": "L0.schema.agreement.invalid-amount-as-number",
+          "level": "L0",
+          "description": "Reject test-vectors/agreement/v0/invalid-amount-as-number.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.agreement.minimal",
+          "level": "L0",
+          "description": "Validate test-vectors/agreement/v0/minimal.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.agreement.minimal",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/agreement/v0/minimal.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.agreement.minimal",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/agreement/v0/minimal.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.agreement.x402-style",
+          "level": "L0",
+          "description": "Validate test-vectors/agreement/v0/x402-style.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.agreement.x402-style",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/agreement/v0/x402-style.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.agreement.x402-style",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/agreement/v0/x402-style.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.verificationReceipt.accepted-minimal",
+          "level": "L0",
+          "description": "Validate test-vectors/verification-receipt/v0/accepted-minimal.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.verificationReceipt.accepted-minimal",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/verification-receipt/v0/accepted-minimal.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.verificationReceipt.accepted-minimal",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/verification-receipt/v0/accepted-minimal.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.verificationReceipt.rejected-with-detail",
+          "level": "L0",
+          "description": "Validate test-vectors/verification-receipt/v0/rejected-with-detail.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.verificationReceipt.rejected-with-detail",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/verification-receipt/v0/rejected-with-detail.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.verificationReceipt.rejected-with-detail",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/verification-receipt/v0/rejected-with-detail.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.settlementReceipt.base-redeemed",
+          "level": "L0",
+          "description": "Validate test-vectors/settlement-receipt/v0/base-redeemed.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.settlementReceipt.base-redeemed",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/settlement-receipt/v0/base-redeemed.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.settlementReceipt.base-redeemed",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/settlement-receipt/v0/base-redeemed.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.settlementReceipt.ergo-note-redeemed",
+          "level": "L0",
+          "description": "Validate test-vectors/settlement-receipt/v0/ergo-note-redeemed.json",
+          "result": "pass"
+        },
+        {
+          "id": "L0.canonical.settlementReceipt.ergo-note-redeemed",
+          "level": "L0",
+          "description": "Canonical bytes match test-vectors/settlement-receipt/v0/ergo-note-redeemed.canonical.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.hash.settlementReceipt.ergo-note-redeemed",
+          "level": "L0",
+          "description": "accord_hash_v0 matches test-vectors/settlement-receipt/v0/ergo-note-redeemed.hash.txt",
+          "result": "pass"
+        },
+        {
+          "id": "L0.schema.settlementReceipt.invalid-mode-for-rail",
+          "level": "L0",
+          "description": "Reject test-vectors/settlement-receipt/v0/invalid-mode-for-rail.json",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "level": "L1",
+      "passed": true,
+      "passed_count": 13,
+      "failed_count": 0,
+      "inconclusive_count": 0,
+      "checks": [
+        {
+          "id": "L1.mcp.missing-agreement-id",
+          "level": "L1",
+          "description": "wrapAccordMcp() rejects calls without accord_agreement_id",
+          "result": "pass",
+          "duration_ms": 0
+        },
+        {
+          "id": "L1.mcp.happy-path",
+          "level": "L1",
+          "description": "wrapAccordMcp() runs the handler when payment + verifier accept",
+          "result": "pass",
+          "duration_ms": 1
+        },
+        {
+          "id": "L1.mcp.agreement-hash-meta",
+          "level": "L1",
+          "description": "_meta.accord_agreement_hash equals blake2b256(canonical(agreement))",
+          "result": "pass"
+        },
+        {
+          "id": "L1.mcp.verification-receipt-present",
+          "level": "L1",
+          "description": "verification.required=true → _meta carries a Verification Receipt",
+          "result": "pass"
+        },
+        {
+          "id": "L1.mcp.verification-receipt-valid",
+          "level": "L1",
+          "description": "Verification Receipt passes core validateVerificationReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L1.mcp.settlement-receipt-valid",
+          "level": "L1",
+          "description": "Settlement Receipt passes core validateSettlementReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.402-challenge-headers",
+          "level": "L1",
+          "description": "no Accord-* request headers → 402 with Accord-Version, Accord-Agreement-Required, WWW-Authenticate Accord402",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.200-happy-path",
+          "level": "L1",
+          "description": "valid Accord-* headers → 200 with output + _meta",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.agreement-hash-header",
+          "level": "L1",
+          "description": "200 response carries x-accord-agreement-hash matching agreement bytes",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.body-output-meta",
+          "level": "L1",
+          "description": "200 body is { output, _meta } with accord_* metadata",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.verification-receipt-valid",
+          "level": "L1",
+          "description": "embedded Verification Receipt passes core validation",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.settlement-receipt-valid",
+          "level": "L1",
+          "description": "embedded Settlement Receipt passes core validation",
+          "result": "pass"
+        },
+        {
+          "id": "L1.gateway.replay-detected",
+          "level": "L1",
+          "description": "second use of the same payment_id is rejected with REPLAY_DETECTED",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "level": "L2",
+      "passed": true,
+      "passed_count": 24,
+      "failed_count": 0,
+      "inconclusive_count": 0,
+      "checks": [
+        {
+          "id": "L2.ergo.verify-payment.happy",
+          "level": "L2",
+          "description": "ergo: verifyPayment(happy) returns ok",
+          "result": "pass",
+          "duration_ms": 1
+        },
+        {
+          "id": "L2.ergo.payment-id.shape",
+          "level": "L2",
+          "description": "ergo: payment_id is a non-empty, untrimmed string",
+          "result": "pass"
+        },
+        {
+          "id": "L2.ergo.settle.completes",
+          "level": "L2",
+          "description": "ergo: rail.settle(happy) returns a Settlement Receipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.ergo.settle.receipt-valid",
+          "level": "L2",
+          "description": "ergo: Settlement Receipt passes core validateSettlementReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.ergo.settle.mode-allow-list",
+          "level": "L2",
+          "description": "ergo: receipt.mode ∈ RAIL_MODE_ALLOWLIST[ergo]",
+          "result": "pass"
+        },
+        {
+          "id": "L2.ergo.verify-payment.rejection",
+          "level": "L2",
+          "description": "ergo: verifyPayment(garbage) does not return ok=true",
+          "result": "pass"
+        },
+        {
+          "id": "L2.rosen.verify-payment.happy",
+          "level": "L2",
+          "description": "rosen: verifyPayment(happy) returns ok",
+          "result": "pass",
+          "duration_ms": 1
+        },
+        {
+          "id": "L2.rosen.payment-id.shape",
+          "level": "L2",
+          "description": "rosen: payment_id is a non-empty, untrimmed string",
+          "result": "pass"
+        },
+        {
+          "id": "L2.rosen.settle.completes",
+          "level": "L2",
+          "description": "rosen: rail.settle(happy) returns a Settlement Receipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.rosen.settle.receipt-valid",
+          "level": "L2",
+          "description": "rosen: Settlement Receipt passes core validateSettlementReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.rosen.settle.mode-allow-list",
+          "level": "L2",
+          "description": "rosen: receipt.mode ∈ RAIL_MODE_ALLOWLIST[rosen]",
+          "result": "pass"
+        },
+        {
+          "id": "L2.rosen.verify-payment.rejection",
+          "level": "L2",
+          "description": "rosen: verifyPayment(garbage) does not return ok=true",
+          "result": "pass"
+        },
+        {
+          "id": "L2.base.verify-payment.happy",
+          "level": "L2",
+          "description": "base: verifyPayment(happy) returns ok",
+          "result": "pass",
+          "duration_ms": 1
+        },
+        {
+          "id": "L2.base.payment-id.shape",
+          "level": "L2",
+          "description": "base: payment_id is a non-empty, untrimmed string",
+          "result": "pass"
+        },
+        {
+          "id": "L2.base.settle.completes",
+          "level": "L2",
+          "description": "base: rail.settle(happy) returns a Settlement Receipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.base.settle.receipt-valid",
+          "level": "L2",
+          "description": "base: Settlement Receipt passes core validateSettlementReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.base.settle.mode-allow-list",
+          "level": "L2",
+          "description": "base: receipt.mode ∈ RAIL_MODE_ALLOWLIST[base]",
+          "result": "pass"
+        },
+        {
+          "id": "L2.base.verify-payment.rejection",
+          "level": "L2",
+          "description": "base: verifyPayment(garbage) does not return ok=true",
+          "result": "pass"
+        },
+        {
+          "id": "L2.x402.verify-payment.happy",
+          "level": "L2",
+          "description": "x402: verifyPayment(happy) returns ok",
+          "result": "pass",
+          "duration_ms": 0
+        },
+        {
+          "id": "L2.x402.payment-id.shape",
+          "level": "L2",
+          "description": "x402: payment_id is a non-empty, untrimmed string",
+          "result": "pass"
+        },
+        {
+          "id": "L2.x402.settle.completes",
+          "level": "L2",
+          "description": "x402: rail.settle(happy) returns a Settlement Receipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.x402.settle.receipt-valid",
+          "level": "L2",
+          "description": "x402: Settlement Receipt passes core validateSettlementReceipt",
+          "result": "pass"
+        },
+        {
+          "id": "L2.x402.settle.mode-allow-list",
+          "level": "L2",
+          "description": "x402: receipt.mode ∈ RAIL_MODE_ALLOWLIST[x402]",
+          "result": "pass"
+        },
+        {
+          "id": "L2.x402.verify-payment.rejection",
+          "level": "L2",
+          "description": "x402: verifyPayment(garbage) does not return ok=true",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "level": "L3",
+      "passed": true,
+      "passed_count": 12,
+      "failed_count": 0,
+      "inconclusive_count": 0,
+      "checks": [
+        {
+          "id": "L3.ergo.mainnet-no-script-rejected",
+          "level": "L3",
+          "description": "ergo-agent-pay assertProductionSafety rejects mainnet write without scriptErgoTree (INSECURE_MAINNET_MODE)",
+          "result": "pass"
+        },
+        {
+          "id": "L3.ergo.mainnet-empty-string-script-rejected",
+          "level": "L3",
+          "description": "ergo-agent-pay assertProductionSafety rejects empty-string scriptErgoTree on mainnet",
+          "result": "pass"
+        },
+        {
+          "id": "L3.ergo.mainnet-no-audit-policy-rejected",
+          "level": "L3",
+          "description": "ergo-agent-pay assertProductionSafety rejects mainnet write with no auditPolicy (UNAUDITED_ERGOTREE)",
+          "result": "pass"
+        },
+        {
+          "id": "L3.ergo.dangerously-allow-p2pk-passes",
+          "level": "L3",
+          "description": "documented escape hatch: dangerouslyAllowInsecureMainnetP2PK lets a P2PK box through on mainnet",
+          "result": "pass"
+        },
+        {
+          "id": "L3.ergo.testnet-always-allowed",
+          "level": "L3",
+          "description": "testnet writes are always allowed (dev convenience)",
+          "result": "pass"
+        },
+        {
+          "id": "L3.ergo.verify-mainnet-rejects-unsigned-manifest",
+          "level": "L3",
+          "description": "verifyAuditedErgoTree(requireMainnet) rejects when manifest is draft-pre-audit",
+          "result": "pass"
+        },
+        {
+          "id": "L3.base.mainnet-no-audit-policy-rejected",
+          "level": "L3",
+          "description": "agentpay-base assertProductionSafety rejects mainnet without auditPolicy",
+          "result": "pass"
+        },
+        {
+          "id": "L3.base.dangerously-allow-passes",
+          "level": "L3",
+          "description": "documented escape hatch: dangerouslyAllowUnauditedContract lets a write through on mainnet",
+          "result": "pass"
+        },
+        {
+          "id": "L3.base.testnet-always-allowed",
+          "level": "L3",
+          "description": "Base/EVM testnet writes are always allowed (dev convenience)",
+          "result": "pass"
+        },
+        {
+          "id": "L3.manifest.ergo.all-blocked",
+          "level": "L3",
+          "description": "AUDITED_ERGOTREES.json: every entry has mainnetAllowed=false (draft-pre-audit)",
+          "result": "pass"
+        },
+        {
+          "id": "L3.manifest.ergo.draft-pre-audit",
+          "level": "L3",
+          "description": "AUDITED_ERGOTREES.json status is 'draft-pre-audit'",
+          "result": "pass"
+        },
+        {
+          "id": "L3.manifest.base.all-blocked",
+          "level": "L3",
+          "description": "AUDITED_CONTRACTS.json: empty entries OR every entry mainnetAllowed=false",
+          "result": "pass"
+        }
+      ]
+    },
+    {
+      "level": "L4",
+      "passed": true,
+      "passed_count": 13,
+      "failed_count": 0,
+      "inconclusive_count": 0,
+      "checks": [
+        {
+          "id": "L4.registry.revocations",
+          "level": "L4",
+          "description": "registry/revocations.json is a well-formed array (0 entries)",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.rails.base",
+          "level": "L4",
+          "description": "rails/base.json is a valid accord.rail_adapter.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.rails.ergo",
+          "level": "L4",
+          "description": "rails/ergo.json is a valid accord.rail_adapter.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.rails.rosen",
+          "level": "L4",
+          "description": "rails/rosen.json is a valid accord.rail_adapter.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.rails.x402",
+          "level": "L4",
+          "description": "rails/x402.json is a valid accord.rail_adapter.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.manifests.base",
+          "level": "L4",
+          "description": "manifests/base.json is a valid manifest_ref.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.manifests.base.path-resolves",
+          "level": "L4",
+          "description": "manifests/base.json.manifest_path → file exists",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.manifests.ergo",
+          "level": "L4",
+          "description": "manifests/ergo.json is a valid manifest_ref.v0 record",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.manifests.ergo.path-resolves",
+          "level": "L4",
+          "description": "manifests/ergo.json.manifest_path → file exists",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.providers.example",
+          "level": "L4",
+          "description": "providers/example.json is a valid provider_profile.v0",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.providers.example.accepted-rails-known",
+          "level": "L4",
+          "description": "accepted_rails ⊆ registered rails",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.providers.example.conformance-level-valid",
+          "level": "L4",
+          "description": "conformance.level ∈ {L0, L1, L2, L3, L4}",
+          "result": "pass"
+        },
+        {
+          "id": "L4.registry.verifiers.example",
+          "level": "L4",
+          "description": "verifiers/example.json is a valid verifier_profile.v0",
+          "result": "pass"
+        }
+      ]
+    }
+  ],
+  "achieved_level": "L4",
+  "signature": {
+    "scheme": "ed25519",
+    "public_key": "0x0b47a2c8bea912c748c5f43d92b538deed5e511fe46537c939824e273677489e",
+    "signature": "0x8d4d3e9ef6932aa562435d8e399f0282669ca5acc90e8a5a8d8bd72cc6381ab5f912eaccc308fc973b97c56b4a2a8d0e3206a49ea84fdec2531a5f955f71a70c",
+    "signed_at": "2026-05-08T14:48:11Z",
+    "signer": "accord-protocol/example"
+  }
+}
