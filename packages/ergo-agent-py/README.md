@@ -1,6 +1,8 @@
 # ergo-agent-pay (Python)
 
-Python SDK for autonomous AI agent payments on the [Ergo blockchain](https://ergoplatform.org).
+Python reference SDK for the **Ergo rail** of [Accord Protocol](https://github.com/bez111/accord-protocol). Agent payments, Note operations, balance + UTxO inspection, LangChain / OpenAI integrations.
+
+The package keeps its legacy npm-mirror name. A canonical Python Accord layer (port of `@accord-protocol/core`) is not yet published; when it is, it will live under a different PyPI name and import from this package as a rail dependency.
 
 Zero required dependencies — uses Python standard library only.
 

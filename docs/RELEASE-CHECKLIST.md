@@ -33,14 +33,20 @@ publishes anything to npm or PyPI.
 1. Sign in to https://pypi.org/
 2. https://pypi.org/manage/account/publishing/
 3. Add a new publisher:
-   - **PyPI Project Name**: `ergo-agent-pay` (the existing PyPI package name; renaming requires a new package)
+   - **PyPI Project Name**: `ergo-agent-pay`
    - **Owner**: `bez111`
    - **Repository name**: `accord-protocol`
    - **Workflow name**: `publish-pypi.yml`
    - **Environment name**: leave blank
 4. Save.
 
-> **Note on PyPI rename**: the Python package keeps its `ergo_agent_pay` name on PyPI even though the GitHub repo is now `accord-protocol`. Renaming on PyPI is non-trivial and out of scope for v0.4.0.
+> **Why `ergo-agent-pay` and not `accord-protocol`?**
+>
+> The Python package is the **Ergo-rail reference SDK** — the Python mirror of the npm package `ergo-agent-pay`. It is not the canonical Accord layer (Python port of `@accord-protocol/core`), which is not yet implemented. When that lands, it will publish under a different PyPI name (likely `accord-protocol` or `accord-protocol-core`) and import this package as a rail dependency.
+>
+> Same convention as on npm: canonical = `@accord-protocol/*`, reference rail = `ergo-agent-*`. The Python publish target follows the reference-rail name to stay consistent.
+>
+> Neither name is currently on PyPI, so we are free to take both — but only when there is real code to put behind each. We are not squatting `accord-protocol` on PyPI ahead of an actual canonical implementation.
 
 ## Step 4 — Pre-flight locally
 
@@ -125,5 +131,5 @@ So re-tagging `v0.3.0` (or any version that's already on npm for a given package
 ## What the publish workflow does NOT do
 
 - **Does not flip `mainnetAllowed: true` in any audit manifest.** That requires an external auditor signature — see [`docs/audit/SIGNING_PLAYBOOK.md`](audit/SIGNING_PLAYBOOK.md).
-- **Does not rename the PyPI package.** `ergo_agent_pay` stays the published name on PyPI.
+- **Does not rename the PyPI package.** `ergo-agent-pay` is the published name on PyPI for this Python reference rail SDK; see Step 3 above for the rationale (it is not the canonical Accord layer).
 - **Does not publish to the Accord-Protocol-branded npm org** (we don't have one). Packages live under `@accord-protocol/*` on the public npm registry.

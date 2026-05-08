@@ -297,7 +297,7 @@ need rail-level primitives outside an Accord engagement.
 | [`agentpay-base`](./packages/agentpay-base/) | `npm install agentpay-base` | Base / EVM reference SDK used by `@accord-protocol/rails-base`: ERC-20 reserves, Note-style settlement, keccak256 task predicates and audit-gated contract manifests |
 | [`ergo-agent-scripts`](./packages/ergo-agent-scripts/) | `npm install ergo-agent-scripts` | Canonical ErgoScript sources, compiled ErgoTree registry, draft audit manifests and manifest-verification helpers |
 | [`ergo-agent-mcp`](./packages/ergo-agent-mcp/) | `npm install ergo-agent-mcp` | Legacy MCP server (predates Accord/MCP; new code should use `@accord-protocol/mcp`) |
-| [`ergo-agent-pay` (Python)](./packages/ergo-agent-py/) | `pip install ergo-agent-pay` | Balance, UTxOs, check_note, LangChain tool, OpenAI function, BridgeClient |
+| [`ergo-agent-pay` (Python)](./packages/ergo-agent-py/) | `pip install ergo-agent-pay` | Python reference SDK for the Ergo rail. Balance, UTxOs, check_note, LangChain tool, OpenAI function, BridgeClient. Mirror of the npm package of the same name. |
 
 ### CLI — `ergo-agent`
 

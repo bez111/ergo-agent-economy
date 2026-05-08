@@ -5,14 +5,14 @@ build-backend = "setuptools.backends.legacy:build"
 [project]
 name = "ergo-agent-pay"
 version = "0.3.0"
-description = "SDK for autonomous AI agents to hold, move, and pay on the Ergo blockchain"
+description = "Python reference SDK for the Ergo rail of Accord Protocol — agent payments, Note operations, LangChain / OpenAI integrations. Mirrors the legacy npm package of the same name; the canonical Python Accord layer will publish later under a different PyPI name."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
 keywords = [
-  "ergo", "blockchain", "agent", "ai-agent", "payments", "autonomous",
-  "langchain", "openai", "eUTXO", "acceptance-predicate", "note",
-  "agent-economy", "bearer-instrument"
+  "accord-protocol", "ergo", "blockchain", "agent", "ai-agent", "payments",
+  "autonomous", "langchain", "openai", "eUTXO", "acceptance-predicate",
+  "note", "agent-economy", "bearer-instrument"
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
