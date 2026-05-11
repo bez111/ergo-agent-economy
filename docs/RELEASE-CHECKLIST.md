@@ -1,135 +1,175 @@
 # v0.4.0 release checklist
 
-What needs to happen before `git tag v0.4.0 && git push --tags` actually
-publishes anything to npm or PyPI.
+This checklist describes what must be true before `git tag v0.4.0 && git push origin v0.4.0`.
+
+A public package release is **not** production certification. Accord remains testnet-first and `NOT CERTIFIED FOR MAINNET` unless signed audit manifests explicitly mark relevant entries `mainnetAllowed: true`.
 
 ## Status
 
 | Blocker | State | Owner |
 |---|---|---|
-| `NPM_TOKEN` secret in repo | **NOT SET** (0 secrets configured) | bez111 |
-| PyPI Trusted Publishing config | **NOT CONFIGURED** for `accord-protocol` | bez111 |
-| `publish-npm.yml` covers new packages | **DONE** (covers all 9 `@accord-protocol/*` plus 8 legacy) | shipped |
-| Skip-if-already-published guard | **DONE** (each job pre-checks via `npm view`) | shipped |
-| Self-conformance gate (L0+L1+L2+L3+L4) on the conformance publish job | **DONE** | shipped |
-| All package.json versions in sync at 0.4.0 | **PARTIAL** (new packages 0.4.0, legacy 0.3.0 — by design) | bez111 to confirm |
-| External auditor signed manifest | **NO** | external auditor |
+| `NPM_TOKEN` secret in repo | Configure before tag | bez111 |
+| PyPI Trusted Publishing config | Configure before tag | bez111 |
+| `publish-npm.yml` package matrix | Covers 10 `@accord-protocol/*` packages + 8 legacy npm packages | shipped / verify |
+| Publish jobs | 18 npm jobs total; PyPI is separate | shipped / verify |
+| Skip-if-already-published guard | Each npm job pre-checks via `npm view` | shipped |
+| Self-conformance gate | L0+L1+L2+L3+L4 before publishing `@accord-protocol/conformance` | shipped |
+| Package versions | Accord packages `0.4.0`; legacy/reference packages `0.3.0`; Python `0.3.0` | by design |
+| External auditor signed manifest | No | external auditor |
+| Mainnet status | `NOT CERTIFIED FOR MAINNET` | must remain true |
 
-## Step 1 — Create npm access token
+## Package matrix
+
+### Canonical Accord npm packages — `0.4.0`
+
+- `@accord-protocol/core`
+- `@accord-protocol/mcp`
+- `@accord-protocol/gateway`
+- `@accord-protocol/rails`
+- `@accord-protocol/rails-ergo`
+- `@accord-protocol/rails-rosen`
+- `@accord-protocol/rails-base`
+- `@accord-protocol/rails-x402`
+- `@accord-protocol/conformance`
+- `@accord-protocol/buyer-policy`
+
+### Maintained reference npm packages — `0.3.0`
+
+- `ergo-agent-pay`
+- `ergo-agent-cli`
+- `ergo-agent-api`
+- `ergo-agent-mcp`
+- `ergo-agent-server`
+- `ergo-agent-scripts`
+- `ergo-agent-rosen`
+- `agentpay-base`
+
+### Python package — `0.3.0`
+
+- `ergo-agent-pay`
+
+## Step 1 — create npm access token
 
 1. Sign in to https://www.npmjs.com/
-2. Settings → Access Tokens → Generate New Token → "Automation" type
-3. Scope: publish for the npm org / packages you'll publish under
-4. Copy the token. It starts with `npm_…`.
+2. Settings → Access Tokens → Generate New Token → Automation token.
+3. Ensure it can publish the `@accord-protocol/*` scope and unscoped legacy packages.
+4. Copy the token.
 
-## Step 2 — Add `NPM_TOKEN` repo secret
+## Step 2 — add `NPM_TOKEN` repo secret
 
-1. https://github.com/bez111/accord-protocol/settings/secrets/actions
-2. New repository secret. Name: `NPM_TOKEN`. Value: the token from step 1.
-3. Save.
+1. Go to `https://github.com/bez111/accord-protocol/settings/secrets/actions`.
+2. New repository secret.
+3. Name: `NPM_TOKEN`.
+4. Value: the npm automation token.
 
-## Step 3 — Configure PyPI Trusted Publishing
+## Step 3 — configure PyPI Trusted Publishing
 
-1. Sign in to https://pypi.org/
-2. https://pypi.org/manage/account/publishing/
-3. Add a new publisher:
-   - **PyPI Project Name**: `ergo-agent-pay`
-   - **Owner**: `bez111`
-   - **Repository name**: `accord-protocol`
-   - **Workflow name**: `publish-pypi.yml`
-   - **Environment name**: leave blank
-4. Save.
+Configure a trusted publisher for the Python reference package:
 
-> **Why `ergo-agent-pay` and not `accord-protocol`?**
->
-> The Python package is the **Ergo-rail reference SDK** — the Python mirror of the npm package `ergo-agent-pay`. It is not the canonical Accord layer (Python port of `@accord-protocol/core`), which is not yet implemented. When that lands, it will publish under a different PyPI name (likely `accord-protocol` or `accord-protocol-core`) and import this package as a rail dependency.
->
-> Same convention as on npm: canonical = `@accord-protocol/*`, reference rail = `ergo-agent-*`. The Python publish target follows the reference-rail name to stay consistent.
->
-> Neither name is currently on PyPI, so we are free to take both — but only when there is real code to put behind each. We are not squatting `accord-protocol` on PyPI ahead of an actual canonical implementation.
+- PyPI Project Name: `ergo-agent-pay`
+- Owner: `bez111`
+- Repository name: `accord-protocol`
+- Workflow name: `publish-pypi.yml`
+- Environment name: leave blank unless the workflow is later changed
 
-## Step 4 — Pre-flight locally
+The Python package is the Ergo-rail reference SDK. It is not the canonical Python Accord layer.
+
+## Step 4 — local pre-flight
+
+Run from repo root:
 
 ```bash
-# 1. Confirm versions match what you intend
-$ grep -h '"version"' packages/*/package.json | sort -u
-
-# 2. Build everything end-to-end
-$ npm install --include=optional
-$ npm run build --workspaces --if-present
-$ npm test --workspaces --if-present
-
-# 3. Run the full conformance suite
-$ npx accord-conformance run --levels L0,L1,L2,L3,L4
-# Expected: Achieved: L4
-
-# 4. Run the demo
-$ npm run dev -w accord-paid-mcp-repo-audit-demo
-# Expected: full Accord lifecycle, both receipts valid
+npm install --include=optional
+npm run build --workspaces --if-present
+npm test --workspaces --if-present
+npm run release:check
 ```
 
-## Step 5 — Tag and push
+Then run Python tests:
 
 ```bash
-# Pre-flight: branch is main, tree is clean, all CI green on main
-$ git checkout main
-$ git pull --ff-only
-$ git status
-
-# Tag and push. The push triggers BOTH workflows:
-#   - .github/workflows/publish-npm.yml  (17 jobs, topological order)
-#   - .github/workflows/publish-pypi.yml (1 job)
-$ git tag v0.4.0
-$ git push origin v0.4.0
+cd packages/ergo-agent-py
+python3 -m unittest discover -s tests -v
+cd ../..
 ```
 
-## Step 6 — Verify the publishes
+Then run conformance from the built local workspace:
 
 ```bash
-# npm — new Accord layer
-$ npm view @accord-protocol/core version            # should be 0.4.0
-$ npm view @accord-protocol/mcp version             # 0.4.0
-$ npm view @accord-protocol/gateway version         # 0.4.0
-$ npm view @accord-protocol/rails version           # 0.4.0
-$ npm view @accord-protocol/rails-ergo version      # 0.4.0
-$ npm view @accord-protocol/rails-rosen version     # 0.4.0
-$ npm view @accord-protocol/rails-base version      # 0.4.0
-$ npm view @accord-protocol/rails-x402 version      # 0.4.0
-$ npm view @accord-protocol/conformance version     # 0.4.0
-
-# npm — legacy layer (no-op if already published at 0.3.0)
-$ npm view ergo-agent-pay version                   # 0.3.0
-$ npm view ergo-agent-mcp version                   # 0.3.0
-
-# PyPI
-$ pip show ergo-agent-pay
+npm run build -w @accord-protocol/conformance
+node packages/accord-conformance/dist/cli.js run --levels L0,L1,L2,L3,L4
 ```
 
-## Skip-if-already-published guard
-
-Every job in `publish-npm.yml` does this before `npm publish`:
+Then run the canonical demo:
 
 ```bash
-LOCAL=$(node -p "require('./packages/<pkg>/package.json').version")
-if npm view "<pkg>@$LOCAL" version >/dev/null 2>&1; then
-  echo "<pkg>@$LOCAL already on npm; skipping."
-else
-  npm publish --workspace <pkg> --access public
-fi
+npm run dev -w accord-paid-mcp-repo-audit-demo
 ```
 
-So re-tagging `v0.3.0` (or any version that's already on npm for a given package) is safe — those jobs no-op. Only NEW versions get published. This makes the workflow safe to re-run on tag-push retries.
+Expected: full Accord lifecycle with Agreement, Verification Receipt, and Settlement Receipt.
 
-## Rollback
+## Step 5 — tag and push
 
-`npm` does not support deleting versions for security reasons. To roll back a bad release:
+Only tag after local pre-flight and CI are clean:
 
-1. Bump to `v0.4.1` with the fix
-2. Deprecate the bad `v0.4.0` versions: `npm deprecate "<pkg>@0.4.0" "use 0.4.1 — see CHANGELOG"`
-3. Bump the tag and re-publish
+```bash
+git checkout main
+git pull --ff-only
+git status
+npm run release:check
+git tag v0.4.0
+git push origin v0.4.0
+```
 
-## What the publish workflow does NOT do
+The tag triggers:
 
-- **Does not flip `mainnetAllowed: true` in any audit manifest.** That requires an external auditor signature — see [`docs/audit/SIGNING_PLAYBOOK.md`](audit/SIGNING_PLAYBOOK.md).
-- **Does not rename the PyPI package.** `ergo-agent-pay` is the published name on PyPI for this Python reference rail SDK; see Step 3 above for the rationale (it is not the canonical Accord layer).
-- **Does not publish to the Accord-Protocol-branded npm org** (we don't have one). Packages live under `@accord-protocol/*` on the public npm registry.
+- `.github/workflows/publish-npm.yml`
+- `.github/workflows/publish-pypi.yml`
+
+## Step 6 — verify publishes
+
+```bash
+npm view @accord-protocol/core version
+npm view @accord-protocol/mcp version
+npm view @accord-protocol/gateway version
+npm view @accord-protocol/rails version
+npm view @accord-protocol/rails-ergo version
+npm view @accord-protocol/rails-rosen version
+npm view @accord-protocol/rails-base version
+npm view @accord-protocol/rails-x402 version
+npm view @accord-protocol/conformance version
+npm view @accord-protocol/buyer-policy version
+
+npm view ergo-agent-pay version
+npm view ergo-agent-cli version
+npm view ergo-agent-api version
+npm view ergo-agent-mcp version
+npm view ergo-agent-server version
+npm view ergo-agent-scripts version
+npm view ergo-agent-rosen version
+npm view agentpay-base version
+
+python -m pip index versions ergo-agent-pay
+```
+
+## Step 7 — GitHub Release
+
+Create a GitHub Release for `v0.4.0` only after registry verification.
+
+Release notes must include:
+
+- Accord packages published at `0.4.0`;
+- legacy/reference packages remain `0.3.0`;
+- Python reference package remains `0.3.0`;
+- `NOT CERTIFIED FOR MAINNET` warning;
+- link to `docs/status.md`;
+- link to `SECURITY.md`;
+- changelog excerpt.
+
+## What the publish workflow does not do
+
+- Does not flip `mainnetAllowed: true`.
+- Does not imply ChainCash/Basis scripts are audited.
+- Does not certify production use.
+- Does not publish a canonical Python Accord layer.
+- Does not migrate the repo into `github.com/accord-protocol`.

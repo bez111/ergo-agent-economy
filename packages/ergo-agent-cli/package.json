@@ -1,7 +1,7 @@
 {
   "name": "ergo-agent-cli",
   "version": "0.3.0",
-  "description": "Command-line companion to ergo-agent-pay — query balances, check Notes, build Reserve/Note/Tracker transactions on Ergo testnet/mainnet.",
+  "description": "Command-line companion to ergo-agent-pay \u2014 query balances, check Notes, build Reserve/Note/Tracker transactions on Ergo testnet/mainnet.",
   "type": "module",
   "bin": {
     "ergo-agent": "./dist/index.js"
@@ -31,7 +31,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/accord-protocol"
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/ergo-agent-cli"
   },
   "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/ergo-agent-cli",
   "bugs": {

@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "v*"          # triggers on: git tag v0.4.0 && git push --tags
-  workflow_dispatch:
-
 # Two scopes published by this workflow:
 #
 #   Legacy `ergo-agent-*` / `agentpay-base` packages (currently at 0.3.0).
@@ -20,11 +18,12 @@ on:
 #                   @accord-protocol/core
 #   2. Mid:         ergo-agent-cli/api/mcp/server (depend on pay)
 #                   ergo-agent-rosen (depends on pay + scripts)
-#                   @accord-protocol/{rails, mcp, gateway} (depend on core)
+#                   @accord-protocol/{rails,mcp,gateway,buyer-policy}
+#                   (depend on core)
 #   3. Rail mid:    @accord-protocol/rails-{ergo,rosen,base,x402}
 #                   (depend on core + rails)
 #   4. Top:         @accord-protocol/conformance
-#                   (depends on everything above)
+#                   (depends on Accord rails and legacy foundation packages)
 #
 # `needs:` enforces the order so a foundation failure aborts dependents.
 
@@ -130,6 +129,8 @@ jobs:
         run: npm install --include=optional
       - name: Build
         run: npm run build -w ergo-agent-cli
+      - name: Test
+        run: npm test -w ergo-agent-cli
       - name: Publish if new
         run: |
           LOCAL=$(node -p "require('./packages/ergo-agent-cli/package.json').version")
@@ -182,6 +183,8 @@ jobs:
         run: npm install --include=optional
       - name: Build
         run: npm run build -w ergo-agent-mcp
+      - name: Test
+        run: npm test -w ergo-agent-mcp
       - name: Publish if new
         run: |
           LOCAL=$(node -p "require('./packages/ergo-agent-mcp/package.json').version")
@@ -491,6 +494,9 @@ jobs:
   accord-conformance:
     name: "@accord-protocol/conformance"
     needs:
+      - ergo-agent-pay
+      - ergo-agent-scripts
+      - agentpay-base
       - accord-core
       - accord-rails
       - accord-mcp

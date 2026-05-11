@@ -21,9 +21,6 @@
     "packages/accord-rails-ergo",
     "packages/accord-rails-rosen",
     "packages/accord-rails-x402",
-    "packages/accord-conformance",
-    "packages/accord-buyer-policy",
-    "examples/15-paid-mcp-repo-audit",
     "packages/ergo-agent-pay",
     "packages/ergo-agent-cli",
     "packages/ergo-agent-api",
@@ -31,12 +28,16 @@
     "packages/ergo-agent-server",
     "packages/ergo-agent-scripts",
     "packages/ergo-agent-rosen",
-    "packages/agentpay-base"
+    "packages/agentpay-base",
+    "packages/accord-conformance",
+    "packages/accord-buyer-policy",
+    "examples/15-paid-mcp-repo-audit"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "release:check": "node scripts/check-release-readiness.mjs"
   },
   "engines": {
     "node": ">=18"
