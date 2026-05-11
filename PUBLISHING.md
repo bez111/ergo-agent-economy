@@ -1,75 +1,131 @@
 # Publishing Guide
 
-How to publish `ergo-agent-pay` to npm and PyPI.
+This guide covers publishing Accord Protocol packages and maintained reference rail packages.
 
----
+Accord Protocol is testnet-first. Publishing a package to npm or PyPI does **not** mean any rail, script, contract, or integration is certified for production mainnet use.
 
-## npm — ergo-agent-pay (TypeScript)
+## Package families
 
-### First time setup
+### Canonical Accord packages
 
-1. Create npm account: https://www.npmjs.com/signup
-2. Generate token: https://www.npmjs.com/settings/tokens → "Automation" type
-3. Add to GitHub repo secrets: Settings → Secrets → `NPM_TOKEN`
+Published under `@accord-protocol/*`:
 
-### Publish a release
+- `@accord-protocol/core`
+- `@accord-protocol/mcp`
+- `@accord-protocol/gateway`
+- `@accord-protocol/rails`
+- `@accord-protocol/rails-ergo`
+- `@accord-protocol/rails-rosen`
+- `@accord-protocol/rails-base`
+- `@accord-protocol/rails-x402`
+- `@accord-protocol/conformance`
+- `@accord-protocol/buyer-policy`
 
-```bash
-# 1. Bump version in packages/ergo-agent-pay/package.json
-# 2. Update CHANGELOG.md
-# 3. Commit
-git add -A && git commit -m "chore: release v0.3.0"
+### Maintained reference rail packages
 
-# 4. Tag — this triggers the publish workflow automatically
-git tag v0.3.0
-git push origin main --tags
+Published under their historical names for compatibility:
+
+- `ergo-agent-pay`
+- `ergo-agent-cli`
+- `ergo-agent-api`
+- `ergo-agent-mcp`
+- `ergo-agent-server`
+- `ergo-agent-scripts`
+- `ergo-agent-rosen`
+- `agentpay-base`
+- Python package: `ergo-agent-pay`
+
+## Release gates before publishing
+
+Before any public release:
+
+1. `README.md`, `docs/status.md`, `SECURITY.md`, `RELEASING.md`, and `llms.txt` must agree on status.
+2. `docs/status.md` must still say `NOT CERTIFIED FOR MAINNET` unless signed audit manifests prove otherwise.
+3. All tests and conformance checks must pass.
+4. The package version must match the release branch/tag plan.
+5. `CHANGELOG.md` must contain a release entry.
+6. npm and PyPI credentials must be configured.
+7. Any package not actually published must not be advertised as installable in a misleading way.
+
+## npm setup
+
+1. Create or use an npm account.
+2. Create an Automation token.
+3. Add it to GitHub Actions secrets as `NPM_TOKEN`.
+4. Confirm that each public package uses the correct `name`, `version`, `license`, `repository`, and `publishConfig.access`.
+
+For scoped packages, ensure:
+
+```json
+{
+  "publishConfig": {
+    "access": "public"
+  }
+}
 ```
 
-GitHub Actions will run: typecheck → build → test → `npm publish`.
+## PyPI setup
 
-### Manual publish (if needed)
+Use PyPI Trusted Publishing where possible.
+
+Configure a trusted publisher for:
+
+- owner: `bez111` until org migration;
+- repository: `accord-protocol`;
+- workflow filename: `publish-pypi.yml`;
+- environment: blank or `pypi`, matching the workflow.
+
+After org migration, update PyPI Trusted Publishing to the new GitHub org/repo.
+
+## Publishing flow
+
+Do not publish directly from an unreviewed local workspace.
+
+Recommended flow:
 
 ```bash
-cd packages/ergo-agent-pay
-npm install
-npm run build
-npm publish --access public
+git checkout -b release/v0.4.0
+# update versions, CHANGELOG, docs/status.md if needed
+git add -A
+git commit -m "chore(release): v0.4.0"
+git push -u origin release/v0.4.0
+# open PR, run CI, review status/security docs
+# merge to main
+git checkout main
+git pull
+git tag v0.4.0
+git push origin v0.4.0
 ```
 
----
+The tag should trigger npm and PyPI workflows. If publishing is not configured, do not tag a public release that implies packages are available.
 
-## npm — ergo-agent-mcp
+## Post-publish verification
 
-Published automatically on the same `v*` tag, after `ergo-agent-pay` succeeds.
+Run:
 
----
+```bash
+npm view @accord-protocol/core version
+npm view @accord-protocol/gateway version
+npm view @accord-protocol/rails-ergo version
+npm view ergo-agent-pay version
+python -m pip index versions ergo-agent-pay
+```
 
-## PyPI — ergo-agent-pay (Python)
+Then create a GitHub Release with:
 
-Uses OIDC Trusted Publishing (no API token needed):
+- status summary;
+- install commands;
+- links to `docs/status.md` and `SECURITY.md`;
+- explicit `NOT CERTIFIED FOR MAINNET` warning;
+- changelog excerpt.
 
-### First time setup
+## What must never be implied by publishing
 
-1. Go to https://pypi.org/manage/account/publishing/
-2. Add publisher:
-   - Owner: `bez111`
-   - Repository: `accord-protocol`
-   - Workflow: `publish-pypi.yml`
-   - Environment: (leave blank)
+Publishing a package must never imply:
 
-That's it — no API key needed. GitHub's OIDC identity proves the publish is from your repo.
-
-### Publish
-
-Same tag as npm — `git tag v0.3.0 && git push --tags` triggers both npm and PyPI.
-
----
-
-## Version sync
-
-Keep versions in sync across:
-- `packages/ergo-agent-pay/package.json`
-- `packages/ergo-agent-mcp/package.json`
-- `packages/ergo-agent-py/pyproject.toml`
-- `packages/ergo-agent-py/ergo_agent_pay/__init__.py`
-- `CHANGELOG.md`
+- ChainCash/Basis scripts are audited;
+- Accord is production-certified;
+- mainnet writes are safe;
+- x402 facilitators are trusted by default;
+- any verifier is correct by default;
+- any rail has identical trust assumptions.

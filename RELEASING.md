@@ -1,140 +1,116 @@
 # Releasing
 
-How a new version of Accord Protocol reaches npm and PyPI.
+This document describes how a new Accord Protocol version reaches public package registries.
 
-## Versioning
+## Versioning model
 
-All seven TypeScript packages and the one Python package share a single
-version number. Bumps are coordinated — when one package needs a change
-that affects its on-disk shape (e.g., audit gate semantics) every
-downstream package gets the same minor bump.
+Accord has two version axes:
 
-```
-ergo-agent-pay        \
-ergo-agent-cli         |
-ergo-agent-api         |  same version, always bumped together
-ergo-agent-mcp         |
-ergo-agent-server      |
-ergo-agent-scripts     |
-ergo-agent-rosen      /
-ergo-agent-pay (py)
-```
+1. **Protocol object version** — embedded in Accord objects, e.g. `v0`, `v1`. This changes only on breaking schema/object changes.
+2. **SDK/package version** — npm/PyPI semver, e.g. `0.4.0`. This changes when implementation packages change.
+
+The current status is tracked in [`docs/status.md`](docs/status.md).
+
+## Release types
+
+| Type | Example | Meaning |
+|---|---|---|
+| Development branch | `feature/...` | Not published |
+| Release candidate | `release/v0.4.0` | Review and CI stage |
+| Public package release | `v0.4.0` tag | npm/PyPI publication if configured |
+| Mainnet-certified release | future | Requires signed external audit manifests |
+
+A release can be public while still being testnet-only. Public package release is not the same as production certification.
 
 ## Pre-release checklist
 
-For every release branch (`release/v0.X.0`):
+Before opening a release PR:
 
-1. `npm install` at repo root — confirms the workspace resolves cleanly.
-2. `npm run build --workspaces` — every package builds.
-3. `npm test --workspaces` — every package's tests pass.
-4. `cd packages/ergo-agent-py && python3 -m unittest discover -s tests -v`
-   — Python tests pass.
-5. `npm run verify-predicates -w ergo-agent-scripts` — registry hashes
-   match committed trees.
-6. CHANGELOG entry under `## [Unreleased]` is non-empty and ordered
-   newest at top.
-7. SECURITY.md banner is correct for the release status.
-8. `data/AUDITED_ERGOTREES.json` `mainnetAllowed` flags reflect the
-   external auditor's signed manifest. **No mainnet promotion** without
-   the auditor's signature on the corresponding commit.
+1. Install dependencies at repo root.
+2. Build all workspaces.
+3. Run all workspace tests.
+4. Run Python tests.
+5. Run conformance tests.
+6. Verify audit manifests.
+7. Confirm `docs/status.md` says the correct mainnet status.
+8. Confirm `SECURITY.md` is current.
+9. Confirm `README.md` does not advertise unpublished packages as already published.
+10. Update `CHANGELOG.md`.
+11. Confirm npm/PyPI publishing setup.
+
+Example commands may vary by package manager and workspace setup:
+
+```bash
+npm install
+npm run build --workspaces
+npm test --workspaces
+cd packages/ergo-agent-py && python3 -m unittest discover -s tests -v
+```
 
 ## Cutting a release
 
-From an up-to-date `main`:
-
 ```bash
-# 1. Bump versions across the seven TS packages and the Python one.
-node -e "
-  const fs=require('node:fs');
-  const v='0.X.0';
-  for (const p of ['ergo-agent-pay','ergo-agent-cli','ergo-agent-api','ergo-agent-mcp','ergo-agent-server','ergo-agent-scripts','ergo-agent-rosen']) {
-    const path='packages/'+p+'/package.json';
-    const j=JSON.parse(fs.readFileSync(path,'utf-8'));
-    j.version=v;
-    for (const sec of ['dependencies','peerDependencies']) {
-      if (!j[sec]) continue;
-      for (const k of Object.keys(j[sec])) {
-        if (k.startsWith('ergo-agent-')) j[sec][k]='^'+v;
-      }
-    }
-    fs.writeFileSync(path, JSON.stringify(j,null,2)+'\n');
-  }
-"
-# Update Python version manually:
-#   - packages/ergo-agent-py/pyproject.toml
-#   - packages/ergo-agent-py/ergo_agent_pay/__init__.py
+git checkout main
+git pull
+git checkout -b release/v0.4.0
 
-# 2. Update CHANGELOG.md: rename [Unreleased] to [v0.X.0] - YYYY-MM-DD,
-#    then add a fresh empty [Unreleased] section above it.
-
-# 3. Commit on a release branch and open a PR.
-git checkout -b release/v0.X.0
-git add -A && git commit -m "chore(release): v0.X.0"
-git push -u origin release/v0.X.0
-gh pr create --title "chore(release): v0.X.0"
-
-# 4. After the PR merges to main, cut the tag.
-git checkout main && git pull
-git tag v0.X.0
-git push origin v0.X.0
+# update versions and docs
+git add -A
+git commit -m "chore(release): v0.4.0"
+git push -u origin release/v0.4.0
 ```
 
-## What the tag triggers
+Open a PR. After CI passes and the PR is reviewed:
 
-`v*` tags fire two GitHub Actions workflows:
+```bash
+git checkout main
+git pull
+git tag v0.4.0
+git push origin v0.4.0
+```
 
-* **`publish-npm.yml`** — publishes every TS workspace package in
-  dependency order. `ergo-agent-pay` and `ergo-agent-scripts` go first
-  (foundation), then the dependents in parallel. A foundation failure
-  short-circuits dependents via `needs:`.
-* **`publish-pypi.yml`** — publishes the Python `ergo-agent-pay`
-  package via [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/)
-  (no API token; the GitHub workflow is registered as the trusted
-  publisher).
+## What the tag should trigger
 
-## Required GitHub secrets
+- npm publication for `@accord-protocol/*` packages and maintained reference packages;
+- PyPI publication for the Python package, if configured;
+- conformance checks before publishing conformance-related packages;
+- skip-if-already-published safeguards where implemented.
 
-| Secret | Where used | How to obtain |
+## Required release secrets and configuration
+
+| Item | Required for | Notes |
 |---|---|---|
-| `NPM_TOKEN` | `publish-npm.yml` | https://www.npmjs.com/settings/<account>/tokens — create an **Automation** token, paste under repo `Settings → Secrets and variables → Actions`. |
-
-PyPI uses Trusted Publishing instead of a static token. Configure once
-at https://pypi.org/manage/account/publishing/ with:
-
-* Owner: `bez111`
-* Repository name: `accord-protocol`
-* Workflow filename: `publish-pypi.yml`
-* Environment name: leave blank or set to `pypi`
+| `NPM_TOKEN` | npm packages | Automation token in GitHub Actions secrets |
+| PyPI Trusted Publishing | Python package | Must be configured against the correct owner/repo/workflow |
+| GitHub Release permissions | Release notes | Usually available to maintainers/admins |
 
 ## After publishing
 
-1. Verify on registries:
-   * `npm view ergo-agent-pay version` — should show `0.X.0`
-   * `npm view ergo-agent-rosen version` — same
-   * `pip show ergo-agent-pay` — same
-2. Cut a GitHub Release pointing at the tag with the CHANGELOG snippet.
-3. (Optional) Post the release notes to the project's social channels
-   once they exist.
+1. Verify registry versions.
+2. Create GitHub Release with release notes.
+3. Update docs/status.md if any item changed.
+4. Publish a short announcement only after package availability is confirmed.
 
-## Rolling back a bad release
+## Rollback
 
-`npm` does not allow re-publishing the same version. To recover:
+npm does not allow overwriting the same version. If a bad package ships:
 
-1. Bump to `0.X.1` with the fix.
-2. Cut a fresh tag.
-3. (Optional, for ≤72h) `npm deprecate ergo-agent-pay@0.X.0 "Critical bug — use 0.X.1+"`.
+1. Fix the issue.
+2. Bump patch version.
+3. Publish a new version.
+4. Optionally deprecate the bad version with a clear message.
 
-Do **not** unpublish unless legally required; unpublishing breaks
-downstream installs irrecoverably.
+Do not unpublish unless legally required.
 
 ## Audit-state interaction
 
-If a release flips `mainnetAllowed: true` for any audited ergoTree, the
-release commit must also include the auditor's signed
-`AUDITED_ERGOTREES.json`. The CHANGELOG entry must call this out
-explicitly:
+If any release flips `mainnetAllowed: true`, the same release must include:
 
-> ### v0.X.0 — Audited mainnet promotion
-> * `credential_v0` and `chaincash_reserve_v0` are now `mainnetAllowed: true` per signed manifest at commit `<sha>`.
-> * Auditor: `<name>` (`<contact>`).
-> * Signed payload hash: `<hash>`.
+- signed external audit manifest;
+- script/bytecode hashes;
+- auditor identity and contact or public report link;
+- exact commit hash;
+- changelog entry describing the mainnet promotion;
+- updated `SECURITY.md` and `docs/status.md`.
+
+Without this, `mainnetAllowed` must remain `false`.
