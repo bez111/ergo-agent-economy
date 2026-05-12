@@ -23,8 +23,8 @@ same text twice.
 > Agent B redeems only by revealing the matching task output. If they
 > didn't actually do the work, they can't redeem.
 >
-> Repo: https://github.com/bez111/ergo-agent-economy
-> Killer demo: https://github.com/bez111/ergo-agent-economy/tree/main/examples/07-end-to-end-agent-economy
+> Repo: https://github.com/accord-protocol/accord-protocol
+> Killer demo: https://github.com/accord-protocol/accord-protocol/tree/main/examples/07-end-to-end-agent-economy
 >
 > Looking for design partners — would love feedback on the Python
 > SDK shape.
@@ -41,7 +41,7 @@ same text twice.
 > orchestrator asked for. Spent budget, no risk of paying for nothing.
 >
 > Example with a CrewAI-style 3-agent pipeline:
-> https://github.com/bez111/ergo-agent-economy/tree/main/examples/04-orchestrator-budget
+> https://github.com/accord-protocol/accord-protocol/tree/main/examples/04-orchestrator-budget
 >
 > Looking for early CrewAI users to try it on testnet.
 
@@ -63,9 +63,9 @@ same text twice.
 > - Credit primitive: agents can issue Notes against a Reserve they
 >   set up after the work, not before.
 >
-> Example: https://github.com/bez111/ergo-agent-economy/tree/main/examples/10-autogen-agent
+> Example: https://github.com/accord-protocol/accord-protocol/tree/main/examples/10-autogen-agent
 >
-> Repo: https://github.com/bez111/ergo-agent-economy
+> Repo: https://github.com/accord-protocol/accord-protocol
 
 ---
 
@@ -90,8 +90,8 @@ same text twice.
 > Claude/Cursor see them in `tools/list` and pass a Note in the call.
 > The handler runs only after the Note verifies on-chain.
 >
-> Repo: https://github.com/bez111/ergo-agent-economy
-> Demo: https://github.com/bez111/ergo-agent-economy/tree/main/examples/12-paywalled-mcp
+> Repo: https://github.com/accord-protocol/accord-protocol
+> Demo: https://github.com/accord-protocol/accord-protocol/tree/main/examples/12-paywalled-mcp
 > Listing on mcp.so: pending submission.
 >
 > Feedback on the wire-level convention especially welcome.

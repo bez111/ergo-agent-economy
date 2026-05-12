@@ -67,9 +67,9 @@ What we're looking for:
 - ChainCash / Rosen contributors who want to comment on the vendored
   source diffs.
 
-Repo: https://github.com/bez111/ergo-agent-economy
-SPEC: https://github.com/bez111/ergo-agent-economy/blob/main/SPEC.md
-Audit pack: https://github.com/bez111/ergo-agent-economy/tree/main/docs/audit
+Repo: https://github.com/accord-protocol/accord-protocol
+SPEC: https://github.com/accord-protocol/accord-protocol/blob/main/SPEC.md
+Audit pack: https://github.com/accord-protocol/accord-protocol/tree/main/docs/audit
 
 Happy to answer detailed protocol / safety / Solidity-vs-eUTXO
 questions in the thread.

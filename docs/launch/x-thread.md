@@ -74,7 +74,7 @@ Looking for:
   partners
 - ChainCash / Rosen contributors for the vendored source review
 
-Repo: https://github.com/bez111/ergo-agent-economy
+Repo: https://github.com/accord-protocol/accord-protocol
 
 Replies > DMs. Detailed Q&A welcome.
 

@@ -1,6 +1,6 @@
 # `@accord-protocol/core`
 
-Core SDK for [Accord Protocol](https://github.com/bez111/accord-protocol). Canonicalize, hash, and validate the three v0 protocol objects:
+Core SDK for [Accord Protocol](https://github.com/accord-protocol/accord-protocol). Canonicalize, hash, and validate the three v0 protocol objects:
 
 | Object | Spec | Type literal |
 |---|---|---|

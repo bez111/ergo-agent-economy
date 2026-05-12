@@ -70,12 +70,10 @@ Use PyPI Trusted Publishing where possible.
 
 Configure a trusted publisher for:
 
-- owner: `bez111` until org migration;
+- owner: `accord-protocol`;
 - repository: `accord-protocol`;
 - workflow filename: `publish-pypi.yml`;
 - environment: blank or `pypi`, matching the workflow.
-
-After org migration, update PyPI Trusted Publishing to the new GitHub org/repo.
 
 ## Publishing flow
 

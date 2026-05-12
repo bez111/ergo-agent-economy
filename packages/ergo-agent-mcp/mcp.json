@@ -6,8 +6,8 @@
   "version": "0.3.0",
   "author": "bez111",
   "license": "MIT",
-  "homepage": "https://github.com/bez111/accord-protocol",
-  "repository": "https://github.com/bez111/accord-protocol",
+  "homepage": "https://github.com/accord-protocol/accord-protocol",
+  "repository": "https://github.com/accord-protocol/accord-protocol",
   "categories": ["payments", "blockchain", "agent-economy"],
   "tags": [
     "ergo",
@@ -116,10 +116,10 @@
     }
   ],
   "links": {
-    "docs": "https://github.com/bez111/accord-protocol/blob/main/packages/ergo-agent-mcp/README.md",
-    "spec": "https://github.com/bez111/accord-protocol/blob/main/SPEC.md",
-    "security": "https://github.com/bez111/accord-protocol/blob/main/SECURITY.md",
-    "audit": "https://github.com/bez111/accord-protocol/blob/main/docs/audit/DEEP_REVIEW.md",
-    "issues": "https://github.com/bez111/accord-protocol/issues"
+    "docs": "https://github.com/accord-protocol/accord-protocol/blob/main/packages/ergo-agent-mcp/README.md",
+    "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/SPEC.md",
+    "security": "https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md",
+    "audit": "https://github.com/accord-protocol/accord-protocol/blob/main/docs/audit/DEEP_REVIEW.md",
+    "issues": "https://github.com/accord-protocol/accord-protocol/issues"
   }
 }

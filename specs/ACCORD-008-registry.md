@@ -127,7 +127,7 @@ This is **descriptive**. The audit gate doesn't trust this entry — it trusts t
     "kind": "provider",
     "reason": "stale_conformance",
     "revoked_at": "2026-06-01T00:00:00Z",
-    "details_url": "https://github.com/bez111/accord-protocol/issues/123"
+    "details_url": "https://github.com/accord-protocol/accord-protocol/issues/123"
   }
 ]
 ```

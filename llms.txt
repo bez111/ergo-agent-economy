@@ -109,7 +109,7 @@ Reference rail packages:
 
 ## Important URLs
 
-- Repository: https://github.com/bez111/accord-protocol
+- Repository: https://github.com/accord-protocol/accord-protocol
 - Status: docs/status.md
 - Security: SECURITY.md
 - Governance: GOVERNANCE.md

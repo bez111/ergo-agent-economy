@@ -1,18 +1,18 @@
-# GitHub Organization Migration Plan
+# GitHub Organization Migration Note
 
-Current repository:
+Previous repository:
 
 ```text
 github.com/bez111/accord-protocol
 ```
 
-Target repository:
+Current repository:
 
 ```text
 github.com/accord-protocol/accord-protocol
 ```
 
-## Why migrate
+## Why this moved
 
 A neutral organization makes Accord look like an open protocol rather than a personal repository. It also separates:
 
@@ -21,7 +21,7 @@ A neutral organization makes Accord look like an open protocol rather than a per
 - Ergo generic infrastructure;
 - ChainCash/Basis reference work.
 
-## What changes
+## What changed
 
 - GitHub repository URL.
 - GitHub Actions secrets.
@@ -40,14 +40,10 @@ A neutral organization makes Accord look like an open protocol rather than a per
 - Audit-gated safety model.
 - `AgentAccord` commercial separation.
 
-## Migration order
+## Remaining post-migration steps
 
-1. Complete README/status/security cleanup in the current repo.
-2. Cut or prepare `v0.4.0` release only if release gates are ready.
-3. Create `github.com/accord-protocol` organization.
-4. Transfer repository.
-5. Reconfigure GitHub Actions secrets.
-6. Reconfigure PyPI Trusted Publishing.
-7. Update website and docs links.
-8. Confirm GitHub redirects.
-9. Publish a short migration note.
+1. Reconfigure GitHub Actions secrets under `accord-protocol/accord-protocol`.
+2. Reconfigure PyPI Trusted Publishing for owner `accord-protocol`.
+3. Update website links.
+4. Confirm GitHub redirects from the old `bez111/accord-protocol` URL.
+5. Publish a short migration note when release setup is complete.

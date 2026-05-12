@@ -49,12 +49,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/accord-protocol",
+    "url": "https://github.com/accord-protocol/accord-protocol",
     "directory": "packages/ergo-agent-pay"
   },
-  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/ergo-agent-pay",
+  "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/ergo-agent-pay",
   "bugs": {
-    "url": "https://github.com/bez111/accord-protocol/issues"
+    "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
     "@fleet-sdk/core": "^0.7.0",
