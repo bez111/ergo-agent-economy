@@ -151,10 +151,10 @@ Conformance passing means an implementation matches current Accord v0 rules. It 
 
 | Item | State |
 |---|---|
-| Publish workflows | Present, but must be checked against current package matrix before tag |
+| Publish workflows | Present; `npm run release:check` verifies the package matrix before tag |
 | `NPM_TOKEN` GitHub secret | Configure before release |
 | PyPI Trusted Publishing | Configure before release |
-| `v0.4.0` tag | Do not push until release gates pass |
+| `v0.4.0` tag | Do not push until `npm run release:check`, CI, npm secret, and PyPI Trusted Publishing are ready |
 | GitHub Release | Create only after packages are published or intentionally marked local-only |
 
 See [`PUBLISHING.md`](../PUBLISHING.md), [`RELEASING.md`](../RELEASING.md), and [`docs/RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md) if present.

@@ -1,7 +1,7 @@
 {
   "name": "agentpay-base",
   "version": "0.3.0",
-  "description": "Base / Ethereum-L2 implementation of the AgentPay v0 protocol. Reserve / Note / Acceptance Predicate semantics on EVM, denominated in any ERC-20 (USDC, USDT, …). Mirrors ergo-agent-pay's API shape so apps can pick the chain by config, not by rewriting.",
+  "description": "Base / Ethereum-L2 implementation of the AgentPay v0 protocol. Reserve / Note / Acceptance Predicate semantics on EVM, denominated in any ERC-20 (USDC, USDT, \u2026). Mirrors ergo-agent-pay's API shape so apps can pick the chain by config, not by rewriting.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -39,9 +39,15 @@
   ],
   "author": "bez111",
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/bez111/accord-protocol" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/agentpay-base"
+  },
   "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/agentpay-base",
-  "bugs": { "url": "https://github.com/bez111/accord-protocol/issues" },
+  "bugs": {
+    "url": "https://github.com/bez111/accord-protocol/issues"
+  },
   "dependencies": {
     "viem": "^2.0.0"
   },
@@ -51,6 +57,10 @@
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   },
-  "engines": { "node": ">=18" },
-  "publishConfig": { "access": "public" }
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

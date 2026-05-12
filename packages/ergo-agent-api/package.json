@@ -1,7 +1,7 @@
 {
   "name": "ergo-agent-api",
   "version": "0.3.0",
-  "description": "Pay-per-API middleware on top of ergo-agent-pay. Verifies Ergo Notes, enforces replay protection, and (optionally) redeems them — usable with Express, Connect, Fastify (via adapter), or as a pure handler.",
+  "description": "Pay-per-API middleware on top of ergo-agent-pay. Verifies Ergo Notes, enforces replay protection, and (optionally) redeems them \u2014 usable with Express, Connect, Fastify (via adapter), or as a pure handler.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -40,7 +40,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/accord-protocol"
+    "url": "https://github.com/bez111/accord-protocol",
+    "directory": "packages/ergo-agent-api"
   },
   "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/ergo-agent-api",
   "bugs": {

@@ -1,8 +1,13 @@
 # Changelog
 
-All notable changes to `ergo-agent-economy` are documented here. This file
-covers all eight published packages (seven TypeScript + one Python). Versions
-are kept in sync across the workspace; a single tag publishes the lot.
+All notable changes to Accord Protocol and its maintained reference rail packages are documented here.
+
+The monorepo has two release lines:
+
+- canonical Accord packages under `@accord-protocol/*`;
+- maintained reference rail packages under `ergo-agent-*`, `agentpay-base`, and Python `ergo-agent-pay`.
+
+A public package release is not production certification. Always check `docs/status.md` and `SECURITY.md` before using any rail with real funds.
 
 ## [Unreleased]
 
@@ -45,6 +50,32 @@ are kept in sync across the workspace; a single tag publishes the lot.
   with `requireMainnet: true` rejects it. The SDK's `assertProductionSafety`
   calls this verifier, so promoting the manifest entry alone is no longer
   enough to let `task_hash_v0` reach mainnet.
+
+
+## [0.4.0] — 2026-05-11
+
+### Added
+
+- Introduced the canonical Accord Protocol package layer under `@accord-protocol/*`:
+  `core`, `mcp`, `gateway`, `rails`, `rails-ergo`, `rails-rosen`, `rails-base`,
+  `rails-x402`, `conformance`, and `buyer-policy`.
+- Added Accord v0 protocol objects: Agreement, Verification Receipt, and Settlement Receipt.
+- Added Accord/402, Accord/MCP, rail-adapter, conformance, and buyer-policy packages.
+- Added L0-L4 conformance suite and CLI.
+- Added release-readiness checks and updated package publishing docs.
+
+### Changed
+
+- Reframed the project from `ergo-agent-economy` to Accord Protocol: an open standard for autonomous agent work agreements.
+- Clarified that Ergo is the first reference programmable-settlement rail, not the only possible rail.
+- Clarified that ChainCash/Basis is reference / research / draft-pre-audit material, not production certification.
+- Updated README, status, security, release, publishing, and LLM-facing documentation around one testnet-first posture.
+
+### Safety
+
+- Accord remains **NOT CERTIFIED FOR MAINNET**.
+- No audit manifest entry is promoted to `mainnetAllowed: true` by this release.
+- Package publication does not imply production safety.
 
 ---
 
