@@ -6,11 +6,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/accord-protocol"
+    "url": "https://github.com/accord-protocol/accord-protocol"
   },
-  "homepage": "https://github.com/bez111/accord-protocol",
+  "homepage": "https://github.com/accord-protocol/accord-protocol",
   "bugs": {
-    "url": "https://github.com/bez111/accord-protocol/issues"
+    "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "workspaces": [
     "packages/accord-core",

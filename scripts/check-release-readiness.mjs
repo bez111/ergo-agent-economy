@@ -58,7 +58,7 @@ for (const [pkgPath, expectedName] of accordPackages) {
   assert(pkg.version === '0.4.0', `${pkg.name}: expected version 0.4.0, got ${pkg.version}`);
   assert(pkg.license === 'MIT', `${pkg.name}: missing MIT license`);
   assert(pkg.publishConfig?.access === 'public', `${pkg.name}: publishConfig.access must be public`);
-  assert(pkg.repository?.url?.includes('bez111/accord-protocol'), `${pkg.name}: repository.url should point to bez111/accord-protocol before org migration`);
+  assert(pkg.repository?.url?.includes('accord-protocol/accord-protocol'), `${pkg.name}: repository.url should point to accord-protocol/accord-protocol`);
   assert(pkg.repository?.directory, `${pkg.name}: repository.directory missing`);
   assert(pkg.homepage, `${pkg.name}: homepage missing`);
   assert(pkg.bugs?.url, `${pkg.name}: bugs.url missing`);

@@ -34,10 +34,10 @@ all = ["langchain>=0.1.0", "pydantic>=2.0", "openai>=1.0.0"]
 dev = ["pytest>=7.0", "pytest-asyncio>=0.21", "mypy>=1.0", "ruff>=0.1"]
 
 [project.urls]
-Homepage = "https://github.com/bez111/accord-protocol"
-Documentation = "https://github.com/bez111/accord-protocol/blob/main/docs/api-reference.md"
-Repository = "https://github.com/bez111/accord-protocol"
-Issues = "https://github.com/bez111/accord-protocol/issues"
+Homepage = "https://github.com/accord-protocol/accord-protocol"
+Documentation = "https://github.com/accord-protocol/accord-protocol/blob/main/docs/api-reference.md"
+Repository = "https://github.com/accord-protocol/accord-protocol"
+Issues = "https://github.com/accord-protocol/accord-protocol/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

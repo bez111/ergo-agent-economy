@@ -39,8 +39,8 @@ scraping for sale to anyone holding the right Note.
 **Tags:** ergo · agent-payments · ai-agents · blockchain · stablecoin
 · model-context-protocol · agent-economy · blake2b
 
-**Homepage:** https://github.com/bez111/ergo-agent-economy
-**Documentation:** https://github.com/bez111/ergo-agent-economy/blob/main/packages/ergo-agent-mcp/README.md
+**Homepage:** https://github.com/accord-protocol/accord-protocol
+**Documentation:** https://github.com/accord-protocol/accord-protocol/blob/main/packages/ergo-agent-mcp/README.md
 **License:** MIT
 **Maintainer:** [bez111](https://github.com/bez111)
 
@@ -65,7 +65,7 @@ https://testnet.ergofaucet.org.
 
 - npm: `ergo-agent-mcp@0.3.0` — published on tag.
 - Mainnet: blocked at the audit gate. Testnet works fully.
-- Source repo: https://github.com/bez111/ergo-agent-economy
+- Source repo: https://github.com/accord-protocol/accord-protocol
 
 **Caveats for the listing reviewer:**
 

@@ -1,6 +1,6 @@
 # Accord Protocol
 
-[![CI](https://github.com/bez111/accord-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/bez111/accord-protocol/actions/workflows/ci.yml)
+[![CI](https://github.com/accord-protocol/accord-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/accord-protocol/accord-protocol/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![mainnet: not certified](https://img.shields.io/badge/mainnet-not%20certified-red.svg)](./SECURITY.md)
 [![status: testnet beta](https://img.shields.io/badge/status-testnet%20beta-orange.svg)](./docs/status.md)
@@ -150,7 +150,7 @@ Until `v0.4.0` is tagged and published, treat npm/PyPI install commands as relea
 The safest way to understand Accord is the mock-rail demo. It runs the full lifecycle without an Ergo node, x402 facilitator, Base RPC, or real funds.
 
 ```bash
-git clone https://github.com/bez111/accord-protocol
+git clone https://github.com/accord-protocol/accord-protocol
 cd accord-protocol/examples/15-paid-mcp-repo-audit
 npm install
 npm run dev
@@ -227,7 +227,7 @@ Current priority order:
 2. Publish `v0.4.0` release candidate only after npm/PyPI release gates are configured.
 3. Keep all rails testnet-only until signed audit manifests permit otherwise.
 4. Improve examples with explicit mock/testnet/mainnet modes.
-5. Prepare migration from `bez111/accord-protocol` to a neutral `accord-protocol/accord-protocol` organization.
+5. Finish post-migration release setup for `accord-protocol/accord-protocol`.
 
 See [`docs/PROFESSIONALIZATION_ROADMAP.md`](./docs/PROFESSIONALIZATION_ROADMAP.md).
 

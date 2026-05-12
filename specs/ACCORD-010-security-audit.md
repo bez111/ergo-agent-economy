@@ -68,7 +68,7 @@ The x402 rail does NOT have a manifest. Trust derives from the facilitator's sig
 ```json
 {
   "schema": "accord-protocol/audited-ergotrees/v1",
-  "repo": "bez111/accord-protocol",
+  "repo": "accord-protocol/accord-protocol",
   "manifest_created_at": "...",
   "status": "draft-pre-audit",
   "auditor": {

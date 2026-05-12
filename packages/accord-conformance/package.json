@@ -38,12 +38,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bez111/accord-protocol",
+    "url": "https://github.com/accord-protocol/accord-protocol",
     "directory": "packages/accord-conformance"
   },
-  "homepage": "https://github.com/bez111/accord-protocol/tree/main/packages/accord-conformance",
+  "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/accord-conformance",
   "bugs": {
-    "url": "https://github.com/bez111/accord-protocol/issues"
+    "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
     "@accord-protocol/core": "^0.4.0",

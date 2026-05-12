@@ -31,7 +31,7 @@ export interface DemoTrace {
 }
 
 export async function runDemo(opts?: { repo_url?: string; agreement_id?: string }): Promise<DemoTrace> {
-  const repo_url = opts?.repo_url ?? "https://github.com/bez111/accord-protocol";
+  const repo_url = opts?.repo_url ?? "https://github.com/accord-protocol/accord-protocol";
 
   // 1. Build the Accord Agreement.
   const agreement = buildDemoAgreement({ repo_url, agreement_id: opts?.agreement_id });

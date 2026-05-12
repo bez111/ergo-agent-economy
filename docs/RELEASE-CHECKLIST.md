@@ -8,8 +8,8 @@ A public package release is **not** production certification. Accord remains tes
 
 | Blocker | State | Owner |
 |---|---|---|
-| `NPM_TOKEN` secret in repo | Configure before tag | bez111 |
-| PyPI Trusted Publishing config | Configure before tag | bez111 |
+| `NPM_TOKEN` secret in repo | Configure before tag | accord-protocol |
+| PyPI Trusted Publishing config | Configure before tag | accord-protocol |
 | `publish-npm.yml` package matrix | Covers 10 `@accord-protocol/*` packages + 8 legacy npm packages | shipped / verify |
 | Publish jobs | 18 npm jobs total; PyPI is separate | shipped / verify |
 | Skip-if-already-published guard | Each npm job pre-checks via `npm view` | shipped |
@@ -57,7 +57,7 @@ A public package release is **not** production certification. Accord remains tes
 
 ## Step 2 — add `NPM_TOKEN` repo secret
 
-1. Go to `https://github.com/bez111/accord-protocol/settings/secrets/actions`.
+1. Go to `https://github.com/accord-protocol/accord-protocol/settings/secrets/actions`.
 2. New repository secret.
 3. Name: `NPM_TOKEN`.
 4. Value: the npm automation token.
@@ -67,7 +67,7 @@ A public package release is **not** production certification. Accord remains tes
 Configure a trusted publisher for the Python reference package:
 
 - PyPI Project Name: `ergo-agent-pay`
-- Owner: `bez111`
+- Owner: `accord-protocol`
 - Repository name: `accord-protocol`
 - Workflow name: `publish-pypi.yml`
 - Environment name: leave blank unless the workflow is later changed

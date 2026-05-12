@@ -118,7 +118,7 @@ Conformance levels are validated by the `accord-conformance` test suite
 
 ## 8. Open-source vs commercial
 
-**Open** — and lives in `bez111/accord-protocol` (this repo) + `accordprotocol.ai`:
+**Open** — and lives in `accord-protocol/accord-protocol` (this repo) + `accordprotocol.ai`:
 
 - Specs, schemas, test vectors, conformance suite.
 - SDKs, gateway core, MCP wrapper, rail adapters.

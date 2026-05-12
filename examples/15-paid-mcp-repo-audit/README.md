@@ -37,7 +37,7 @@ Accord Protocol — paid MCP repo-audit demo
 Output:
 {
   "schema": "accord.audit_report.v0",
-  "repo_url": "https://github.com/bez111/accord-protocol",
+  "repo_url": "https://github.com/accord-protocol/accord-protocol",
   "findings": [ … ]
 }
 ```

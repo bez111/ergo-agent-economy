@@ -37,4 +37,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         # Uses OIDC trusted publishing — no API token needed
         # Configure at: https://pypi.org/manage/account/publishing/
-        # Publisher: bez111/accord-protocol, workflow: publish-pypi.yml
+        # Publisher: accord-protocol/accord-protocol, workflow: publish-pypi.yml

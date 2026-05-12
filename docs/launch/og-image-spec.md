@@ -39,7 +39,7 @@ Recommended composition:
 
 1. Render the image (Figma / Sketch / hand-coded SVG → PNG).
 2. Settings → Social preview → "Edit" → upload PNG.
-3. Verify the embed at https://www.opengraph.xyz/url/https%3A%2F%2Fgithub.com%2Fbez111%2Fergo-agent-economy
+3. Verify the embed at https://www.opengraph.xyz/url/https%3A%2F%2Fgithub.com%2Faccord-protocol%2Faccord-protocol
 
 ## Placeholder until ready
 

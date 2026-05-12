@@ -1,6 +1,6 @@
 # External Auditor Request
 
-We need an independent pre-mainnet review of `bez111/ergo-agent-economy`, focused on compiled ErgoTree bytes and ErgoScript source semantics.
+We need an independent pre-mainnet review of `accord-protocol/accord-protocol`, focused on compiled ErgoTree bytes and ErgoScript source semantics.
 
 ## Scope
 
