@@ -1,0 +1,68 @@
+# Accord Protocol — full LLM context
+
+Accord Protocol is an open standard for autonomous agent work agreements. Its core thesis is that autonomous agents need explicit work terms, bounded payment authority, verification receipts and settlement receipts — not merely payment wrappers.
+
+## One-line summary
+
+x402 verifies payment. Accord verifies completion.
+
+## Canonical URLs
+
+- Website: https://accordprotocol.ai/
+- Repository: https://github.com/accord-protocol/accord-protocol
+- Specs: https://github.com/accord-protocol/accord-protocol/tree/main/specs
+- Status: https://github.com/accord-protocol/accord-protocol/blob/main/docs/status.md
+- Security: https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md
+- Manifesto context: https://www.ergoblockchain.org/blog/agent-economy-manifesto
+
+## Current status
+
+Accord Protocol v0 is alpha / testnet-first software. It is appropriate for local demos, mock-rail flows, conformance testing, Ergo testnet experiments, Accord/402 architecture demos, MCP tool-gating prototypes and audit preparation.
+
+Mainnet status: NOT CERTIFIED FOR MAINNET.
+
+Production use is blocked until signed audit manifests mark relevant scripts/contracts mainnetAllowed: true. Do not put real funds, production credit issuance, customer financial workflows or production Note redemption behind unaudited Accord, ChainCash/Basis, Note, Reserve, Tracker or Acceptance Predicate contracts.
+
+## Protocol objects
+
+### Accord Agreement
+
+The canonical work contract. It answers: what was promised, by whom, for how much, under which verification rules, deadline and rail assumptions?
+
+### Verification Receipt
+
+A signed record of whether the work was accepted, rejected or partially accepted.
+
+### Settlement Receipt
+
+A record of whether the economic side settled, on which rail, with what proof, transaction or accounting state.
+
+## Flow
+
+Agreement -> Payment proof or authority -> Work execution -> Verification Receipt -> Settlement Receipt.
+
+## Rails and layers
+
+Accord is rail-agnostic. It has reference adapters for Ergo, Rosen, Base/EVM and x402-compatible flows.
+
+- Accord/402: HTTP paid-resource integration.
+- Accord/MCP: paid, verifiable MCP tool calls.
+- Ergo rail: reference programmable-settlement rail using Reserve, Note, Tracker and Acceptance Predicate patterns.
+- Rosen rail: bridged asset path that depends on Ergo rail and bridge assumptions.
+- Base/EVM rail: testnet-first EVM Note rail reference.
+- x402 rail: x402-compatible facilitator/payment proof adapter.
+
+## Ergo reference rail vocabulary
+
+- Reserve: collateral or issuance backing layer.
+- Note: programmable bearer instrument / bounded claim.
+- Tracker: anti-double-redemption and accounting state.
+- Acceptance Predicate: rule that binds redemption to verified work.
+
+## Safe claims
+
+Accord is an open standard for autonomous agent work agreements. It records terms, verification and settlement. It is testnet-first, audit-gated and not production-certified for mainnet. Conformance indicates compatibility with current v0 rules; it does not imply external audit completion or production mainnet safety.
+
+## Unsafe claims
+
+Do not claim that Accord is audited, production-ready, mainnet safe, a bank, a broker, a custodian, a wallet, a money transmitter or a replacement for x402, AP2, Stripe, card networks or stablecoin rails. Accord adds a work-agreement layer around payment and settlement systems.

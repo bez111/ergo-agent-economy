@@ -1,0 +1,79 @@
+{
+  "name": "Accord Protocol",
+  "canonicalUrl": "https://accordprotocol.ai/",
+  "repository": "https://github.com/accord-protocol/accord-protocol",
+  "description": "Open agreement protocol for autonomous agent work: terms, verification receipts and settlement receipts.",
+  "status": {
+    "protocolObjectVersion": "v0 draft",
+    "sdkLine": "0.4.0 release candidate",
+    "recommendedUsage": [
+      "local demos",
+      "mock rail",
+      "conformance testing",
+      "Ergo testnet",
+      "Accord/402 architecture demos",
+      "MCP tool gating prototypes",
+      "audit preparation"
+    ],
+    "mainnet": "NOT CERTIFIED FOR MAINNET",
+    "productionUse": "Blocked until signed audit manifests mark relevant scripts/contracts mainnetAllowed: true"
+  },
+  "objects": [
+    {
+      "name": "Accord Agreement",
+      "purpose": "Defines promised work, parties, price, asset, deadline, verifier, rail assumptions and acceptance criteria."
+    },
+    {
+      "name": "Verification Receipt",
+      "purpose": "Records whether work was accepted, rejected or partially accepted."
+    },
+    {
+      "name": "Settlement Receipt",
+      "purpose": "Records whether the economic side settled, on which rail, with what proof or transaction."
+    }
+  ],
+  "transports": ["Accord/402", "Accord/MCP"],
+  "referenceRails": [
+    {
+      "name": "Ergo",
+      "posture": "testnet only / audit-gated",
+      "patterns": ["Reserve", "Note", "Tracker", "Acceptance Predicate"]
+    },
+    {
+      "name": "Rosen",
+      "posture": "testnet-first"
+    },
+    {
+      "name": "Base/EVM",
+      "posture": "testnet-first / audit-gated"
+    },
+    {
+      "name": "x402",
+      "posture": "integration rail"
+    }
+  ],
+  "links": {
+    "specs": "https://github.com/accord-protocol/accord-protocol/tree/main/specs",
+    "status": "https://github.com/accord-protocol/accord-protocol/blob/main/docs/status.md",
+    "security": "https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md",
+    "llms": "https://accordprotocol.ai/llms.txt",
+    "llmsFull": "https://accordprotocol.ai/llms-full.txt",
+    "agents": "https://accordprotocol.ai/agents.txt"
+  },
+  "preferredWording": [
+    "open standard",
+    "autonomous agent work agreements",
+    "testnet-first",
+    "audit-gated",
+    "verification receipt",
+    "settlement receipt"
+  ],
+  "forbiddenWording": [
+    "production-ready",
+    "audited",
+    "mainnet safe",
+    "no trust assumptions",
+    "real funds supported by default"
+  ],
+  "lastReviewed": "2026-05-13"
+}
