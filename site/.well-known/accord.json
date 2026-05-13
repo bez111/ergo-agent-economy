@@ -1,108 +1,79 @@
 {
   "name": "Accord Protocol",
-  "canonical_url": "https://accordprotocol.ai/",
+  "canonicalUrl": "https://accordprotocol.ai/",
   "repository": "https://github.com/accord-protocol/accord-protocol",
-  "license": "MIT",
-  "tagline": "x402 verifies payment. Accord verifies completion.",
-  "summary": "Open standard for autonomous agent work agreements: terms, verification receipts and settlement receipts across rails.",
+  "description": "Open agreement protocol for autonomous agent work: terms, verification receipts and settlement receipts.",
   "status": {
-    "protocol_object_version": "v0 draft",
-    "sdk_line": "0.4.0 release candidate",
-    "recommended_usage": [
+    "protocolObjectVersion": "v0 draft",
+    "sdkLine": "0.4.0 release candidate",
+    "recommendedUsage": [
       "local demos",
       "mock rail",
       "conformance testing",
-      "testnet development"
+      "Ergo testnet",
+      "Accord/402 architecture demos",
+      "MCP tool gating prototypes",
+      "audit preparation"
     ],
-    "mainnet_status": "NOT CERTIFIED FOR MAINNET",
-    "production_use": "blocked until signed audit manifests mark relevant scripts or contracts mainnetAllowed: true",
-    "last_reviewed": "2026-05-13"
+    "mainnet": "NOT CERTIFIED FOR MAINNET",
+    "productionUse": "Blocked until signed audit manifests mark relevant scripts/contracts mainnetAllowed: true"
   },
   "objects": [
     {
       "name": "Accord Agreement",
-      "type": "accord.agreement.v0",
-      "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/specs/ACCORD-001-agreement-object.md",
-      "schema": "https://github.com/accord-protocol/accord-protocol/blob/main/schemas/agreement.v0.schema.json"
+      "purpose": "Defines promised work, parties, price, asset, deadline, verifier, rail assumptions and acceptance criteria."
     },
     {
       "name": "Verification Receipt",
-      "type": "accord.verification_receipt.v0",
-      "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/specs/ACCORD-002-verification-receipt.md",
-      "schema": "https://github.com/accord-protocol/accord-protocol/blob/main/schemas/verification-receipt.v0.schema.json"
+      "purpose": "Records whether work was accepted, rejected or partially accepted."
     },
     {
       "name": "Settlement Receipt",
-      "type": "accord.settlement_receipt.v0",
-      "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/specs/ACCORD-003-settlement-receipt.md",
-      "schema": "https://github.com/accord-protocol/accord-protocol/blob/main/schemas/settlement-receipt.v0.schema.json"
+      "purpose": "Records whether the economic side settled, on which rail, with what proof or transaction."
     }
   ],
-  "transports": [
-    {
-      "name": "Accord/402",
-      "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/specs/ACCORD-004-accord-402.md"
-    },
-    {
-      "name": "Accord/MCP",
-      "spec": "https://github.com/accord-protocol/accord-protocol/blob/main/specs/ACCORD-005-accord-mcp.md"
-    }
-  ],
-  "rails": [
+  "transports": ["Accord/402", "Accord/MCP"],
+  "referenceRails": [
     {
       "name": "Ergo",
-      "package": "@accord-protocol/rails-ergo",
-      "status": "testnet-only, audit-gated"
+      "posture": "testnet only / audit-gated",
+      "patterns": ["Reserve", "Note", "Tracker", "Acceptance Predicate"]
     },
     {
       "name": "Rosen",
-      "package": "@accord-protocol/rails-rosen",
-      "status": "testnet-first"
+      "posture": "testnet-first"
     },
     {
       "name": "Base/EVM",
-      "package": "@accord-protocol/rails-base",
-      "status": "testnet-only, audit-gated"
+      "posture": "testnet-first / audit-gated"
     },
     {
-      "name": "x402-compatible",
-      "package": "@accord-protocol/rails-x402",
-      "status": "integration rail"
+      "name": "x402",
+      "posture": "integration rail"
     }
   ],
-  "packages": [
-    "@accord-protocol/core",
-    "@accord-protocol/mcp",
-    "@accord-protocol/gateway",
-    "@accord-protocol/rails",
-    "@accord-protocol/rails-ergo",
-    "@accord-protocol/rails-rosen",
-    "@accord-protocol/rails-base",
-    "@accord-protocol/rails-x402",
-    "@accord-protocol/conformance",
-    "@accord-protocol/buyer-policy"
-  ],
-  "entry_points": {
-    "site": "https://accordprotocol.ai/",
-    "llms": "https://accordprotocol.ai/llms.txt",
-    "llms_full": "https://accordprotocol.ai/llms-full.txt",
-    "agents": "https://accordprotocol.ai/agents.txt",
+  "links": {
+    "specs": "https://github.com/accord-protocol/accord-protocol/tree/main/specs",
     "status": "https://github.com/accord-protocol/accord-protocol/blob/main/docs/status.md",
     "security": "https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md",
-    "specs": "https://github.com/accord-protocol/accord-protocol/tree/main/specs",
-    "schemas": "https://github.com/accord-protocol/accord-protocol/tree/main/schemas",
-    "examples": "https://github.com/accord-protocol/accord-protocol/tree/main/examples"
+    "llms": "https://accordprotocol.ai/llms.txt",
+    "llmsFull": "https://accordprotocol.ai/llms-full.txt",
+    "agents": "https://accordprotocol.ai/agents.txt"
   },
-  "agent_guidance": {
-    "preferred_summary": "Accord Protocol is the open agreement protocol for autonomous agent work.",
-    "preserve_safety_language": true,
-    "do_not_claim": [
-      "production-ready",
-      "audited",
-      "mainnet safe",
-      "custodial service",
-      "replacement for x402, MCP, A2A or AP2"
-    ],
-    "recommended_first_demo": "examples/15-paid-mcp-repo-audit"
-  }
+  "preferredWording": [
+    "open standard",
+    "autonomous agent work agreements",
+    "testnet-first",
+    "audit-gated",
+    "verification receipt",
+    "settlement receipt"
+  ],
+  "forbiddenWording": [
+    "production-ready",
+    "audited",
+    "mainnet safe",
+    "no trust assumptions",
+    "real funds supported by default"
+  ],
+  "lastReviewed": "2026-05-13"
 }

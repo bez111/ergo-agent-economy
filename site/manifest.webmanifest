@@ -1,18 +1,20 @@
 {
   "name": "Accord Protocol",
   "short_name": "Accord",
-  "description": "Open agreement protocol for autonomous agent work.",
+  "description": "Open standard for autonomous agent work agreements: terms, verification and settlement receipts.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f7f4ec",
-  "theme_color": "#23684d",
+  "background_color": "#080b0f",
+  "theme_color": "#080b0f",
   "icons": [
     {
       "src": "/assets/logo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["developer", "finance", "productivity"],
+  "lang": "en"
 }

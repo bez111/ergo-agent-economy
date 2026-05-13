@@ -1,5 +1,4 @@
-Contact: https://github.com/accord-protocol/accord-protocol/security/advisories/new
-Contact: mailto:security@agentaccord.com
+Contact: https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md
 Policy: https://github.com/accord-protocol/accord-protocol/blob/main/SECURITY.md
 Preferred-Languages: en
 Canonical: https://accordprotocol.ai/.well-known/security.txt

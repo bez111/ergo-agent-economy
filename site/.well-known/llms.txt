@@ -1,6 +1,0 @@
-# Accord Protocol
-
-Primary LLM reference: https://accordprotocol.ai/llms.txt
-Full LLM context: https://accordprotocol.ai/llms-full.txt
-Agent policy: https://accordprotocol.ai/agents.txt
-Discovery JSON: https://accordprotocol.ai/.well-known/accord.json

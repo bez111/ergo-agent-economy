@@ -1,29 +1,51 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Accord Protocol social preview</title>
-  <desc id="desc">Accord Protocol positioning card with agreement, verification and settlement flow.</desc>
-  <rect width="1200" height="630" fill="#F7F4EC"/>
-  <rect x="44" y="44" width="1112" height="542" rx="24" fill="#FFFDF8" stroke="#D8D3C4" stroke-width="2"/>
-  <g transform="translate(84 82)">
-    <rect width="74" height="74" rx="16" fill="#121512"/>
-    <circle cx="23" cy="25" r="8" fill="#8BD7B4"/>
-    <circle cx="51" cy="25" r="8" fill="#F0B45F"/>
-    <circle cx="37" cy="52" r="8" fill="#8EBEE5"/>
-    <path d="M31 25h13M28 32l7 13M46 32l-7 13" fill="none" stroke="#FFFDF8" stroke-width="5" stroke-linecap="round"/>
+  <title id="title">Accord Protocol — Agreement Layer for Autonomous Agent Work</title>
+  <desc id="desc">Open graph image for Accord Protocol.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1200" y1="0" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#080b0f"/>
+      <stop offset="0.56" stop-color="#0d1218"/>
+      <stop offset="1" stop-color="#15202b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(390 0 0 390 930 170)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#66e0ad" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#66e0ad" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="794" x2="1078" y1="142" y2="454" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8ff5c7"/>
+      <stop offset="0.62" stop-color="#66e0ad"/>
+      <stop offset="1" stop-color="#89bfff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g opacity="0.22" stroke="#fff" stroke-width="1">
+    <path d="M0 96h1200M0 192h1200M0 288h1200M0 384h1200M0 480h1200M0 576h1200"/>
+    <path d="M96 0v630M192 0v630M288 0v630M384 0v630M480 0v630M576 0v630M672 0v630M768 0v630M864 0v630M960 0v630M1056 0v630"/>
   </g>
-  <text x="84" y="220" fill="#121512" font-family="Inter, Arial, sans-serif" font-size="104" font-weight="800" letter-spacing="0">Accord Protocol</text>
-  <text x="90" y="292" fill="#23684D" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="0">Agreement layer for autonomous agent work</text>
-  <text x="90" y="372" fill="#2C312D" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="0">x402 verifies payment. Accord verifies completion.</text>
-  <g transform="translate(90 444)">
-    <rect width="226" height="70" rx="12" fill="#DFF1E7"/>
-    <text x="24" y="44" fill="#23684D" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Agreement</text>
-    <path d="M250 35h70" stroke="#121512" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="328" cy="35" r="7" fill="#121512"/>
-    <rect x="354" width="226" height="70" rx="12" fill="#F5E4C4"/>
-    <text x="378" y="44" fill="#9B5F08" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Verification</text>
-    <path d="M604 35h70" stroke="#121512" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="682" cy="35" r="7" fill="#121512"/>
-    <rect x="708" width="226" height="70" rx="12" fill="#DBE9F4"/>
-    <text x="732" y="44" fill="#275F92" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Settlement</text>
+  <g transform="translate(86 82)">
+    <g transform="translate(0 0)">
+      <rect x="0" y="0" width="60" height="60" rx="14" fill="#111923" stroke="#2f4d42"/>
+      <path d="M30 10 48 20v20L30 50 12 40V20Z" fill="none" stroke="#66e0ad" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M20 37 30 17l10 20M24 30h16" fill="none" stroke="#f7f2e8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="78" y="39" fill="#f7f2e8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="25" font-weight="800" letter-spacing="-0.5">Accord Protocol</text>
+    <text x="0" y="154" fill="#66e0ad" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="900" letter-spacing="2.6">OPEN STANDARD · V0 DRAFT · TESTNET-FIRST</text>
+    <text x="0" y="248" fill="#fffaf0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="74" font-weight="900" letter-spacing="-5">The agreement layer</text>
+    <text x="0" y="326" fill="#fffaf0" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="74" font-weight="900" letter-spacing="-5">for autonomous work.</text>
+    <text x="0" y="398" fill="#c8d1da" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif" font-size="29" font-weight="500">x402 verifies payment. Accord verifies completion.</text>
+    <g transform="translate(0 454)">
+      <rect x="0" y="0" width="278" height="42" rx="21" fill="rgba(102,224,173,0.12)" stroke="rgba(102,224,173,0.34)"/>
+      <text x="20" y="28" fill="#c9f8df" font-family="Inter, ui-sans-serif, system-ui" font-size="16" font-weight="800">NOT CERTIFIED FOR MAINNET</text>
+    </g>
   </g>
-  <text x="90" y="560" fill="#5F665F" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">v0 draft - testnet-first - audit-gated - github.com/accord-protocol/accord-protocol</text>
+  <g transform="translate(805 120)">
+    <path d="M150 0 292 82v164l-142 82L8 246V82Z" fill="none" stroke="url(#mark)" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M78 202 150 72l72 130M103 157h94" fill="none" stroke="#f7f2e8" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="150" cy="72" r="18" fill="#66e0ad"/>
+    <circle cx="78" cy="202" r="18" fill="#89bfff"/>
+    <circle cx="222" cy="202" r="18" fill="#ffcf74"/>
+    <circle cx="150" cy="274" r="12" fill="#f7f2e8" opacity="0.9"/>
+    <path d="M150 72C214 84 247 124 222 202M222 202c-37 45-85 49-144 0M78 202C47 142 80 91 150 72" fill="none" stroke="#66e0ad" stroke-opacity="0.28" stroke-width="2"/>
+  </g>
 </svg>
