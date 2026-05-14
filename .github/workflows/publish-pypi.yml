@@ -36,6 +36,10 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        # Uses OIDC trusted publishing — no API token needed
+        # Uses OIDC trusted publishing — no API token needed.
         # Configure at: https://pypi.org/manage/account/publishing/
         # Publisher: accord-protocol/accord-protocol, workflow: publish-pypi.yml
+        # `packages-dir` is required because the action runs in a Docker
+        # container that ignores the job-level `defaults.run.working-directory`.
+        with:
+          packages-dir: packages/ergo-agent-py/dist
