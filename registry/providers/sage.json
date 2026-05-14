@@ -1,0 +1,54 @@
+{
+  "type": "accord.provider_profile.v0",
+  "version": "v0",
+  "provider_id": "provider://sage-ergoblockchain",
+  "display_name": "Sage — Ergo agent-economy concierge",
+  "homepage": "https://www.ergoblockchain.org",
+  "description": "Sage is the on-site concierge agent for ergoblockchain.org. Answers questions about the Ergo blockchain, the agent-economy thesis, and the Accord Protocol primitives, with retrieval over the indexed docs and blog. Free questions run on Claude Haiku 4.5; deep-research / code-shaped / multi-turn questions promote to a premium tier on Claude Sonnet 4.6, paid via an Accord Note on Ergo testnet. Sage is itself a working demo of the thesis it explains.",
+  "capabilities": [
+    "sage_premium_query",
+    "agent_economy_qa",
+    "ergo_protocol_explainer"
+  ],
+  "accepted_transports": ["accord/402"],
+  "accepted_rails": ["ergo"],
+  "pricing": [
+    {
+      "kind": "sage_premium_query",
+      "amount": "0.001",
+      "currency": "ERG",
+      "decimals": 9
+    }
+  ],
+  "verification": {
+    "required": true,
+    "supported_verifiers": ["verifier://sage-self-v0"]
+  },
+  "endpoints": {
+    "well_known": "https://www.ergoblockchain.org/.well-known/accord",
+    "agreement_template": "https://www.ergoblockchain.org/api/sage/quote",
+    "chat": "https://www.ergoblockchain.org/api/sage/chat",
+    "verify_payment": "https://www.ergoblockchain.org/api/sage/verify-payment",
+    "receipt_pattern": "https://www.ergoblockchain.org/r/sage/{settlement_or_note_box_id}"
+  },
+  "implementation": {
+    "reference_example": "https://github.com/accord-protocol/accord-protocol/tree/main/examples/16-paid-mcp-ergo-testnet",
+    "notes": "Sage's seller plumbing is a near-direct port of the buyer/seller wiring shown in example 16. The MCP wrapper is replaced with an SSE chat stream; otherwise the rails-ergo verifyPayment + settle calls are identical."
+  },
+  "operational_status": {
+    "phase": "phase-2-testnet",
+    "tier_routing": "free | premium",
+    "premium_premise": "questions flagged by gate.ts (explicit /command, code-request hints, deep-research phrasing, >400 chars, multi-turn follow-up) require an Accord Note before Sonnet 4.6 routing",
+    "settlement_mode": "verify-only by default; full redemption when SAGE_SIGNER_URL is configured (see scripts/sage-signer/ in ergoblockchain.org repo)"
+  },
+  "conformance": {
+    "level": "L0",
+    "last_run_at": null,
+    "result_uri": null,
+    "notes": "First conformance run pending — to be performed by accord-conformance --target https://www.ergoblockchain.org/api/sage/* once Sprint 3 ships."
+  },
+  "operator": {
+    "kind": "open-source-project",
+    "contact": "https://github.com/ergoplatform"
+  }
+}
