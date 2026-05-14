@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"          # triggers on: git tag v0.4.0 && git push --tags
+  workflow_dispatch:  # manual re-run from Actions UI (used to verify green CI after fixes)
+
 # Two scopes published by this workflow:
 #
 #   Legacy `ergo-agent-*` / `agentpay-base` packages (currently at 0.3.0).
