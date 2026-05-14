@@ -127,6 +127,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install
         run: npm install --include=optional
+      - name: Build deps
+        run: npm run build -w ergo-agent-pay
       - name: Build
         run: npm run build -w ergo-agent-cli
       - name: Test
@@ -154,6 +156,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install
         run: npm install --include=optional
+      - name: Build deps
+        run: npm run build -w ergo-agent-pay
       - name: Build
         run: npm run build -w ergo-agent-api
       - name: Test
@@ -171,7 +175,7 @@ jobs:
 
   ergo-agent-mcp:
     name: ergo-agent-mcp
-    needs: [ergo-agent-pay]
+    needs: [ergo-agent-pay, ergo-agent-api]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -181,6 +185,10 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install
         run: npm install --include=optional
+      - name: Build deps
+        run: |
+          npm run build -w ergo-agent-pay
+          npm run build -w ergo-agent-api
       - name: Build
         run: npm run build -w ergo-agent-mcp
       - name: Test
@@ -208,6 +216,8 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install
         run: npm install --include=optional
+      - name: Build deps
+        run: npm run build -w ergo-agent-pay
       - name: Build
         run: npm run build -w ergo-agent-server
       - name: Test
@@ -235,6 +245,10 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install
         run: npm install --include=optional
+      - name: Build deps
+        run: |
+          npm run build -w ergo-agent-pay
+          npm run build -w ergo-agent-scripts
       - name: Build
         run: npm run build -w ergo-agent-rosen
       - name: Test
