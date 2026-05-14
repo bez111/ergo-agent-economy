@@ -1,7 +1,7 @@
 {
   "name": "agentpay-base",
   "version": "0.3.0",
-  "description": "Base / Ethereum-L2 implementation of the AgentPay v0 protocol. Reserve / Note / Acceptance Predicate semantics on EVM, denominated in any ERC-20 (USDC, USDT, \u2026). Mirrors ergo-agent-pay's API shape so apps can pick the chain by config, not by rewriting.",
+  "description": "Base / Ethereum-L2 implementation of the AgentPay v0 protocol. Reserve / Note / Acceptance Predicate semantics on EVM, denominated in any ERC-20 (USDC, USDT, …). Mirrors ergo-agent-pay's API shape so apps can pick the chain by config, not by rewriting.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -41,7 +41,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/accord-protocol/accord-protocol",
+    "url": "git+https://github.com/accord-protocol/accord-protocol.git",
     "directory": "packages/agentpay-base"
   },
   "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/agentpay-base",

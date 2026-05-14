@@ -11,6 +11,16 @@ A public package release is not production certification. Always check `docs/sta
 
 ## [Unreleased]
 
+### Post-`v0.4.0` release-pipeline polish
+
+The `v0.4.0` tag was pushed with all 18 packages already on the npm registry. The following changes landed on `main` after the tag to make the publish workflows reproducible from `workflow_dispatch` going forward:
+
+- **publish-npm.yml** — added a `Build deps` step to the five legacy jobs (`ergo-agent-cli`, `ergo-agent-api`, `ergo-agent-mcp`, `ergo-agent-server`, `ergo-agent-rosen`) so each builds its upstream workspaces before its own `Build` / `Test` step. Each job runs in a fresh checkout; `needs:` enforces ordering, not artifact transfer. (PR #59)
+- **`packages/ergo-agent-py/pyproject.toml`** — fixed invalid `build-backend` (`setuptools.backends.legacy:build` → `setuptools.build_meta`). Without this fix, `python -m build` failed in CI. (PR #59)
+- **publish-npm.yml / publish-pypi.yml** — re-enabled `workflow_dispatch:` so the publish pipelines can be re-run manually after fixes without re-pushing a tag. (PR #60)
+- **publish-pypi.yml** — added `packages-dir: packages/ergo-agent-py/dist` to the `pypa/gh-action-pypi-publish` step. The action runs in a Docker container that ignores the job-level `defaults.run.working-directory`. (PR #61)
+- **All workspace `package.json` files** — normalized `repository.url` to `git+https://...` form to remove the per-publish `npm auto-corrected` warning.
+
 ### Examples
 
 - **examples/13-paywalled-langchain** — LangChain `BaseTool` whose `_run`

@@ -37,7 +37,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/accord-protocol/accord-protocol",
+    "url": "git+https://github.com/accord-protocol/accord-protocol.git",
     "directory": "packages/accord-rails-rosen"
   },
   "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/accord-rails-rosen",
@@ -54,8 +54,12 @@
     "ergo-agent-rosen": "^0.3.0"
   },
   "peerDependenciesMeta": {
-    "ergo-agent-pay": { "optional": true },
-    "ergo-agent-rosen": { "optional": true }
+    "ergo-agent-pay": {
+      "optional": true
+    },
+    "ergo-agent-rosen": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

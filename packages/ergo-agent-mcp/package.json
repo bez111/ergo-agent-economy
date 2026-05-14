@@ -51,7 +51,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/accord-protocol/accord-protocol",
+    "url": "git+https://github.com/accord-protocol/accord-protocol.git",
     "directory": "packages/ergo-agent-mcp"
   },
   "engines": {

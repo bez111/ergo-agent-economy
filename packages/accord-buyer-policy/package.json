@@ -34,7 +34,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/accord-protocol/accord-protocol",
+    "url": "git+https://github.com/accord-protocol/accord-protocol.git",
     "directory": "packages/accord-buyer-policy"
   },
   "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/accord-buyer-policy",

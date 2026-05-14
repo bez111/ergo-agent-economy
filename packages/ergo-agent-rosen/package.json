@@ -1,7 +1,7 @@
 {
   "name": "ergo-agent-rosen",
   "version": "0.3.0",
-  "description": "Cross-chain glue between ergo-agent-pay and Rosen Bridge. Lets agents accept and settle stablecoin payments on Ergo (rsUSDT, rsUSDC, rsBTC, rsETH, \u2026) bridged from Ethereum, Bitcoin, Cardano, Binance, and any chain Rosen watchers cover.",
+  "description": "Cross-chain glue between ergo-agent-pay and Rosen Bridge. Lets agents accept and settle stablecoin payments on Ergo (rsUSDT, rsUSDC, rsBTC, rsETH, …) bridged from Ethereum, Bitcoin, Cardano, Binance, and any chain Rosen watchers cover.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -39,7 +39,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/accord-protocol/accord-protocol",
+    "url": "git+https://github.com/accord-protocol/accord-protocol.git",
     "directory": "packages/ergo-agent-rosen"
   },
   "homepage": "https://github.com/accord-protocol/accord-protocol/tree/main/packages/ergo-agent-rosen",
