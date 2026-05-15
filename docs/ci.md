@@ -11,7 +11,7 @@ This document explains the intended role of Accord Protocol GitHub Actions workf
 | Conformance CI | Run Accord conformance checks |
 | Python CI | Test Python reference package |
 | Demo CI | Ensure examples still run or compile |
-| Release readiness CI | Build workspaces, smoke CommonJS exports, then run root typecheck plus `release:check`, `audit:check`, `pilots:check`, and `site:check` |
+| Release readiness CI | Build workspaces, smoke CommonJS exports, then run root typecheck plus `release:check`, `audit:check`, `pilots:check` for P4 result/progress consistency, and `site:check` |
 | Publish workflows | Publish npm/PyPI packages after a release tag; npm publish runs repository-wide prepublish gates first, and PyPI publish runs Python unit tests, builds dist, validates metadata, and smoke-installs the wheel before publishing |
 
 ## Merge expectations

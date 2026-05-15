@@ -18,13 +18,28 @@ entries.
 | x402 facilitator integration | x402 | Validate facilitator proof handling and Accord receipts around HTTP payment flows | [`x402-facilitator-integration.md`](./x402-facilitator-integration.md) |
 
 Use [`result-template.md`](./result-template.md) for every pilot result.
-Run `npm run pilots:check` before committing a completed result record.
+Run `npm run pilots:check` before committing a completed result record. The
+check also reports current P4 progress and verifies the completed/pending
+tables below stay aligned with the pilot matrix.
 
 ## Completed Results
 
 | Pilot | Result | Record |
 |---|---|---|
 | Mock Accord/MCP paid tool | Pass | [`results/2026-05-15-mock-mcp-paid-tool.md`](./results/2026-05-15-mock-mcp-paid-tool.md) |
+
+## Pending Pilots
+
+These remain pending until external testnet credentials, facilitator access, or
+bridge evidence are available. Moving a pilot out of this table requires a
+dated result record in [`results/`](./results/).
+
+| Pilot | Blocking evidence |
+|---|---|
+| Ergo testnet Note settlement | Fresh Ergo testnet wallet, live reserve/note/settlement tx ids, explorer links, and conformance output |
+| Rosen wrapped-token architecture | Test TokenMap evidence, wrapped-token accounting evidence, bridge assumption review, and conformance output |
+| Base Sepolia contract rail | Base Sepolia contract address, live testnet transaction evidence, audit-gate result, and conformance output |
+| x402 facilitator integration | Test facilitator or stub proof, HTTP payment flow transcript, facilitator failure classification, and conformance output |
 
 ## Shared Rules
 

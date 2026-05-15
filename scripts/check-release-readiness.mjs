@@ -155,6 +155,8 @@ const pilotReadme = read('docs/pilots/README.md');
 assert(pilotReadme.includes('No pilot in this folder certifies mainnet use'), 'docs/pilots/README.md must preserve mainnet warning');
 assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must link the pilot result template');
 assert(pilotReadme.includes('npm run pilots:check'), 'docs/pilots/README.md must document npm run pilots:check');
+assert(pilotReadme.includes('check also reports current P4 progress'), 'docs/pilots/README.md must describe the P4 progress check');
+assert(pilotReadme.includes('## Pending Pilots'), 'docs/pilots/README.md must track pending P4 pilots');
 assert(pilotReadme.includes('results/2026-05-15-mock-mcp-paid-tool.md'), 'docs/pilots/README.md must link the completed mock pilot result');
 const mockPilotResult = read('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md');
 assert(mockPilotResult.includes('| Result | `pass` |'), 'mock pilot result must record pass status');
