@@ -1,0 +1,24 @@
+{
+  "type": "accord.settlement_receipt.v0",
+  "version": "v0",
+  "settlement_id": "sr_01HX0000000000000000000000",
+  "agreement_id": "acc_01HX0000000000000000000000",
+  "agreement_hash": "sha256:0x0000000000000000000000000000000000000000000000000000000000000000",
+  "verification_receipts": [
+    "blake2b256:0x2222222222222222222222222222222222222222222222222222222222222222"
+  ],
+  "rail": "ergo",
+  "mode": "note_redeemed",
+  "status": "settled",
+  "amount": "25",
+  "currency": "ERG",
+  "decimals": 9,
+  "tx": {
+    "network": "testnet",
+    "tx_id": "0x33333333333333333333333333333333333333333333333333333333333333aa",
+    "box_id": "0x44444444444444444444444444444444444444444444444444444444444444bb",
+    "block_height": 1234567,
+    "confirmations": 12
+  },
+  "created_at": "2026-05-07T00:00:20Z"
+}

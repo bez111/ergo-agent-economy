@@ -29,6 +29,7 @@ import {
 const ISO_UTC = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/;
 const DEADLINE_RELATIVE = /^\+[0-9]+ (blocks|seconds)$/;
 const DECIMAL_AMOUNT = /^(0|[1-9][0-9]*)(\.[0-9]+)?$/;
+const ACCORD_HASH_V0 = /^blake2b256:0x[0-9a-f]{64}$/;
 const HASH_PREFIXED = /^(blake2b256|keccak256|sha256):0x[0-9a-f]{64}$/;
 
 export interface ValidationProblem {
@@ -42,10 +43,30 @@ export interface ValidationResult {
   problems: ValidationProblem[];
 }
 
+function rejectReservedTopLevelNamespace(
+  value: Record<string, unknown>,
+  problems: ValidationProblem[],
+) {
+  for (const key of Object.keys(value)) {
+    if (key.startsWith("accord_")) {
+      problems.push({
+        code: "ACCORD_UNKNOWN_CRITICAL_EXTENSION",
+        path: `$.${key}`,
+        message: "top-level field uses the reserved 'accord_' prefix",
+      });
+    }
+  }
+}
+
 // ── Agreement ───────────────────────────────────────────────────────────────
 
 export function validateAgreement(agreement: AccordAgreement): ValidationResult {
   const problems: ValidationProblem[] = [];
+
+  rejectReservedTopLevelNamespace(
+    agreement as unknown as Record<string, unknown>,
+    problems,
+  );
 
   if (!ISO_UTC.test(agreement.created_at)) {
     problems.push({
@@ -95,19 +116,6 @@ export function validateAgreement(agreement: AccordAgreement): ValidationResult 
     });
   }
 
-  // Reserved namespace at the top level. `type` / `version` are the only
-  // protocol-defined keys; anything else starting with `accord_` is reserved
-  // for future spec additions.
-  for (const key of Object.keys(agreement)) {
-    if (key.startsWith("accord_") && key !== "accord_") {
-      problems.push({
-        code: "ACCORD_UNKNOWN_CRITICAL_EXTENSION",
-        path: `$.${key}`,
-        message: `top-level field uses the reserved 'accord_' prefix`,
-      });
-    }
-  }
-
   return { ok: problems.length === 0, problems };
 }
 
@@ -119,6 +127,11 @@ export function validateVerificationReceipt(
 ): ValidationResult {
   const problems: ValidationProblem[] = [];
 
+  rejectReservedTopLevelNamespace(
+    receipt as unknown as Record<string, unknown>,
+    problems,
+  );
+
   if (!ISO_UTC.test(receipt.created_at)) {
     problems.push({
       code: "ACCORD_INVALID_TIMESTAMP",
@@ -127,7 +140,7 @@ export function validateVerificationReceipt(
     });
   }
 
-  if (!HASH_PREFIXED.test(receipt.agreement_hash)) {
+  if (!ACCORD_HASH_V0.test(receipt.agreement_hash)) {
     problems.push({
       code: "ACCORD_INVALID_SCHEMA",
       path: "$.agreement_hash",
@@ -204,6 +217,11 @@ export function validateSettlementReceipt(
 ): ValidationResult {
   const problems: ValidationProblem[] = [];
 
+  rejectReservedTopLevelNamespace(
+    receipt as unknown as Record<string, unknown>,
+    problems,
+  );
+
   if (!ISO_UTC.test(receipt.created_at)) {
     problems.push({
       code: "ACCORD_INVALID_TIMESTAMP",
@@ -217,6 +235,14 @@ export function validateSettlementReceipt(
       code: "ACCORD_INVALID_AMOUNT",
       path: "$.amount",
       message: "expected a decimal string with no leading zeros",
+    });
+  }
+
+  if (!ACCORD_HASH_V0.test(receipt.agreement_hash)) {
+    problems.push({
+      code: "ACCORD_INVALID_SCHEMA",
+      path: "$.agreement_hash",
+      message: "expected 'blake2b256:0x<64 hex>'",
     });
   }
 

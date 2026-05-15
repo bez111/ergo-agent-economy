@@ -18,6 +18,7 @@
     "settlement"
   ],
   "additionalProperties": true,
+  "propertyNames": { "not": { "pattern": "^accord_" } },
   "properties": {
     "type": { "const": "accord.agreement.v0" },
     "version": { "const": "v0" },
@@ -111,7 +112,7 @@
         "deadline": {
           "description": "Either '+N blocks', '+N seconds', or absolute ISO-8601 UTC.",
           "type": "string",
-          "pattern": "^(\\+[0-9]+ (blocks|seconds))|([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z)$"
+          "pattern": "^(\\+[0-9]+ (blocks|seconds)|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z)$"
         }
       },
       "if": { "properties": { "mode": { "const": "note" } } },

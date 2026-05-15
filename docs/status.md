@@ -2,7 +2,7 @@
 
 This page is the single source of truth for what works, what does not work, and what can reach mainnet. Other docs MUST defer to this page when they conflict.
 
-Last updated: 2026-05-11 — professionalization / trust-language sync.
+Last updated: 2026-05-15 — protocol compatibility and registry semantics sync.
 
 ## Executive summary
 
@@ -14,6 +14,7 @@ Last updated: 2026-05-11 — professionalization / trust-language sync.
 | Recommended usage | Local demos, mock rail, testnet development, conformance testing |
 | Mainnet status | **NOT CERTIFIED FOR MAINNET** |
 | Production use | Blocked until signed audit manifests mark relevant scripts/contracts `mainnetAllowed: true` |
+| Compatibility policy | [`docs/PROTOCOL_COMPATIBILITY.md`](./PROTOCOL_COMPATIBILITY.md) |
 
 Accord Protocol is alpha / testnet-first software. The repo may contain working code and testnet demos, but no Accord rail, Note/Reserve/Tracker script, ChainCash/Basis contract, or EVM contract is production-certified until the relevant signed audit manifests say so.
 
@@ -78,7 +79,7 @@ Do not use Accord today for:
 | `ACCORD-009` Conformance | Draft |
 | `ACCORD-010` Security & Audit | Draft |
 
-Stable RFCs must ship matching JSON Schemas in [`schemas/`](../schemas/) and conformance tests before being treated as stable.
+Stable RFCs must ship matching JSON Schemas in [`schemas/`](../schemas/) and conformance tests before being treated as stable. Compatibility rules for v0 object versions, schemas, conformance levels, SDK releases, and registry semantics are tracked in [`docs/PROTOCOL_COMPATIBILITY.md`](./PROTOCOL_COMPATIBILITY.md).
 
 ---
 

@@ -1,6 +1,8 @@
 # Accord Protocol Registry — preview
 
-This folder is the **public, file-based** preview of `registry.accordprotocol.ai`. Anyone implementing Accord Protocol can submit a record here via PR; once merged, their record is part of the canonical registry.
+This folder is the **public, file-based** preview of `registry.accordprotocol.ai`. Anyone implementing Accord Protocol can submit a record here via PR; once merged, their record is part of the canonical registry index for discovery and conformance.
+
+The registry is descriptive, not an audit authority. Rail records can point to manifests, but the per-rail manifest and SDK safety gates remain the source of truth for mainnet certification.
 
 It's structured as plain JSON files so it can be:
 
@@ -8,7 +10,7 @@ It's structured as plain JSON files so it can be:
 - forked / mirrored without depending on a hosted service,
 - fixed by PR rather than admin console.
 
-When `accordprotocol.ai` ships, the hosted registry is built from this folder via CI.
+When `accordprotocol.ai` ships, the hosted registry is built from this folder via CI. The hosted service must not override local manifest safety decisions.
 
 ## Layout
 

@@ -132,6 +132,13 @@ describe("validateVerificationReceipt", () => {
     assert.equal(r.ok, true);
   });
 
+  it("rejects an agreement_hash with a non-Accord hash prefix", () => {
+    const v = minimalVReceipt("sha256:0x" + "0".repeat(64));
+    const r = validateVerificationReceipt(v);
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.path === "$.agreement_hash"));
+  });
+
   it("rejects result=accepted while a check has result=fail", () => {
     const v = minimalVReceipt(hash);
     v.checks = [{ name: "schema_valid", result: "fail" }];
@@ -179,6 +186,14 @@ describe("validateVerificationReceipt", () => {
       ),
     );
   });
+
+  it("rejects top-level keys that start with `accord_`", () => {
+    const v = minimalVReceipt(hash) as unknown as Record<string, unknown>;
+    v["accord_future"] = true;
+    const r = validateVerificationReceipt(v as unknown as AccordVerificationReceipt);
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.code === "ACCORD_UNKNOWN_CRITICAL_EXTENSION"));
+  });
 });
 
 describe("validateSettlementReceipt", () => {
@@ -187,6 +202,13 @@ describe("validateSettlementReceipt", () => {
   it("accepts a minimal Ergo note_redeemed receipt", () => {
     const r = validateSettlementReceipt(minimalSReceipt(hash));
     assert.equal(r.ok, true);
+  });
+
+  it("rejects an agreement_hash with a non-Accord hash prefix", () => {
+    const s = minimalSReceipt("sha256:0x" + "0".repeat(64));
+    const r = validateSettlementReceipt(s);
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.path === "$.agreement_hash"));
   });
 
   it("rejects mode 'redeemed' under rail 'ergo'", () => {
@@ -229,6 +251,14 @@ describe("validateSettlementReceipt", () => {
     assert.ok(
       r.problems.some((p) => p.code === "ACCORD_AMOUNT_EXCEEDS_AGREEMENT"),
     );
+  });
+
+  it("rejects top-level keys that start with `accord_`", () => {
+    const s = minimalSReceipt(hash) as unknown as Record<string, unknown>;
+    s["accord_future"] = true;
+    const r = validateSettlementReceipt(s as unknown as AccordSettlementReceipt);
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.code === "ACCORD_UNKNOWN_CRITICAL_EXTENSION"));
   });
 });
 

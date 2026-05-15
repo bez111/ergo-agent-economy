@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 | Implements in this repo | [`registry/`](../registry/) |
 
@@ -17,9 +17,9 @@ The Accord Registry is the public directory of:
 - **Manifests** — pointers to audited tree / contract manifests
 - **Revocations** — entries that have been revoked (audit trail)
 
-At v0 the registry is a **folder of JSON files** ([`registry/`](../registry/)), not a hosted service. Anyone implementing Accord Protocol can submit a record via PR; once merged, their record is canonical.
+At v0 the registry is a **folder of JSON files** ([`registry/`](../registry/)), not a hosted service. Anyone implementing Accord Protocol can submit a record via PR; once merged, their record is part of the canonical registry index for discovery and conformance.
 
-When `registry.accordprotocol.ai` ships, the hosted registry will be **built from this folder** via CI. The JSON files here remain the source of truth.
+When `registry.accordprotocol.ai` ships, the hosted registry will be **built from this folder** via CI. The JSON files here remain the source of truth for registry records. The hosted service is not allowed to make an uncertified manifest safe or to bypass SDK mainnet gates.
 
 ## 2. Layout
 
@@ -103,7 +103,7 @@ registry/
 }
 ```
 
-This is **descriptive**. The audit gate doesn't trust this entry — it trusts the manifest the entry points at.
+This is **descriptive**. The audit gate does not trust this entry as the authority. It trusts the manifest the entry points at, and then only when that manifest is signed and marks the exact artifact `mainnetAllowed: true`.
 
 ### 3.4 Manifest pointer (`manifests/<rail>.json`)
 

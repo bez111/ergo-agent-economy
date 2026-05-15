@@ -33,6 +33,7 @@ Ergo       -> the first reference programmable-settlement rail.
 | Mainnet status | **NOT CERTIFIED FOR MAINNET** |
 | Production use | Blocked until signed audit manifests mark relevant scripts/contracts `mainnetAllowed: true` |
 | Source of truth | [`docs/status.md`](./docs/status.md) |
+| Compatibility policy | [`docs/PROTOCOL_COMPATIBILITY.md`](./docs/PROTOCOL_COMPATIBILITY.md) |
 
 This is **alpha / testnet-first software**. Do not put real funds or production customer workflows behind unaudited Accord, ChainCash/Basis, Note, Reserve, Tracker, or Acceptance Predicate contracts.
 
@@ -53,6 +54,9 @@ A complete Accord flow can look like this:
 ```text
 Agreement -> Payment proof -> Work execution -> Verification Receipt -> Settlement Receipt
 ```
+
+Versioning and compatibility rules for v0 objects, schemas, conformance levels,
+and registry semantics live in [`docs/PROTOCOL_COMPATIBILITY.md`](./docs/PROTOCOL_COMPATIBILITY.md).
 
 ---
 

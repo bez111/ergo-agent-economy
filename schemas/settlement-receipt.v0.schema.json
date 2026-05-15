@@ -20,6 +20,7 @@
     "created_at"
   ],
   "additionalProperties": true,
+  "propertyNames": { "not": { "pattern": "^accord_" } },
   "properties": {
     "type": { "const": "accord.settlement_receipt.v0" },
     "version": { "const": "v0" },

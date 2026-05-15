@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 
 ## 1. Purpose
@@ -287,6 +287,8 @@ test-vectors/agreement/v0/
 ├── x402-style.json             — payment.mode = pay_before_response
 ├── batchable.json              — settlement.mode = batchable
 ├── invalid-amount-as-number.json — must be rejected
+├── invalid-deadline-trailing-junk.json — must be rejected
+├── invalid-reserved-accord-field.json — must be rejected
 └── invalid-unknown-mode.json     — must be rejected (without --accept-unknown)
 ```
 

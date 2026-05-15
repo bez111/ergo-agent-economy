@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 
 ## 1. Purpose
@@ -71,6 +71,11 @@ SHOULD reference one or more Verification Receipts (ACCORD-002).
 | `tx` | object | yes | see [§3.3](#33-tx) |
 | `signature` | object | no | Optional issuer signature (see [§5](#5-optional-signature)) |
 | `created_at` | string | yes | ISO-8601 UTC, second precision |
+
+Unknown top-level extension fields are allowed when they are non-critical and
+implementation-defined. A top-level field whose key starts with `accord_` MUST
+be rejected. The `accord_` namespace is reserved for future protocol-defined
+critical behavior that old implementations must not silently ignore.
 
 ### 3.2 mode by rail
 
@@ -165,6 +170,7 @@ A v0 implementation MUST reject a Settlement Receipt that:
 7. Has a `tx.tx_id` whose format does not match the rail (e.g. Ergo tx_id
    must be 64 hex chars; EVM tx_id must be 0x + 64 hex chars).
 8. Has `created_at` before the parent Agreement's `created_at`.
+9. Carries a top-level extension field whose key starts with `accord_`.
 
 A v0 implementation SHOULD verify the rail-side claim (re-fetch the tx from
 the rail and confirm `box_id` / `tx_id` exist with the claimed effect) before
@@ -224,7 +230,9 @@ x402-paid-before-response.json
 partial-with-verification.json
 pending-then-settled.json                — pair: pending receipt + final
 invalid-amount-exceeds-agreement.json    — must be rejected
+invalid-agreement-hash-algorithm.json    — must be rejected
 invalid-mode-for-rail.json               — must be rejected
+invalid-reserved-accord-field.json       — must be rejected
 invalid-no-verification-when-required.json — must be rejected
 ```
 
@@ -238,6 +246,7 @@ invalid-no-verification-when-required.json — must be rejected
 | `ACCORD_VERIFICATION_REQUIRED` | `status: settled` but no Verification Receipt was referenced when one was required. |
 | `ACCORD_AMOUNT_EXCEEDS_AGREEMENT` | `amount > price.amount`. |
 | `ACCORD_TX_FORMAT_INVALID` | `tx.tx_id` does not match the rail's tx-id format. |
+| `ACCORD_UNKNOWN_CRITICAL_EXTENSION` | Top-level field uses the reserved `accord_` prefix. |
 | `ACCORD_RAIL_NOT_CONFIRMED` | (When verifying against the rail) the named tx does not exist or did not have the claimed effect. |
 
 ## 11. Open questions (v1 candidates)

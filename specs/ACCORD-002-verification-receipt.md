@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 
 ## 1. Purpose
@@ -69,6 +69,11 @@ controlled by the Agreement's `verification.required` field (ACCORD-001 §3.6).
 | `checks` | array | no | Optional itemised check log (see [§3.4](#34-checks)) |
 | `created_at` | string | yes | ISO-8601 UTC, second precision |
 | `signature` | object | yes | see [§5](#5-signature) |
+
+Unknown top-level extension fields are allowed when they are non-critical and
+implementation-defined. A top-level field whose key starts with `accord_` MUST
+be rejected. The `accord_` namespace is reserved for future protocol-defined
+critical behavior that old implementations must not silently ignore.
 
 ### 3.2 verifier
 
@@ -186,6 +191,7 @@ A v0 implementation MUST reject a Verification Receipt that:
    `created_at` or after the `payment.deadline` plus an implementation grace).
 8. Has any element of the Agreement's `verification.evidence_required` array
    missing from `checks` or marked `skip`.
+9. Carries a top-level extension field whose key starts with `accord_`.
 
 A v0 implementation MAY warn (but MUST NOT reject) on:
 
@@ -216,6 +222,8 @@ disputed.json
 invalid-accepted-with-failed-check.json     — must be rejected
 invalid-verifier-mismatch.json              — must be rejected
 invalid-signature.json                      — must be rejected
+invalid-agreement-hash-algorithm.json       — must be rejected
+invalid-reserved-accord-field.json          — must be rejected
 ```
 
 ## 9. Error codes
