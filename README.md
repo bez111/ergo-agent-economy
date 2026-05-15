@@ -28,7 +28,7 @@ Ergo       -> the first reference programmable-settlement rail.
 | Area | Status |
 |---|---|
 | Protocol object version | `v0` draft |
-| SDK line | `0.4.1` release candidate |
+| SDK line | `0.4.1` published package line |
 | Recommended usage | Local demos, mock rail, conformance testing, Ergo testnet |
 | Mainnet status | **NOT CERTIFIED FOR MAINNET** |
 | Production use | Blocked until signed audit manifests mark relevant scripts/contracts `mainnetAllowed: true` |
@@ -116,7 +116,7 @@ before putting real value at risk.
 
 The canonical public API lives in the `@accord-protocol/*` packages. The older `ergo-agent-*` packages are maintained reference rail packages used by the Accord rail adapters and kept for downstream compatibility.
 
-Until `v0.4.1` is tagged and published, treat npm/PyPI install commands as release targets and run workspace examples locally from this monorepo.
+The `@accord-protocol/*` npm packages are published at `0.4.1`; the maintained reference npm packages and Python reference package are published at `0.3.1`. For local development and examples, keep using this monorepo workspace so tests, fixtures, and demos stay together.
 
 For install status, package role, rail scope, and mainnet posture, see the
 [`package matrix`](./docs/PACKAGE_MATRIX.md).

@@ -1,6 +1,7 @@
-# v0.4.1 release checklist
+# v0.4.1 release checklist and publication record
 
-This checklist describes what must be true before `git tag v0.4.1 && git push origin v0.4.1`.
+This page records the completed `v0.4.1` package publication and keeps the
+same checklist useful for future `v0.4.x` patch releases.
 
 A public package release is **not** production certification. Accord remains testnet-first and `NOT CERTIFIED FOR MAINNET` unless signed audit manifests explicitly mark relevant entries `mainnetAllowed: true`.
 
@@ -8,15 +9,19 @@ A public package release is **not** production certification. Accord remains tes
 
 | Blocker | State | Owner |
 |---|---|---|
-| `NPM_TOKEN` secret in repo | Configure before tag | accord-protocol |
-| PyPI Trusted Publishing config | Configure before tag | accord-protocol |
-| `publish-npm.yml` package matrix | Covers 10 `@accord-protocol/*` packages + 8 legacy npm packages | shipped / verify |
-| Publish jobs | npm prepublish gates run before any package publish; PyPI runs unit tests, builds dist, `twine check`, and wheel install smoke | shipped / verify |
+| npm Trusted Publishing | Complete for the 18 npm packages published from `publish-npm.yml` | accord-protocol |
+| npm registry verification | `npm run npm:publish-status` reports 18/18 package version(s) already published; 0 pending | accord-protocol |
+| PyPI registry verification | `ergo-agent-pay==0.3.1` is available on PyPI | accord-protocol |
+| `NPM_TOKEN` secret in repo | Not used for npm publish; Trusted Publishing/OIDC is the active path | accord-protocol |
+| `publish-npm.yml` package matrix | Covers 10 `@accord-protocol/*` packages + 8 legacy npm packages | shipped |
+| Publish jobs | npm prepublish gates run before any package publish; PyPI runs unit tests, builds dist, `twine check`, and wheel install smoke | shipped |
 | Skip-if-already-published guard | Each npm job pre-checks via `npm view` | shipped |
 | Self-conformance gate | L0+L1+L2+L3+L4 before publishing `@accord-protocol/conformance` | shipped |
 | Package versions | Accord packages `0.4.1`; legacy/reference packages `0.3.1`; Python `0.3.1` | by design |
 | External auditor signed manifest | No | external auditor |
 | Mainnet status | `NOT CERTIFIED FOR MAINNET` | must remain true |
+
+Publication evidence: [`docs/release-evidence/2026-05-15-npm-publish.md`](./release-evidence/2026-05-15-npm-publish.md).
 
 ## Package matrix
 
@@ -50,7 +55,8 @@ A public package release is **not** production certification. Accord remains tes
 
 ## Step 1 — configure npm publishing
 
-Preferred: configure npm Trusted Publishing for every npm package with:
+Done for `v0.4.1`. For future packages, preferred setup is npm Trusted
+Publishing for every npm package with:
 
 - owner: `accord-protocol`;
 - repository: `accord-protocol`;
@@ -61,9 +67,11 @@ enabled, or an Automation token if the npm account/org policy still supports
 it. The npm account behind the token must be able to publish the
 `@accord-protocol/*` scope and unscoped legacy packages.
 
-## Step 2 — add `NPM_TOKEN` repo secret
+## Step 2 — add `NPM_TOKEN` repo secret only as fallback
 
-Skip this step only if every npm package is configured for Trusted Publishing.
+Skip this step when every npm package is configured for Trusted Publishing. The
+current `v0.4.1` npm publish path uses Trusted Publishing/OIDC and does not rely
+on `NPM_TOKEN`.
 
 1. Go to `https://github.com/accord-protocol/accord-protocol/settings/secrets/actions`.
 2. New repository secret.
@@ -72,7 +80,8 @@ Skip this step only if every npm package is configured for Trusted Publishing.
 
 ## Step 3 — configure PyPI Trusted Publishing
 
-Configure a trusted publisher for the Python reference package:
+For future PyPI releases, configure a trusted publisher for the Python reference
+package:
 
 - PyPI Project Name: `ergo-agent-pay`
 - Owner: `accord-protocol`
@@ -133,9 +142,9 @@ npm run dev -w accord-paid-mcp-repo-audit-demo
 
 Expected: full Accord lifecycle with Agreement, Verification Receipt, and Settlement Receipt.
 
-## Step 5 — tag and push
+## Step 5 — tag and push a future release
 
-Only tag after local pre-flight and CI are clean:
+Only tag a future release after local pre-flight and CI are clean:
 
 ```bash
 git checkout main
@@ -181,7 +190,7 @@ python -m pip index versions ergo-agent-pay
 
 ## Step 7 — GitHub Release
 
-Create a GitHub Release for `v0.4.1` only after registry verification.
+Create or refresh a GitHub Release only after registry verification.
 
 Release notes must include:
 

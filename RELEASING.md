@@ -80,7 +80,8 @@ git push origin v0.4.1
 
 | Item | Required for | Notes |
 |---|---|---|
-| `NPM_TOKEN` | npm packages | Automation token in GitHub Actions secrets |
+| npm Trusted Publishing | npm packages | Preferred: GitHub Actions OIDC, no long-lived npm token |
+| `NPM_TOKEN` | npm packages | Fallback only if Trusted Publishing is unavailable |
 | PyPI Trusted Publishing | Python package | Must be configured against the correct owner/repo/workflow |
 | GitHub Release permissions | Release notes | Usually available to maintainers/admins |
 

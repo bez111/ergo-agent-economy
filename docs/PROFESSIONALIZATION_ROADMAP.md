@@ -16,14 +16,14 @@ The guiding rule is simple: ship useful developer infrastructure now, but keep e
 
 ## Current execution state
 
-As of 2026-05-15, the P0-P3 base and the `v0.4.1` release recovery bump have
-been merged to `main`. Commits should stay small and reviewable, and each
-pushed batch should preserve clean CI plus a clean local release preflight when
-release surfaces change.
+As of 2026-05-15, the P0-P3 base and the `v0.4.1` package release have been
+merged and published from `main`. Commits should stay small and reviewable, and
+each pushed batch should preserve clean CI plus a clean local release preflight
+when release surfaces change.
 
 | Phase | Current state | Evidence on `main` |
 |---|---|---|
-| P0 Repository stabilization | Complete on `main` | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, final `npm run release:preflight:pack` passed on `main`, and `v0.4.1` is tagged |
+| P0 Repository stabilization | Complete on `main` | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, final `npm run release:preflight:pack` passed on `main`, `v0.4.1` is tagged, and 18/18 npm package versions are published |
 | P1 Audit readiness | Complete for pre-audit | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
 | P2 Protocol hardening | Complete for v0 draft | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
 | P3 Developer experience | Complete for public review | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, contributor templates, public README wording cleanup, and release-readiness CI committed |
@@ -35,7 +35,7 @@ Immediate remaining work toward `1.0.0`:
 - execute the remaining P4 pilot runbooks and archive dated result records when external testnet credentials and facilitator access are available;
 - keep Rosen example 11 out of the root workspace until external TokenMap dependencies are suitable for clean CI;
 - turn deterministic pilot failures into tests or tracked issues;
-- configure npm package publish authority through Trusted Publishing or a publish-capable token before rerunning the `v0.4.1` npm workflow;
+- preserve npm/PyPI publication evidence and Trusted Publishing settings for future `v0.4.x` patch releases;
 - obtain external audit reports and signed manifest updates before any P5 mainnet promotion.
 
 ## Phase P0 - Repository stabilization

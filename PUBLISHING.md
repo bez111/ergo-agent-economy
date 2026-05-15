@@ -4,6 +4,16 @@ This guide covers publishing Accord Protocol packages and maintained reference r
 
 Accord Protocol is testnet-first. Publishing a package to npm or PyPI does **not** mean any rail, script, contract, or integration is certified for production mainnet use.
 
+## Current v0.4.1 publication status
+
+As of 2026-05-15, the `v0.4.1` Accord npm package line and the `0.3.1`
+maintained reference package line are published. `npm run npm:publish-status`
+verifies 18/18 npm package versions as already published, and
+`ergo-agent-pay==0.3.1` is available on PyPI as the Python reference package.
+
+The publication evidence is archived in
+[`docs/release-evidence/2026-05-15-npm-publish.md`](./docs/release-evidence/2026-05-15-npm-publish.md).
+
 ## Package families
 
 ### Canonical Accord packages
@@ -44,7 +54,7 @@ Before any public release:
 3. All tests and conformance checks must pass.
 4. The package version must match the release branch/tag plan.
 5. `CHANGELOG.md` must contain a release entry.
-6. npm and PyPI credentials must be configured.
+6. npm and PyPI publishing authority must be configured.
 7. Any package not actually published must not be advertised as installable in a misleading way.
 
 ## npm setup

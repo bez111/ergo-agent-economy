@@ -2,20 +2,21 @@
 
 This page is the single source of truth for what works, what does not work, and what can reach mainnet. Other docs MUST defer to this page when they conflict.
 
-Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, example modes, testnet-first example guidance, P4 pilot runbooks, and the first mock pilot result.
+Last updated: 2026-05-15 — `v0.4.1` npm publication verified, Python reference package verified on PyPI, P4 pilot status preserved, and mainnet gates still default-deny.
 
 ## Executive summary
 
 | Area | Status |
 |---|---|
 | Protocol object version | `v0` draft |
-| SDK line | `0.4.1` release candidate |
+| SDK line | `0.4.1` published package line |
 | Conformance | L0-L4 implemented in the reference suite |
 | Recommended usage | Local demos, mock rail, testnet development, conformance testing |
 | Mainnet status | **NOT CERTIFIED FOR MAINNET** |
 | Production use | Blocked until signed audit manifests mark relevant scripts/contracts `mainnetAllowed: true` |
 | Compatibility policy | [`docs/PROTOCOL_COMPATIBILITY.md`](./PROTOCOL_COMPATIBILITY.md) |
 | Package matrix | [`docs/PACKAGE_MATRIX.md`](./PACKAGE_MATRIX.md) |
+| Package publication evidence | [`docs/release-evidence/2026-05-15-npm-publish.md`](./release-evidence/2026-05-15-npm-publish.md) |
 
 Accord Protocol is alpha / testnet-first software. The repo may contain working code and testnet demos, but no Accord rail, Note/Reserve/Tracker script, ChainCash/Basis contract, or EVM contract is production-certified until the relevant signed audit manifests say so.
 
@@ -88,7 +89,7 @@ Stable RFCs must ship matching JSON Schemas in [`schemas/`](../schemas/) and con
 
 ## SDK implementation status
 
-### Accord Protocol layer (`@accord-protocol/*`, `0.4.1` release candidate)
+### Accord Protocol layer (`@accord-protocol/*`, published `0.4.1`)
 
 | Package | State | What it does |
 |---|---|---|
@@ -157,13 +158,13 @@ Full example inventory: [`docs/EXAMPLE_MODES.md`](./EXAMPLE_MODES.md).
 
 | Item | State |
 |---|---|
-| Publish workflows | Present; `npm run release:check` verifies the package matrix before tag |
+| Publish workflows | npm publication uses GitHub Actions Trusted Publishing/OIDC; `npm run release:check` verifies the package matrix and release gates |
 | Local release preflight | `npm run release:preflight -- --allow-branch --pack` can smoke a pushed PR branch, including Python tests and venv install smoke; `npm run release:preflight:pack` is the final main-branch pack/install/conformance-CLI smoke |
 | Package matrix | [`docs/PACKAGE_MATRIX.md`](./PACKAGE_MATRIX.md) tracks install status, rail scope, and mainnet posture |
-| `NPM_TOKEN` GitHub secret | Configure before release |
-| PyPI Trusted Publishing | Configure before release |
-| `v0.4.1` tag | Do not push until `npm run release:preflight:pack`, CI, npm secret, and PyPI Trusted Publishing are ready |
-| GitHub Release | Create only after packages are published or intentionally marked local-only |
+| npm registry status | `npm run npm:publish-status` verified 18/18 package versions already published; 0 pending |
+| PyPI registry status | `ergo-agent-pay==0.3.1` is available on PyPI as the Python reference package |
+| `v0.4.1` package release | Package publication complete; this is still not a mainnet certification |
+| GitHub Release | Create or refresh only with the `NOT CERTIFIED FOR MAINNET` warning and links to status/security docs |
 
 See [`PUBLISHING.md`](../PUBLISHING.md), [`RELEASING.md`](../RELEASING.md), and [`docs/RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md) if present.
 
