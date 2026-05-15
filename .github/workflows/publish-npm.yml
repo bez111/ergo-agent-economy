@@ -69,15 +69,6 @@ jobs:
         run: npm run site:check
       - name: npm publish status
         run: npm run npm:publish-status
-      - name: npm token probe
-        run: |
-          if npm whoami --registry=https://registry.npmjs.org; then
-            echo "NPM_TOKEN authenticates. Publish jobs still require package/org publish rights."
-          else
-            echo "::warning::NPM_TOKEN did not authenticate with npm. If npm Trusted Publishing is configured for every package, npm publish may still work via OIDC; otherwise publish jobs will fail."
-          fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Legacy: foundation ──────────────────────────────────────────────────────
 
@@ -107,8 +98,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-pay --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   ergo-agent-scripts:
     name: ergo-agent-scripts
@@ -138,8 +127,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-scripts --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   agentpay-base:
     name: agentpay-base
@@ -167,8 +154,6 @@ jobs:
           else
             npm publish --workspace agentpay-base --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Legacy: dependents ──────────────────────────────────────────────────────
 
@@ -200,8 +185,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-cli --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   ergo-agent-api:
     name: ergo-agent-api
@@ -231,8 +214,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-api --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   ergo-agent-mcp:
     name: ergo-agent-mcp
@@ -264,8 +245,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-mcp --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   ergo-agent-server:
     name: ergo-agent-server
@@ -295,8 +274,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-server --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   ergo-agent-rosen:
     name: ergo-agent-rosen
@@ -328,8 +305,6 @@ jobs:
           else
             npm publish --workspace ergo-agent-rosen --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Accord Protocol layer: foundation ───────────────────────────────────────
 
@@ -359,8 +334,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/core --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Accord Protocol layer: mid ──────────────────────────────────────────────
 
@@ -392,8 +365,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/rails --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accord-mcp:
     name: "@accord-protocol/mcp"
@@ -423,8 +394,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/mcp --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accord-gateway:
     name: "@accord-protocol/gateway"
@@ -454,8 +423,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/gateway --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Accord Protocol layer: rail adapters ────────────────────────────────────
 
@@ -488,8 +455,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/rails-ergo --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accord-rails-rosen:
     name: "@accord-protocol/rails-rosen"
@@ -520,8 +485,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/rails-rosen --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accord-rails-base:
     name: "@accord-protocol/rails-base"
@@ -552,8 +515,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/rails-base --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accord-rails-x402:
     name: "@accord-protocol/rails-x402"
@@ -584,8 +545,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/rails-x402 --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Accord Protocol layer: top (depends on everything) ──────────────────────
 
@@ -641,8 +600,6 @@ jobs:
           else
             npm publish --workspace @accord-protocol/conformance --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Accord Protocol layer: buyer-side policy enforcer ─────────────────────
 
@@ -677,5 +634,3 @@ jobs:
           else
             npm publish --workspace @accord-protocol/buyer-policy --access public
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
