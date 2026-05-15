@@ -24,6 +24,7 @@ const BUYER_ADDRESS = requireEnv("BUYER_ADDRESS");
 const ROSEN_TOKEN_MAP_PATH = requireEnv("ROSEN_TOKEN_MAP_PATH");
 const API_URL = process.env.API_URL ?? "http://localhost:3000";
 const RESERVE_BOX_ID = process.env.RESERVE_BOX_ID;
+const SUPPLIED_NOTE_BOX_ID = process.env.NOTE_BOX_ID;
 
 const tokenMap = new TokenMap();
 await tokenMap.updateConfigByJson(JSON.parse(await readFile(ROSEN_TOKEN_MAP_PATH, "utf-8")));
@@ -58,7 +59,7 @@ const agent = new ErgoAgentPay({
   },
 });
 
-// Step 4: issue a Note
+// Step 4: issue a Note, unless the caller is resuming with a known Note box id.
 const expectedOutput = JSON.stringify({ word_count: 4 });
 const taskHash = computeTaskHash(expectedOutput);
 
@@ -71,9 +72,28 @@ const noteOpts = buildRosenNoteOptions({
   taskHash,
 });
 
-const issued = await agent.issueNote(noteOpts);
-const noteBoxId = process.env.NOTE_BOX_ID ?? "REPLACE_AFTER_SUBMISSION";
-console.log(`issued note tx=${issued.txId} boxId=${noteBoxId}`);
+let noteBoxId = SUPPLIED_NOTE_BOX_ID;
+if (noteBoxId) {
+  console.log(`using supplied note boxId=${noteBoxId}`);
+} else {
+  const issued = await agent.issueNote(noteOpts);
+  if (!issued.submitted || !issued.txId) {
+    console.log("issueNote built an unsigned transaction. Sign and submit it, then rerun with NOTE_BOX_ID=<resolved box id>.");
+    console.log(JSON.stringify(issued.unsignedTx, null, 2));
+    process.exit(0);
+  }
+
+  noteBoxId = issued.noteBoxId;
+  if (!noteBoxId) {
+    console.log(`issued note tx=${issued.txId}`);
+    console.log(
+      `signer did not return output box ids; resolve output index ${issued.noteOutputIndex} ` +
+        "from your testnet node/explorer, then rerun with NOTE_BOX_ID=<resolved box id>.",
+    );
+    process.exit(0);
+  }
+  console.log(`issued note tx=${issued.txId} boxId=${noteBoxId}`);
+}
 
 // Step 5: call the API
 const response = await fetch(`${API_URL}/api/analyze`, {

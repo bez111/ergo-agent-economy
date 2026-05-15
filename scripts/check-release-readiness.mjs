@@ -112,6 +112,10 @@ for (const [docPath, banned] of [
   ['packages/accord-rails-rosen/README.md', 'peer deps for production use'],
   ['packages/accord-rails-rosen/src/types.ts', 'ROSEN_MAINNET'],
   ['packages/accord-rails-rosen/src/types.ts', 'Example mainnet'],
+  ['examples/11-cross-chain-rosen/README.md', 'rosen-mainnet-tokens.json'],
+  ['examples/11-cross-chain-rosen/README.md', 'Rosen mainnet TokenMap JSON'],
+  ['examples/11-cross-chain-rosen/agent.ts', 'REPLACE_AFTER_SUBMISSION'],
+  ['examples/11-cross-chain-rosen/package.json', 'audited basis_token_reserve_v0'],
 ]) {
   assert(!read(docPath).includes(banned), `${docPath} must not include legacy mainnet-ready wording: ${banned}`);
 }

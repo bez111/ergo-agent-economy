@@ -2,7 +2,7 @@
 // 11 — Seller API accepting Rosen-bridged stablecoin payments
 //
 // Same architecture as example 07, but Notes are denominated in rsUSDT
-// (Rosen-bridged USDT-on-Ethereum) using the audited
+// (Rosen-bridged USDT-on-Ethereum) using the manifest-gated
 // `basis_token_reserve_v0` ergoTree.
 // ─────────────────────────────────────────────────────────────────────────────
 
