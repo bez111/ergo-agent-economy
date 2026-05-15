@@ -14,6 +14,10 @@ This document explains the intended role of Accord Protocol GitHub Actions workf
 | Release readiness CI | Build workspaces, smoke CommonJS exports, then run root typecheck plus `release:check`, `audit:check`, `pilots:check` for P4 result/progress consistency, and `site:check` |
 | Publish workflows | Publish npm/PyPI packages after a release tag; npm publish runs repository-wide prepublish gates first, and PyPI publish runs Python unit tests, builds dist, validates metadata, and smoke-installs the wheel before publishing |
 
+All workflows set `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"` so GitHub-hosted
+JavaScript actions run on the upcoming Node 24 runtime before GitHub removes
+the Node 20 action runtime.
+
 ## Merge expectations
 
 For changes touching protocol, security, schemas, rails, or release files:

@@ -14,6 +14,9 @@ on:
       - "packages/ergo-agent-pay/**"
       - ".github/workflows/ci-server.yml"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build:
     name: Build, typecheck & test

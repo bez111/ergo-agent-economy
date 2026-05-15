@@ -12,6 +12,9 @@ on:
       - "packages/ergo-agent-py/**"
       - "test-vectors/**"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   lint-typecheck:
     name: Lint & typecheck

@@ -94,6 +94,7 @@ assert(rootPkg.scripts?.['cjs:check'] === 'node scripts/check-cjs-exports.mjs', 
 assert(rootPkg.scripts?.['release:preflight'] === 'node scripts/release-preflight.mjs', 'package.json must expose npm run release:preflight');
 assert(rootPkg.scripts?.['release:preflight:pack'] === 'node scripts/release-preflight.mjs --pack', 'package.json must expose npm run release:preflight:pack');
 assert(rootPkg.scripts?.['pilots:check'] === 'node scripts/check-pilot-results.mjs', 'package.json must expose npm run pilots:check');
+assert(rootPkg.scripts?.['pilots:todo'] === 'node scripts/list-pilot-blockers.mjs', 'package.json must expose npm run pilots:todo');
 assert(rootPkg.scripts?.['npm:publish-status'] === 'node scripts/check-npm-publish-status.mjs', 'package.json must expose npm run npm:publish-status');
 const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
 assert(example16Pkg.scripts?.preflight === 'tsx scripts/preflight.ts', 'example 16 workspace must expose npm run preflight');
@@ -159,6 +160,7 @@ const pilotReadme = read('docs/pilots/README.md');
 assert(pilotReadme.includes('No pilot in this folder certifies mainnet use'), 'docs/pilots/README.md must preserve mainnet warning');
 assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must link the pilot result template');
 assert(pilotReadme.includes('npm run pilots:check'), 'docs/pilots/README.md must document npm run pilots:check');
+assert(pilotReadme.includes('npm run pilots:todo'), 'docs/pilots/README.md must document npm run pilots:todo');
 assert(pilotReadme.includes('check also reports current P4 progress'), 'docs/pilots/README.md must describe the P4 progress check');
 assert(pilotReadme.includes('## Pending Pilots'), 'docs/pilots/README.md must track pending P4 pilots');
 assert(pilotReadme.includes('EXTERNAL_INPUTS.md'), 'docs/pilots/README.md must link external pilot inputs');
@@ -321,6 +323,17 @@ assert(releaseReadinessWorkflow.includes('npm run pilots:check'), 'ci-release-re
 assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readiness.yml must run when CONTRIBUTING.md changes');
 assert(releaseReadinessWorkflow.includes('.github/pull_request_template.md'), 'ci-release-readiness.yml must run when the PR template changes');
 assert(releaseReadinessWorkflow.includes('.github/ISSUE_TEMPLATE/**'), 'ci-release-readiness.yml must run when issue templates change');
+assert(releaseReadinessWorkflow.includes('.github/workflows/**'), 'ci-release-readiness.yml must run when any workflow changes');
+for (const workflowName of fs.readdirSync(path.join(root, '.github/workflows')).filter((name) => name.endsWith('.yml'))) {
+  const workflowPath = `.github/workflows/${workflowName}`;
+  const workflow = read(workflowPath);
+  if (workflow.includes('actions/checkout@v4') || workflow.includes('actions/setup-node@v4')) {
+    assert(
+      workflow.includes('FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"'),
+      `${workflowPath} must opt JavaScript actions into the Node 24 runtime`,
+    );
+  }
+}
 const releasePreflight = read('scripts/release-preflight.mjs');
 assert(releasePreflight.includes('npm", ["run", "cjs:check"]'), 'release-preflight must run npm run cjs:check');
 assert(releasePreflight.includes('CommonJS export smoke'), 'release-preflight must name the CommonJS export smoke gate');

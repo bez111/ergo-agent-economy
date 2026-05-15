@@ -21,6 +21,8 @@ Use [`result-template.md`](./result-template.md) for every pilot result.
 Run `npm run pilots:check` before committing a completed result record. The
 check also reports current P4 progress and verifies the completed/pending
 tables below stay aligned with the pilot matrix.
+Run `npm run pilots:todo` when you want a plain terminal summary of the
+remaining external evidence blockers.
 Use [`EXTERNAL_INPUTS.md`](./EXTERNAL_INPUTS.md) to see the exact credentials,
 testnet artifacts, facilitator inputs, bridge evidence, and audit inputs that
 cannot be produced by repository code alone.
