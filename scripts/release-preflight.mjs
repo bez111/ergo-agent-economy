@@ -23,7 +23,8 @@
 //  13. MCP-stdio probe against the bundled stub
 //  14. `npm pack` for every @accord-protocol/* package (opt-in via --pack)
 //  15. install-in-tempdir smoke for all 18 workspace tarballs —
-//      installs them into one fresh project and imports each canonical Accord package
+//      installs them into one fresh project, imports each canonical Accord package,
+//      and runs the packaged accord-conformance CLI from outside the repo root
 //      (opt-in via --pack — depends on gate 14's output)
 //
 // Usage:
@@ -404,7 +405,28 @@ if (RUN_PACK) {
       if (!m || parseInt(m[1], 10) === 0) {
         return fail(`probe reported no exports:\n${probe.stdout}`);
       }
-      return pass(`installed all 18 + imported 10 Accord (${m[1]} total exports)`);
+
+      const conformanceCli = path.join(
+        proj,
+        "node_modules",
+        "@accord-protocol",
+        "conformance",
+        "dist",
+        "cli.js",
+      );
+      const conformance = run(
+        process.execPath,
+        [conformanceCli, "run", "--levels", "L0,L1,L2,L3,L4"],
+        { cwd: proj },
+      );
+      if (conformance.status !== 0) {
+        return fail(`packaged conformance CLI exit ${conformance.status}: ${conformance.stdout.slice(-500)}`);
+      }
+      if (!conformance.stdout.includes("Achieved: L4")) {
+        return fail(`packaged conformance CLI did not reach L4:\n${conformance.stdout.slice(-500)}`);
+      }
+
+      return pass(`installed all 18 + imported 10 Accord (${m[1]} exports) + packaged conformance L4`);
     } finally {
       fs.rmSync(proj, { recursive: true, force: true });
       if (PACK_TARBALL_DIR) {

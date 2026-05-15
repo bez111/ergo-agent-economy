@@ -23,7 +23,7 @@ CI plus a clean local release preflight when release surfaces change.
 
 | Phase | Current state | Evidence on branch |
 |---|---|---|
-| P0 Repository stabilization | Complete on PR branch | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, and branch pack/install preflight passed |
+| P0 Repository stabilization | Complete on PR branch | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, and branch pack/install/packaged-conformance preflight passed |
 | P1 Audit readiness | Implemented locally | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
 | P2 Protocol hardening | Implemented locally for v0 | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
 | P3 Developer experience | In review | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, contributor templates, public README wording cleanup, and release-readiness CI committed |
