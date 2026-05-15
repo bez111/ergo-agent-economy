@@ -27,12 +27,13 @@ verification pass is clean.
 | P1 Audit readiness | Implemented locally | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
 | P2 Protocol hardening | Implemented locally for v0 | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
 | P3 Developer experience | In progress | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, public README wording cleanup, and release-readiness CI committed |
-| P4 Testnet pilots | Not started | needs written pilot runs and signed sample receipts after PR/CI |
+| P4 Testnet pilots | Runbooks scaffolded | pilot matrix, result template, testnet wallet setup, and per-rail rollback plans committed; actual pilot evidence still pending |
 | P5 Controlled mainnet launch | Blocked by design | requires external audit reports and signed manifests with exact `mainnetAllowed: true` entries |
 
 Immediate remaining work before opening a PR:
 
 - run a final full verification pass from a clean working tree;
+- execute the P4 pilot runbooks and archive dated result records;
 - keep Rosen example 11 out of the root workspace until external TokenMap dependencies are suitable for clean CI;
 - prepare the PR body with command evidence and the P0-P3 scope boundary.
 

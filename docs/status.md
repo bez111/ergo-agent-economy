@@ -2,7 +2,7 @@
 
 This page is the single source of truth for what works, what does not work, and what can reach mainnet. Other docs MUST defer to this page when they conflict.
 
-Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, example modes, and testnet-first example guidance.
+Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, example modes, testnet-first example guidance, and P4 pilot runbooks.
 
 ## Executive summary
 
@@ -50,6 +50,7 @@ Use Accord today for:
 - Ergo testnet experiments;
 - x402-compatible HTTP payment architecture demos;
 - MCP tool gating prototypes;
+- P4 pilot dry-runs using [`docs/pilots/`](./pilots/);
 - conformance testing;
 - protocol/schema review;
 - audit preparation.

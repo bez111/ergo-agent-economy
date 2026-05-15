@@ -91,6 +91,42 @@ const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
 assert(example16Pkg.scripts?.typecheck === 'tsc --noEmit', 'example 16 workspace must expose npm run typecheck');
 assert(Boolean(example16Pkg.scripts?.test), 'example 16 workspace must expose npm test');
 
+const pilotDocs = [
+  'docs/testnet-wallet-setup.md',
+  'docs/pilots/README.md',
+  'docs/pilots/result-template.md',
+  'docs/pilots/mock-mcp-paid-tool.md',
+  'docs/pilots/ergo-testnet-note-settlement.md',
+  'docs/pilots/rosen-wrapped-token-architecture.md',
+  'docs/pilots/base-sepolia-contract-rail.md',
+  'docs/pilots/x402-facilitator-integration.md',
+];
+
+for (const pilotDoc of pilotDocs) {
+  assert(exists(pilotDoc), `${pilotDoc} must exist for P4 pilot readiness`);
+}
+
+function assertLocalMarkdownLinks(docPath) {
+  const dir = path.dirname(docPath);
+  const linkPattern = /\[[^\]]+\]\(([^)]+)\)/g;
+  for (const match of read(docPath).matchAll(linkPattern)) {
+    const href = match[1].split('#')[0];
+    if (!href || href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) continue;
+    const target = path.normalize(path.join(dir, href));
+    assert(exists(target), `${docPath} has a broken local link: ${href}`);
+  }
+}
+
+for (const pilotDoc of pilotDocs) {
+  if (exists(pilotDoc)) assertLocalMarkdownLinks(pilotDoc);
+}
+
+const pilotReadme = read('docs/pilots/README.md');
+assert(pilotReadme.includes('No pilot in this folder certifies mainnet use'), 'docs/pilots/README.md must preserve mainnet warning');
+assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must link the pilot result template');
+const example16Readme = read('examples/16-paid-mcp-ergo-testnet/README.md');
+assert(example16Readme.includes('docs/testnet-wallet-setup.md'), 'example 16 must link the testnet wallet setup guide');
+
 const status = read('docs/status.md');
 assert(status.includes('NOT CERTIFIED FOR MAINNET'), 'docs/status.md must include NOT CERTIFIED FOR MAINNET');
 assert(status.includes('mainnetAllowed: true'), 'docs/status.md must describe the mainnetAllowed audit gate');
