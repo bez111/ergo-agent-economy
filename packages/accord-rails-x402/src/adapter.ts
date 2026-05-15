@@ -176,6 +176,9 @@ async function settle(
     settlement_id: makeSettlementId(agreement.agreement_id, payment_id),
     agreement_id: agreement.agreement_id,
     agreement_hash: "blake2b256:0x" + accordHashV0(agreement),
+    ...(input.verification
+      ? { verification_receipts: [input.verification.receipt_id] }
+      : {}),
     rail: "x402",
     mode: "paid_before_response",
     status: "settled",

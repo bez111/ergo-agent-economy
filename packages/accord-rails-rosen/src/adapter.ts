@@ -221,6 +221,9 @@ async function settle(
     settlement_id: makeSettlementId(agreement.agreement_id, result.txId ?? proof.note_box_id),
     agreement_id: agreement.agreement_id,
     agreement_hash: "blake2b256:0x" + accordHashV0(agreement),
+    ...(input.verification
+      ? { verification_receipts: [input.verification.receipt_id] }
+      : {}),
     rail: "rosen",
     mode: "note_redeemed",
     status: result.submitted ? "settled" : "pending",

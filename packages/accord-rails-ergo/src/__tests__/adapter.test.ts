@@ -2,8 +2,10 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { blake2b } from "@noble/hashes/blake2";
 import {
+  accordHashV0,
   validateSettlementReceipt,
   type AccordAgreement,
+  type AccordVerificationReceipt,
 } from "@accord-protocol/core";
 import {
   createErgoRailAdapter,
@@ -46,6 +48,21 @@ function agreement(overrides: Partial<AccordAgreement> = {}): AccordAgreement {
     verification: { required: false, method: "none" },
     settlement: { mode: "inline", refund_policy: "expiry", dispute_policy: "none" },
     ...overrides,
+  };
+}
+
+function verificationReceipt(ag: AccordAgreement): AccordVerificationReceipt {
+  return {
+    type: "accord.verification_receipt.v0",
+    version: "v0",
+    receipt_id: "vr_01HX0000000000000000000000",
+    agreement_id: ag.agreement_id,
+    agreement_hash: "blake2b256:0x" + accordHashV0(ag),
+    verifier: { id: "verifier://test" },
+    result: "accepted",
+    evidence: { output_hash: "blake2b256:0x" + "1".repeat(64) },
+    created_at: "2026-05-07T00:00:10Z",
+    signature: { scheme: "ed25519", public_key: "0xaa", signature: "0xbb" },
   };
 }
 
@@ -311,6 +328,18 @@ describe("createErgoRailAdapter — settle", () => {
       payment: VALID_PAYMENT,
     });
     assert.equal(receipt.tx.tx_id, txHash);
+  });
+
+  it("carries verification_receipts when verification was supplied", async () => {
+    const adapter = createErgoRailAdapter({ ops: makeOps() });
+    const ag = agreement({
+      verification: { required: true, method: "verifier_receipt", verifier: "verifier://test" },
+    });
+    const verification = verificationReceipt(ag);
+    const receipt = await adapter.settle!({ agreement: ag, payment: VALID_PAYMENT, verification });
+    const v = validateSettlementReceipt(receipt, { agreement: ag });
+    assert.equal(v.ok, true, JSON.stringify(v.problems));
+    assert.deepEqual(receipt.verification_receipts, [verification.receipt_id]);
   });
 
   it("uses the explicit `network` option when provided", async () => {

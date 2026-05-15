@@ -184,7 +184,15 @@ async function settleAndReceipt(
 ): Promise<AccordSettlementReceipt> {
   const proof = input.payment as BasePaymentProof;
   const result = await ops.redeemNote(proof.note_id, proof.task_output);
-  return makeReceipt(input.agreement, network, mode, result.txHash, proof.note_id, "settled");
+  return makeReceipt(
+    input.agreement,
+    network,
+    mode,
+    result.txHash,
+    proof.note_id,
+    "settled",
+    input.verification?.receipt_id,
+  );
 }
 
 async function refundAndReceipt(
@@ -216,6 +224,7 @@ function makeReceipt(
   txHash: Hex,
   noteId: Hex,
   status: "settled" | "refunded",
+  verificationReceiptId?: string,
 ): AccordSettlementReceipt {
   return {
     type: "accord.settlement_receipt.v0",
@@ -223,6 +232,7 @@ function makeReceipt(
     settlement_id: makeSettlementId(agreement.agreement_id, txHash),
     agreement_id: agreement.agreement_id,
     agreement_hash: "blake2b256:0x" + accordHashV0(agreement),
+    ...(verificationReceiptId ? { verification_receipts: [verificationReceiptId] } : {}),
     rail: "base",
     mode,
     status,
