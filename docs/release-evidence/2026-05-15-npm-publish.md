@@ -59,9 +59,11 @@ See also:
 
 ## Remaining 1.0.0 blockers
 
-- Run the two pending external P4 testnet pilots.
+- Run the remaining Base Sepolia external P4 testnet pilot.
 - Upgrade the Sage Ergo testnet result from `inconclusive` to `pass` after the
   public Sage receipt/activity surfaces expose signed Accord receipt JSON.
+- Rerun the Rosen result with live bridge/watcher/liquidity evidence if project
+  policy requires non-stub bridge evidence before `1.0.0`.
 - Rerun the x402 result against a live test facilitator if project policy
   requires non-stub facilitator evidence before `1.0.0`.
 - Archive pilot evidence with dated result records.

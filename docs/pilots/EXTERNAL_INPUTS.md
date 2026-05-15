@@ -31,6 +31,10 @@ npm run dev -w accord-paid-mcp-ergo-testnet-demo
 
 ## Rosen Wrapped-Token Architecture
 
+Local architecture evidence is archived in
+[`results/2026-05-15-rosen-stub-wrapped-token-architecture.md`](./results/2026-05-15-rosen-stub-wrapped-token-architecture.md).
+The inputs below are only required for a live bridge rerun.
+
 Needed before completing:
 
 - test TokenMap source and hash;
