@@ -2,7 +2,7 @@
 
 This page is the single source of truth for what works, what does not work, and what can reach mainnet. Other docs MUST defer to this page when they conflict.
 
-Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, and package matrix.
+Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, and example modes.
 
 ## Executive summary
 
@@ -134,6 +134,8 @@ Conformance passing means an implementation matches current Accord v0 rules. It 
 ---
 
 ## Example modes
+
+Full example inventory: [`docs/EXAMPLE_MODES.md`](./EXAMPLE_MODES.md).
 
 | Path | Mode | Uses real funds? | Mainnet certified? |
 |---|---|---:|---:|

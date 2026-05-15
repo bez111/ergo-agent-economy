@@ -95,6 +95,14 @@ for (const [, expectedName] of [...accordPackages, ...referencePackages]) {
 assert(packageMatrix.includes('ergo-agent-pay` Python'), 'docs/PACKAGE_MATRIX.md must mention the Python ergo-agent-pay package');
 assert(packageMatrix.includes('NOT') || packageMatrix.includes('Not certified'), 'docs/PACKAGE_MATRIX.md must preserve a conservative mainnet posture');
 
+const exampleModes = read('docs/EXAMPLE_MODES.md');
+for (const entry of fs.readdirSync(path.join(root, 'examples'), { withFileTypes: true })) {
+  if (entry.isDirectory()) {
+    assert(exampleModes.includes(entry.name), `docs/EXAMPLE_MODES.md must mention examples/${entry.name}`);
+  }
+}
+assert(exampleModes.includes('No example in this repository is mainnet-certified'), 'docs/EXAMPLE_MODES.md must preserve the mainnet warning');
+
 const security = read('SECURITY.md');
 assert(security.includes('NOT CERTIFIED FOR MAINNET'), 'SECURITY.md must include NOT CERTIFIED FOR MAINNET');
 

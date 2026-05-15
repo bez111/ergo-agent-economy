@@ -188,6 +188,9 @@ Do not use mainnet funds unless the relevant scripts are audited and the signed 
 
 ## Example modes
 
+The short table below covers the canonical examples. The full 01-16 inventory
+lives in [`docs/EXAMPLE_MODES.md`](./docs/EXAMPLE_MODES.md).
+
 | Example | Mode | Uses real chain? | Uses real funds? | Mainnet certified? |
 |---|---|---:|---:|---:|
 | [`examples/15-paid-mcp-repo-audit`](./examples/15-paid-mcp-repo-audit/) | Mock rail | No | No | No |
