@@ -33,6 +33,20 @@ A component is considered audited only when all of the following are true:
 ## Related docs
 
 - [`MANIFEST_FORMAT.md`](./MANIFEST_FORMAT.md)
+- [`ASSUMPTIONS.md`](./ASSUMPTIONS.md)
+- [`AUDITOR_REQUEST.md`](./AUDITOR_REQUEST.md)
 - [`MAINNET_CERTIFICATION.md`](./MAINNET_CERTIFICATION.md)
+- [`SIGNING_PLAYBOOK.md`](./SIGNING_PLAYBOOK.md)
 - [`../status.md`](../status.md)
 - [`../../SECURITY.md`](../../SECURITY.md)
+
+## Repeatable handoff
+
+Maintainers should run the audit readiness checks before sending material to an external reviewer:
+
+```bash
+npm run audit:check
+npm run audit:handoff -- --out dist/audit-handoff
+```
+
+The handoff script writes a `dist/audit-handoff/` directory with the exact files, sizes, and sha256 hashes included in the review packet. It refuses a dirty working tree unless `--allow-dirty` is passed for an explicitly marked draft handoff.

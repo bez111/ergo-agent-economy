@@ -5,6 +5,8 @@ A rail, contract, script, or predicate can be considered for production mainnet 
 ## Checklist
 
 - [ ] Threat model documented.
+- [ ] `npm run audit:check` passes.
+- [ ] `npm run audit:handoff -- --out dist/audit-handoff` produced a clean handoff from the reviewed commit.
 - [ ] Source code reviewed.
 - [ ] Compiled artifact hash is deterministic and reproducible.
 - [ ] Test vectors published.

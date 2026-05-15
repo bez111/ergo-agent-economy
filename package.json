@@ -37,6 +37,8 @@
     "build": "npm run build --workspaces --if-present",
     "test": "npm run build && npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "audit:check": "node scripts/check-audit-readiness.mjs",
+    "audit:handoff": "node scripts/audit-handoff.mjs",
     "release:check": "node scripts/check-release-readiness.mjs",
     "site:serve": "node site/serve.mjs",
     "site:check": "node site/check.mjs"
