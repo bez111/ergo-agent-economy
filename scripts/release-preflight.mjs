@@ -204,7 +204,11 @@ gate("06 build --workspaces", () => {
 gate("07 CommonJS export smoke", () => {
   const r = run("npm", ["run", "cjs:check"]);
   if (r.status !== 0) return fail(`exit ${r.status}: ${(r.stderr || r.stdout).slice(0, 500)}`);
-  const summary = r.stdout.trim().split("\n")[0] ?? "CJS smoke passed";
+  const summary =
+    r.stdout
+      .trim()
+      .split("\n")
+      .find((line) => line.startsWith("CommonJS export smoke passed:")) ?? "CJS smoke passed";
   return pass(summary.replace(/^CommonJS export smoke passed: /, ""));
 });
 
