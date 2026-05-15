@@ -221,13 +221,13 @@ AgentAccord commercial services live outside this open-standard repository. Anyo
 
 ## Roadmap
 
-Current priority order:
+Current priority order follows the phased roadmap:
 
-1. Stabilize README, status, security, publishing, release, and LLM-facing docs.
-2. Publish `v0.4.0` release candidate only after npm/PyPI release gates are configured.
-3. Keep all rails testnet-only until signed audit manifests permit otherwise.
-4. Improve examples with explicit mock/testnet/mainnet modes.
-5. Finish post-migration release setup for `accord-protocol/accord-protocol`.
+1. Stabilize repository packaging, tests, release checks, and conformance packaging.
+2. Prepare audit-ready manifests, threat model, and auditor handoff materials.
+3. Harden Accord v0 schemas, conformance levels, registry rules, and buyer policy.
+4. Improve quickstarts, examples, and contributor workflows for outside builders.
+5. Run testnet pilots, then consider controlled mainnet only after signed audit manifests allow it.
 
 See [`docs/PROFESSIONALIZATION_ROADMAP.md`](./docs/PROFESSIONALIZATION_ROADMAP.md).
 

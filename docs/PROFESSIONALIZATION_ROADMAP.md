@@ -1,88 +1,211 @@
 # Accord Protocol Professionalization Roadmap
 
-This roadmap turns the current alpha monorepo into a professional open-source protocol repository.
+Last updated: 2026-05-15
 
-## PR-001 — README trust cleanup
+This roadmap turns the current alpha monorepo into a professional open-source protocol repository that can support public contributors, external auditors, testnet pilots, and eventually a controlled mainnet launch.
 
-Goal: remove conflicting claims and make the README match status/security docs.
+The guiding rule is simple: ship useful developer infrastructure now, but keep every real-funds path default-deny until signed audit manifests explicitly allow it.
 
-Changes:
+## Operating principles
 
-- `only blockchain` -> `one of the few / first reference rail`.
-- `No application-layer trust` -> `minimizes application-layer trust`.
-- `ChainCash runs this stack on mainnet today` -> `reference implementation / not production certification`.
-- `fatal flaw` table -> `where existing rails are strong and where Accord adds another layer`.
-- `No MEV` -> eUTXO caveat.
-- `Pay fees in any token` -> supported tokens when fee conversion exists.
+1. `docs/status.md` is the source of truth for maturity, mainnet status, and recommended usage.
+2. All rails remain testnet-only until external audit evidence updates the relevant signed manifest.
+3. Every published package must be installable from a clean checkout and usable outside the monorepo.
+4. The conformance suite is the compatibility contract for third-party implementations.
+5. AgentAccord commercial products stay separate from the open Accord Protocol standard.
 
-## PR-002 — Status language sync
+## Phase P0 - Repository stabilization
 
-Goal: make `docs/status.md` the single source of truth.
+Goal: make the repository trustworthy to clone, install, build, test, and read.
 
-Changes:
+Scope:
 
-- mark all rails testnet-only unless signed manifests say otherwise;
-- replace ambiguous `Stable` labels with `Maintained reference — not production-certified`;
-- add current recommended usage;
-- add mainnet certification checklist link.
+- keep README, status, security, release, and LLM-facing docs consistent;
+- make `npm test` work from a clean checkout by building package artifacts first;
+- make CJS and ESM package entrypoints work where packages advertise both formats;
+- make `@accord-protocol/conformance` self-contained after npm packaging;
+- keep release checks aligned with the current publish workflow;
+- remove accidental local-only assumptions from package scripts and CLIs.
 
-## PR-003 — Publishing / release cleanup
+Acceptance criteria:
 
-Goal: remove confusion between `@accord-protocol/*` and `ergo-agent-*` packages.
+- `npm install` or `npm ci` completes without project-caused engine conflicts;
+- `npm run build` succeeds;
+- `npm test` succeeds from the repository root;
+- `npm run typecheck` succeeds;
+- `npm run release:check` succeeds;
+- `npm run site:check` succeeds;
+- Python tests pass for `packages/ergo-agent-py`;
+- CommonJS smoke tests pass for all packages that advertise CJS exports;
+- `@accord-protocol/conformance` can run from outside the repository root.
 
-Changes:
+Suggested GitHub milestone: `P0 Repository Stabilization`
 
-- update `PUBLISHING.md`;
-- update `RELEASING.md`;
-- document npm/PyPI gates;
-- avoid advertising unpublished packages as already available.
+Suggested issues:
 
-## PR-004 — Example mode matrix
+- Fix CJS runtime path resolution for packaged data files.
+- Package conformance schemas, registry, and test vectors with the CLI.
+- Make root test command clean-checkout safe.
+- Reconcile release preflight with idempotent manual npm workflow reruns.
+- Remove optional Rosen token registry from default workspace installation.
 
-Goal: make examples safe and clear.
+## Phase P1 - Audit readiness
 
-Changes:
+Goal: make the external audit path explicit, reproducible, and reviewable.
 
-- add mock/testnet/architecture/mainnet-certified matrix;
-- mark every example `not mainnet certified` unless audit manifests say otherwise.
+Scope:
 
-## PR-005 — Security contact + audit docs
+- freeze the audit input set for Ergo scripts, Base contracts, schemas, and rail adapters;
+- produce signed or signable manifests for every mainnet-sensitive artifact;
+- document verifier assumptions, wallet assumptions, bridge assumptions, and facilitator assumptions;
+- ensure dangerous override flags are noisy, searchable, and absent from examples;
+- add a repeatable auditor handoff bundle.
 
-Goal: improve trust.
+Acceptance criteria:
 
-Changes:
+- `docs/audit/AUDITOR_REQUEST.md` names exact artifacts and expected outputs;
+- manifest formats cover tree hashes, bytecode hashes, source revisions, audit status, and `mainnetAllowed`;
+- pre-audit findings are either fixed or tracked as explicit accepted risks;
+- each mainnet gate has at least one negative test proving default-deny behavior;
+- every real-funds path links back to `SECURITY.md` and `docs/status.md`.
 
-- improve `SECURITY.md`;
-- add audit folder docs;
-- define manifest format;
-- define mainnet certification checklist.
+Suggested GitHub milestone: `P1 Audit Readiness`
 
-## PR-006 — Maintainers + issue templates
+Suggested issues:
 
-Goal: make contribution flow professional.
+- Finalize Ergo ErgoTree manifest signing workflow.
+- Finalize Base/EVM contract manifest signing workflow.
+- Add negative tests for all mainnet safety gates.
+- Create auditor handoff archive script.
+- Add threat model coverage for verifier compromise and replay.
 
-Changes:
+## Phase P2 - Protocol hardening
 
-- add `MAINTAINERS.md`;
-- add bug/spec/rail/security issue templates;
-- add PR template.
+Goal: make Accord v0 stable enough for independent implementations.
 
-## PR-007 — llms.txt refresh
+Scope:
 
-Goal: stop AI/search systems from repeating stale claims.
+- freeze v0 object schemas for Agreement, Verification Receipt, and Settlement Receipt;
+- expand conformance vectors for malformed inputs, replay windows, settlement mismatch, and registry mismatch;
+- define compatibility rules for minor SDK releases;
+- make buyer policy behavior explicit and testable;
+- clarify registry semantics and versioning.
 
-Changes:
+Acceptance criteria:
 
-- rename to Accord Protocol reference;
-- add current testnet/audit status;
-- add preferred and forbidden wording.
+- every stable RFC has matching JSON Schema and conformance cases;
+- conformance levels L0-L4 have documented pass/fail semantics;
+- package APIs expose stable, typed inputs for core protocol objects;
+- examples use protocol objects consistently instead of ad hoc payloads;
+- registry entries can be validated without private infrastructure.
 
-## PR-008 — Org migration prep
+Suggested GitHub milestone: `P2 Protocol v0 Hardening`
 
-Goal: prepare move to `github.com/accord-protocol/accord-protocol` after cleanup.
+Suggested issues:
 
-Changes:
+- Freeze Accord Agreement v0 schema.
+- Add replay and nonce conformance vectors.
+- Add registry mismatch conformance vectors.
+- Document buyer policy decision semantics.
+- Publish compatibility policy for `0.x` SDK releases.
 
-- add migration plan;
-- list post-migration action items;
-- keep current repo until trust cleanup is done.
+## Phase P3 - Developer experience and adoption
+
+Goal: make the project understandable and pleasant for outside builders.
+
+Scope:
+
+- improve quickstarts for mock rail, Accord/402, Accord/MCP, and conformance;
+- separate legacy `ergo-agent-*` guidance from canonical `@accord-protocol/*` guidance;
+- publish a package matrix with install status, rail status, and mainnet status;
+- keep examples mode-labeled as mock, testnet, architecture, or mainnet-certified;
+- add issue templates and contributor workflows that route questions to the right place.
+
+Acceptance criteria:
+
+- a new developer can run the mock demo in under ten minutes;
+- every example states whether it uses real chain access, real funds, or mainnet-certified code;
+- docs do not imply that unpublished packages are already available from registries;
+- `llms.txt` and README wording match `docs/status.md`;
+- GitHub issues and PRs have templates for bugs, specs, rails, security-sensitive reports, and release work.
+
+Suggested GitHub milestone: `P3 Developer Experience`
+
+Suggested issues:
+
+- Refresh quickstart around mock rail first.
+- Add package availability matrix.
+- Add conformance CLI quickstart for third-party implementers.
+- Add example mode badges.
+- Review docs for stale AgentAccord versus Accord wording.
+
+## Phase P4 - Testnet pilots
+
+Goal: validate real integrations without risking mainnet funds.
+
+Scope:
+
+- run controlled pilots for Accord/402 and Accord/MCP with mock and testnet rails;
+- test Ergo, Rosen, Base/EVM, and x402 assumptions independently;
+- collect verifier failure modes and policy false positives;
+- capture operational runbooks for key rotation, manifest updates, and failed settlements.
+
+Acceptance criteria:
+
+- each pilot has a written scenario, expected receipts, and rollback plan;
+- every pilot result includes conformance output and signed example receipts;
+- verifier and settlement failures are classified and turned into tests where possible;
+- no pilot requires disabling default mainnet safety gates.
+
+Suggested GitHub milestone: `P4 Testnet Pilots`
+
+Suggested issues:
+
+- Run mock Accord/MCP paid tool pilot.
+- Run Ergo testnet Note settlement pilot.
+- Run Rosen wrapped-token architecture pilot.
+- Run Base testnet contract rail pilot.
+- Run x402 facilitator integration pilot.
+
+## Phase P5 - Controlled mainnet launch
+
+Goal: allow narrow, audited, explicitly certified mainnet usage.
+
+Scope:
+
+- enable `mainnetAllowed: true` only for artifacts covered by signed external audit evidence;
+- publish release notes that name exactly which rails and scripts are certified;
+- keep uncertified rails default-deny;
+- run a low-limit launch with monitoring, incident process, and rollback instructions.
+
+Acceptance criteria:
+
+- external audit reports are linked from the relevant manifests;
+- `mainnetAllowed: true` appears only for audited hashes;
+- release artifacts are reproducible from a clean checkout;
+- conformance and package smoke tests pass against the release tag;
+- launch limits, incident contacts, and rollback procedures are public.
+
+Suggested GitHub milestone: `P5 Controlled Mainnet Launch`
+
+Suggested issues:
+
+- Prepare audited release tag.
+- Publish signed audit manifests.
+- Add launch monitoring checklist.
+- Add mainnet incident response runbook.
+- Run post-launch conformance and receipt audit.
+
+## Release train
+
+The next release train should be:
+
+1. Finish P0 fixes locally.
+2. Push the stabilization branch to GitHub.
+3. Open a PR with build, test, typecheck, release-check, site-check, and Python test evidence.
+4. Cut `v0.4.0-rc.1` only after CI and registry credentials are ready.
+5. Promote to `v0.4.0` only after package publishing and conformance packaging are verified from a clean install.
+
+## Definition of done for this roadmap
+
+The roadmap is complete when P0-P4 are done, at least one external audit has produced signed manifest updates, and P5 can proceed without changing the default-deny safety model.
