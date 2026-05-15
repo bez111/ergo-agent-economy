@@ -2,7 +2,7 @@
 
 This page is the single source of truth for what works, what does not work, and what can reach mainnet. Other docs MUST defer to this page when they conflict.
 
-Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, example modes, testnet-first example guidance, and P4 pilot runbooks.
+Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-policy sync, receipt-binding validation, package matrix, example modes, testnet-first example guidance, P4 pilot runbooks, and the first mock pilot result.
 
 ## Executive summary
 
@@ -51,6 +51,7 @@ Use Accord today for:
 - x402-compatible HTTP payment architecture demos;
 - MCP tool gating prototypes;
 - P4 pilot dry-runs using [`docs/pilots/`](./pilots/);
+- completed local mock pilot evidence in [`docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md`](./pilots/results/2026-05-15-mock-mcp-paid-tool.md);
 - conformance testing;
 - protocol/schema review;
 - audit preparation.

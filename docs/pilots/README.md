@@ -19,6 +19,12 @@ entries.
 
 Use [`result-template.md`](./result-template.md) for every pilot result.
 
+## Completed Results
+
+| Pilot | Result | Record |
+|---|---|---|
+| Mock Accord/MCP paid tool | Pass | [`results/2026-05-15-mock-mcp-paid-tool.md`](./results/2026-05-15-mock-mcp-paid-tool.md) |
+
 ## Shared Rules
 
 - Use fresh testnet credentials and low balances.

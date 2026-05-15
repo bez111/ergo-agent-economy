@@ -108,6 +108,10 @@ const pilotDocs = [
 for (const pilotDoc of pilotDocs) {
   assert(exists(pilotDoc), `${pilotDoc} must exist for P4 pilot readiness`);
 }
+assert(
+  exists('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md'),
+  'docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md must preserve the completed mock pilot result',
+);
 
 function assertLocalMarkdownLinks(docPath) {
   const dir = path.dirname(docPath);
@@ -145,6 +149,11 @@ for (const pilotDoc of pilotDocs) {
 const pilotReadme = read('docs/pilots/README.md');
 assert(pilotReadme.includes('No pilot in this folder certifies mainnet use'), 'docs/pilots/README.md must preserve mainnet warning');
 assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must link the pilot result template');
+assert(pilotReadme.includes('results/2026-05-15-mock-mcp-paid-tool.md'), 'docs/pilots/README.md must link the completed mock pilot result');
+const mockPilotResult = read('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md');
+assert(mockPilotResult.includes('| Result | `pass` |'), 'mock pilot result must record pass status');
+assert(mockPilotResult.includes('Achieved: L4'), 'mock pilot result must include conformance L4 evidence');
+assert(mockPilotResult.includes('does not certify mainnet use'), 'mock pilot result must preserve the mainnet warning');
 const example16Readme = read('examples/16-paid-mcp-ergo-testnet/README.md');
 assert(example16Readme.includes('docs/testnet-wallet-setup.md'), 'example 16 must link the testnet wallet setup guide');
 
