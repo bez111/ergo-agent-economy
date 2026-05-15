@@ -1,6 +1,6 @@
 {
   "name": "agentpay-base",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Base / Ethereum-L2 implementation of the AgentPay v0 protocol. Reserve / Note / Acceptance Predicate semantics on EVM, denominated in any ERC-20 (USDC, USDT, …). Mirrors ergo-agent-pay's API shape so apps can pick the chain by config, not by rewriting.",
   "type": "module",
   "main": "./dist/index.cjs",

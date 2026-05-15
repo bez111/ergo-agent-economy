@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-server",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Local HTTP signing-and-submission daemon for ergo-agent-pay. Closes the TS↔Python (and any-language) gap by exposing the SDK over a small REST surface.",
   "type": "module",
   "bin": {
@@ -41,7 +41,7 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "ergo-agent-pay": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

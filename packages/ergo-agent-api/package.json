@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-api",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Pay-per-API middleware on top of ergo-agent-pay. Verifies Ergo Notes, enforces replay protection, and (optionally) redeems them — usable with Express, Connect, Fastify (via adapter), or as a pure handler.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -48,7 +48,7 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "ergo-agent-pay": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

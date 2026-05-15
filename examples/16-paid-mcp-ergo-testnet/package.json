@@ -11,11 +11,11 @@
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/mcp": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0",
-    "@accord-protocol/rails-ergo": "^0.4.0",
-    "ergo-agent-pay": "^0.3.0"
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/mcp": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1",
+    "@accord-protocol/rails-ergo": "^0.4.1",
+    "ergo-agent-pay": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

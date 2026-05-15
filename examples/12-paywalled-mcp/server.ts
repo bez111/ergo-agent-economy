@@ -80,7 +80,7 @@ async function callFree(name: string): Promise<McpToolResult> {
 // ── MCP wiring ──────────────────────────────────────────────────────────────
 
 const server = new Server(
-  { name: "ergo-paywalled-demo", version: "0.3.0" },
+  { name: "ergo-paywalled-demo", version: "0.3.1" },
   { capabilities: { tools: {} } }
 );
 

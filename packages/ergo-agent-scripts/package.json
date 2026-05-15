@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-scripts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Canonical ErgoScript sources for v0 predicates plus a typed registry for compiled ergoTrees. Ships sources only; the compile script populates trees via ergo-lib-wasm-nodejs.",
   "type": "module",
   "main": "./dist/index.cjs",

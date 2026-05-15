@@ -3,12 +3,16 @@
   "name": "ergo-agent-mcp",
   "displayName": "Ergo Agent",
   "description": "Lets MCP-compatible AI agents (Claude Desktop, Cursor, Windsurf, …) hold ERG, check Note boxes on the Ergo blockchain, build payment transactions, and offer paywalled tools that gate execution behind a real on-chain Note. Built on the AgentPay v0 protocol from Accord Protocol.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "bez111",
   "license": "MIT",
   "homepage": "https://github.com/accord-protocol/accord-protocol",
   "repository": "https://github.com/accord-protocol/accord-protocol",
-  "categories": ["payments", "blockchain", "agent-economy"],
+  "categories": [
+    "payments",
+    "blockchain",
+    "agent-economy"
+  ],
   "tags": [
     "ergo",
     "ergo-blockchain",

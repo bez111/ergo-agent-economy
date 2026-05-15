@@ -1,6 +1,6 @@
-# v0.4.0 release checklist
+# v0.4.1 release checklist
 
-This checklist describes what must be true before `git tag v0.4.0 && git push origin v0.4.0`.
+This checklist describes what must be true before `git tag v0.4.1 && git push origin v0.4.1`.
 
 A public package release is **not** production certification. Accord remains testnet-first and `NOT CERTIFIED FOR MAINNET` unless signed audit manifests explicitly mark relevant entries `mainnetAllowed: true`.
 
@@ -14,13 +14,13 @@ A public package release is **not** production certification. Accord remains tes
 | Publish jobs | npm prepublish gates run before any package publish; PyPI runs unit tests, builds dist, `twine check`, and wheel install smoke | shipped / verify |
 | Skip-if-already-published guard | Each npm job pre-checks via `npm view` | shipped |
 | Self-conformance gate | L0+L1+L2+L3+L4 before publishing `@accord-protocol/conformance` | shipped |
-| Package versions | Accord packages `0.4.0`; legacy/reference packages `0.3.0`; Python `0.3.0` | by design |
+| Package versions | Accord packages `0.4.1`; legacy/reference packages `0.3.1`; Python `0.3.1` | by design |
 | External auditor signed manifest | No | external auditor |
 | Mainnet status | `NOT CERTIFIED FOR MAINNET` | must remain true |
 
 ## Package matrix
 
-### Canonical Accord npm packages — `0.4.0`
+### Canonical Accord npm packages — `0.4.1`
 
 - `@accord-protocol/core`
 - `@accord-protocol/mcp`
@@ -33,7 +33,7 @@ A public package release is **not** production certification. Accord remains tes
 - `@accord-protocol/conformance`
 - `@accord-protocol/buyer-policy`
 
-### Maintained reference npm packages — `0.3.0`
+### Maintained reference npm packages — `0.3.1`
 
 - `ergo-agent-pay`
 - `ergo-agent-cli`
@@ -44,7 +44,7 @@ A public package release is **not** production certification. Accord remains tes
 - `ergo-agent-rosen`
 - `agentpay-base`
 
-### Python package — `0.3.0`
+### Python package — `0.3.1`
 
 - `ergo-agent-pay`
 
@@ -134,8 +134,8 @@ git checkout main
 git pull --ff-only
 git status
 npm run release:check
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.4.1
+git push origin v0.4.1
 ```
 
 The tag triggers:
@@ -171,13 +171,13 @@ python -m pip index versions ergo-agent-pay
 
 ## Step 7 — GitHub Release
 
-Create a GitHub Release for `v0.4.0` only after registry verification.
+Create a GitHub Release for `v0.4.1` only after registry verification.
 
 Release notes must include:
 
-- Accord packages published at `0.4.0`;
-- legacy/reference packages remain `0.3.0`;
-- Python reference package remains `0.3.0`;
+- Accord packages published at `0.4.1`;
+- legacy/reference packages remain `0.3.1`;
+- Python reference package remains `0.3.1`;
 - `NOT CERTIFIED FOR MAINNET` warning;
 - link to `docs/status.md`;
 - link to `SECURITY.md`;

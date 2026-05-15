@@ -3,16 +3,16 @@ name: Publish to npm
 on:
   push:
     tags:
-      - "v*"          # triggers on: git tag v0.4.0 && git push --tags
+      - "v*"          # triggers on: git tag v0.4.1 && git push --tags
   workflow_dispatch:  # manual re-run from Actions UI (used to verify green CI after fixes)
 
 # Two scopes published by this workflow:
 #
-#   Legacy `ergo-agent-*` / `agentpay-base` packages (currently at 0.3.0).
+#   Legacy `ergo-agent-*` / `agentpay-base` packages (currently at 0.3.1).
 #   Re-publishing the same version is a no-op via the skip-if-already-published
 #   guard at the top of each job, so an accidental v0.3.x tag is safe.
 #
-#   New `@accord-protocol/*` scoped packages (at 0.4.0). These are the
+#   New `@accord-protocol/*` scoped packages (at 0.4.1). These are the
 #   open-standard layer added during the rebrand.
 #
 # Topological ordering:

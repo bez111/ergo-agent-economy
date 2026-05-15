@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/mcp",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord/MCP transport wrapper. Turn any MCP tool into a paid, verifiable Accord engagement: validate Agreement, verify payment via rail adapter, emit Verification + Settlement Receipts. Rail-agnostic. See specs/ACCORD-005-accord-mcp.md.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -42,7 +42,7 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

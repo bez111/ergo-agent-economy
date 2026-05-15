@@ -228,8 +228,8 @@ The next release train should be:
 1. Finish P0 fixes locally.
 2. Push the stabilization branch to GitHub.
 3. Open a PR with build, test, typecheck, release-check, site-check, and Python test evidence.
-4. Cut `v0.4.0-rc.1` only after CI and registry credentials are ready.
-5. Promote to `v0.4.0` only after package publishing and conformance packaging are verified from a clean install.
+4. Cut `v0.4.1-rc.1` only after CI and registry credentials are ready.
+5. Promote to `v0.4.1` only after package publishing and conformance packaging are verified from a clean install.
 
 ## Definition of done for this roadmap
 

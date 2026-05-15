@@ -9,7 +9,7 @@ Last updated: 2026-05-15 — protocol compatibility, registry semantics, buyer-p
 | Area | Status |
 |---|---|
 | Protocol object version | `v0` draft |
-| SDK line | `0.4.0` release candidate |
+| SDK line | `0.4.1` release candidate |
 | Conformance | L0-L4 implemented in the reference suite |
 | Recommended usage | Local demos, mock rail, testnet development, conformance testing |
 | Mainnet status | **NOT CERTIFIED FOR MAINNET** |
@@ -88,7 +88,7 @@ Stable RFCs must ship matching JSON Schemas in [`schemas/`](../schemas/) and con
 
 ## SDK implementation status
 
-### Accord Protocol layer (`@accord-protocol/*`, `0.4.0` release candidate)
+### Accord Protocol layer (`@accord-protocol/*`, `0.4.1` release candidate)
 
 | Package | State | What it does |
 |---|---|---|
@@ -103,7 +103,7 @@ Stable RFCs must ship matching JSON Schemas in [`schemas/`](../schemas/) and con
 | [`@accord-protocol/conformance`](../packages/accord-conformance/) | Alpha — implemented | L0-L4 conformance suite and CLI |
 | [`@accord-protocol/buyer-policy`](../packages/accord-buyer-policy/) | Alpha — implemented | Buyer-side policy engine for agentic wallets |
 
-### Reference / legacy rail packages (`ergo-agent-*` / `agentpay-base`, `0.3.0` line)
+### Reference / legacy rail packages (`ergo-agent-*` / `agentpay-base`, `0.3.1` line)
 
 These are maintained reference packages. They may be API-stable within the reference line, but they are **not production-certified** and do **not** imply mainnet safety.
 
@@ -162,7 +162,7 @@ Full example inventory: [`docs/EXAMPLE_MODES.md`](./EXAMPLE_MODES.md).
 | Package matrix | [`docs/PACKAGE_MATRIX.md`](./PACKAGE_MATRIX.md) tracks install status, rail scope, and mainnet posture |
 | `NPM_TOKEN` GitHub secret | Configure before release |
 | PyPI Trusted Publishing | Configure before release |
-| `v0.4.0` tag | Do not push until `npm run release:preflight:pack`, CI, npm secret, and PyPI Trusted Publishing are ready |
+| `v0.4.1` tag | Do not push until `npm run release:preflight:pack`, CI, npm secret, and PyPI Trusted Publishing are ready |
 | GitHub Release | Create only after packages are published or intentionally marked local-only |
 
 See [`PUBLISHING.md`](../PUBLISHING.md), [`RELEASING.md`](../RELEASING.md), and [`docs/RELEASE-CHECKLIST.md`](./RELEASE-CHECKLIST.md) if present.

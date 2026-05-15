@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/rails-base",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord rail adapter for the Base / EVM Note primitive (AgentPayReserveV0). verifyPayment fetches the Note from the Solidity contract, checks expiry / receiver binding / task-hash / value; settle calls redeemNote and emits a v0 Settlement Receipt with mode=redeemed.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -43,12 +43,12 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0",
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1",
     "@noble/hashes": "^1.8.0"
   },
   "peerDependencies": {
-    "agentpay-base": "^0.3.0"
+    "agentpay-base": "^0.3.1"
   },
   "peerDependenciesMeta": {
     "agentpay-base": {

@@ -9,9 +9,9 @@
     "agent": "tsx agent.ts"
   },
   "dependencies": {
-    "ergo-agent-pay": "*",
-    "ergo-agent-api": "*",
-    "ergo-agent-scripts": "*",
+    "ergo-agent-pay": "^0.3.1",
+    "ergo-agent-api": "^0.3.1",
+    "ergo-agent-scripts": "^0.3.1",
     "express": "^4.19.0"
   },
   "devDependencies": {

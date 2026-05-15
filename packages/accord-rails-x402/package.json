@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/rails-x402",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord rail adapter for x402-compatible HTTP payments. Wraps any x402 facilitator (Coinbase, custom) into the AccordRailAdapter shape so x402 endpoints can settle Accord agreements atomically (pay_before_response).",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -43,8 +43,8 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

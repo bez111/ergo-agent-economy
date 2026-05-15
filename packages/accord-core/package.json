@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/core",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord Protocol core SDK — canonicalize, hash, validate Agreement / Verification Receipt / Settlement Receipt v0 objects. Rail-agnostic. See specs/ACCORD-000-overview.md.",
   "type": "module",
   "main": "./dist/index.cjs",

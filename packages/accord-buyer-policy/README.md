@@ -110,6 +110,6 @@ SIGNER_ERROR                        – signer rejected; budget rolled back
 
 ## Status
 
-Alpha at v0.4.0. The API is intended to remain stable through the v0.x line; breaking changes will land in a v1 release. Conformance with this package is **not** a registry-level claim — it is a buyer-side hygiene tool.
+Alpha at v0.4.1. The API is intended to remain stable through the v0.x line; breaking changes will land in a v1 release. Conformance with this package is **not** a registry-level claim — it is a buyer-side hygiene tool.
 
 The package is **not** a substitute for an external audit of the rest of the Accord stack. Mainnet trees and contracts are still gated by the audit manifest workflow described in [ACCORD-010](../../specs/ACCORD-010-security-audit.md).

@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/rails-ergo",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord rail adapter for the Ergo Note primitive. verifyPayment fetches the Note from the chain, checks expiry / reserve binding / task-hash / value; settle calls redeemNote and emits a v0 Settlement Receipt with mode=note_redeemed.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -42,11 +42,11 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1"
   },
   "peerDependencies": {
-    "ergo-agent-pay": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1"
   },
   "peerDependenciesMeta": {
     "ergo-agent-pay": {

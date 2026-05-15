@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "ergo-agent-pay": "^0.3.0",
-    "ergo-agent-mcp": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1",
+    "ergo-agent-mcp": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

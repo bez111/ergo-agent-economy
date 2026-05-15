@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // scripts/release-preflight.mjs
 //
-// Pre-flight smoke for v0.4.0 release. Runs every gate the publish workflow
+// Pre-flight smoke for v0.4.1 release. Runs every gate the publish workflow
 // will run, locally, in <2 minutes. Catches things that would otherwise fail
 // the workflow after `git tag && push`.
 //
@@ -10,7 +10,7 @@
 //   1. Working tree clean
 //   2. On main, in sync with origin (or a clean, pushed branch when
 //      --allow-branch is passed)
-//   3. Version distribution (10 × 0.4.0 + 8 × 0.3.0 expected)
+//   3. Version distribution (10 × 0.4.1 + 8 × 0.3.1 expected)
 //   4. `npm install --include=optional` clean
 //   5. `npm run typecheck --workspaces` clean
 //   6. `npm run build --workspaces` clean
@@ -35,7 +35,7 @@
 //   node scripts/release-preflight.mjs --allow-branch --pack # PR branch smoke
 //
 // Exit code 0 iff all gates pass. Designed to be run before
-// `git tag v0.4.0 && git push --tags`.
+// `git tag v0.4.1 && git push --tags`.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { spawnSync } from "node:child_process";
@@ -73,10 +73,10 @@ const ACCORD_PACKAGES = [
   "@accord-protocol/buyer-policy",
 ];
 
-// Reference rail packages at 0.3.0. The @accord-protocol/* tarballs declare
-// runtime deps on these (e.g. rails-base depends on agentpay-base@^0.3.0), so
+// Reference rail packages at 0.3.1. The @accord-protocol/* tarballs declare
+// runtime deps on these (e.g. rails-base depends on agentpay-base@^0.3.1), so
 // the install-in-tempdir gate has to ship them as local tarballs too — the
-// 0.3.0 line is not yet on the public npm registry.
+// 0.3.1 line is not yet on the public npm registry.
 const LEGACY_PACKAGES = [
   "ergo-agent-pay",
   "ergo-agent-cli",
@@ -175,7 +175,7 @@ gate("02 release branch synced with origin", () => {
   return pass(`${branch} is pushed and contains origin/main (--allow-branch)`);
 });
 
-gate("03 version distribution (10×0.4.0 + 8×0.3.0)", () => {
+gate("03 version distribution (10×0.4.1 + 8×0.3.1)", () => {
   const counts = new Map();
   for (const pkg of fs.readdirSync(path.join(REPO_ROOT, "packages"))) {
     const p = path.join(REPO_ROOT, "packages", pkg, "package.json");
@@ -183,14 +183,14 @@ gate("03 version distribution (10×0.4.0 + 8×0.3.0)", () => {
     const json = JSON.parse(fs.readFileSync(p, "utf-8"));
     counts.set(json.version, (counts.get(json.version) ?? 0) + 1);
   }
-  const expect040 = counts.get("0.4.0") ?? 0;
-  const expect030 = counts.get("0.3.0") ?? 0;
+  const expect040 = counts.get("0.4.1") ?? 0;
+  const expect030 = counts.get("0.3.1") ?? 0;
   if (expect040 !== 10 || expect030 !== 8) {
     return fail(
-      `expected 10×0.4.0 + 8×0.3.0; got ${[...counts].map(([v, c]) => `${c}×${v}`).join(" + ")}`,
+      `expected 10×0.4.1 + 8×0.3.1; got ${[...counts].map(([v, c]) => `${c}×${v}`).join(" + ")}`,
     );
   }
-  return pass(`10×0.4.0 (Accord) + 8×0.3.0 (legacy)`);
+  return pass(`10×0.4.1 (Accord) + 8×0.3.1 (legacy)`);
 });
 
 gate("04 npm install --include=optional", () => {
@@ -384,15 +384,15 @@ if (RUN_PACK) {
       return fail(`expected ${expected} tarballs, got ${allTarballs.length}`);
     }
 
-    // Build name → tarball-path map so we can resolve transitive 0.3.0 deps
-    // (e.g. rails-base depends on agentpay-base@^0.3.0) against the local
-    // tarballs via npm `overrides`, since the 0.3.0 packages are not on the
+    // Build name → tarball-path map so we can resolve transitive 0.3.1 deps
+    // (e.g. rails-base depends on agentpay-base@^0.3.1) against the local
+    // tarballs via npm `overrides`, since the 0.3.1 packages are not on the
     // public registry yet.
     const nameToTarball = new Map();
     for (const file of allTarballs) {
       const full = path.join(PACK_TARBALL_DIR, file);
-      // Parse name out of the tarball filename: scoped accord-protocol-core-0.4.0.tgz
-      // becomes @accord-protocol/core; legacy ergo-agent-pay-0.3.0.tgz stays as-is.
+      // Parse name out of the tarball filename: scoped accord-protocol-core-0.4.1.tgz
+      // becomes @accord-protocol/core; legacy ergo-agent-pay-0.3.1.tgz stays as-is.
       let name;
       if (file.startsWith("accord-protocol-")) {
         const stem = file.replace(/-[\d.]+\.tgz$/, "").replace(/^accord-protocol-/, "");
@@ -406,8 +406,8 @@ if (RUN_PACK) {
     const proj = fs.mkdtempSync(path.join(os.tmpdir(), "accord-install-"));
     try {
       // Declare every workspace tarball as a file: dependency. This forces
-      // npm to resolve transitive 0.3.0 constraints (e.g. rails-base →
-      // agentpay-base@^0.3.0) against the local tarballs rather than the
+      // npm to resolve transitive 0.3.1 constraints (e.g. rails-base →
+      // agentpay-base@^0.3.1) against the local tarballs rather than the
       // public registry.
       const dependencies = {};
       for (const [name, tarball] of nameToTarball) {
@@ -483,7 +483,7 @@ if (RUN_PACK) {
 
 // ── Run ──────────────────────────────────────────────────────────────────────
 
-console.log(`Accord Protocol v0.4.0 release pre-flight\n`);
+console.log(`Accord Protocol v0.4.1 release pre-flight\n`);
 let failures = 0;
 for (const g of GATES) {
   process.stdout.write(`  ${g.name.padEnd(45)} ... `);
@@ -506,8 +506,8 @@ console.log("");
 if (failures === 0) {
   const branch = run("git", ["branch", "--show-current"]).stdout.trim();
   const nextStep = branch === "main"
-    ? "Ready to tag v0.4.0."
-    : "Branch pre-flight passed; merge to main before tagging v0.4.0.";
+    ? "Ready to tag v0.4.1."
+    : "Branch pre-flight passed; merge to main before tagging v0.4.1.";
   console.log(`✓ All ${GATES.length} gates passed. ${nextStep}`);
   process.exit(0);
 } else {

@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/conformance",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord Protocol conformance suite and CLI. Exercises L0 schema, L1 transport, L2 rail, L3 security and L4 registry compatibility against an Accord implementation. Supports HTTP and MCP-stdio probing, plus ed25519 signing of conformance results. The output is the source of truth for 'Accord-compatible (L*)' badge claims.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -48,21 +48,21 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/gateway": "^0.4.0",
-    "@accord-protocol/mcp": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0",
-    "@accord-protocol/rails-base": "^0.4.0",
-    "@accord-protocol/rails-ergo": "^0.4.0",
-    "@accord-protocol/rails-rosen": "^0.4.0",
-    "@accord-protocol/rails-x402": "^0.4.0",
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/gateway": "^0.4.1",
+    "@accord-protocol/mcp": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1",
+    "@accord-protocol/rails-base": "^0.4.1",
+    "@accord-protocol/rails-ergo": "^0.4.1",
+    "@accord-protocol/rails-rosen": "^0.4.1",
+    "@accord-protocol/rails-x402": "^0.4.1",
     "@noble/curves": "^1.8.0",
     "@noble/hashes": "^1.8.0",
-    "agentpay-base": "^0.3.0",
+    "agentpay-base": "^0.3.1",
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.0",
-    "ergo-agent-pay": "^0.3.0",
-    "ergo-agent-scripts": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1",
+    "ergo-agent-scripts": "^0.3.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

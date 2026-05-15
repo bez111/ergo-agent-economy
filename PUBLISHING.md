@@ -82,17 +82,17 @@ Do not publish directly from an unreviewed local workspace.
 Recommended flow:
 
 ```bash
-git checkout -b release/v0.4.0
+git checkout -b release/v0.4.1
 # update versions, CHANGELOG, docs/status.md if needed
 git add -A
-git commit -m "chore(release): v0.4.0"
-git push -u origin release/v0.4.0
+git commit -m "chore(release): v0.4.1"
+git push -u origin release/v0.4.1
 # open PR, run CI, review status/security docs
 # merge to main
 git checkout main
 git pull
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.4.1
+git push origin v0.4.1
 ```
 
 The tag should trigger npm and PyPI workflows. If publishing is not configured, do not tag a public release that implies packages are available.

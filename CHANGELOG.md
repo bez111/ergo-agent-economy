@@ -11,6 +11,15 @@ A public package release is not production certification. Always check `docs/sta
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-05-15
+
+### Release recovery
+
+`v0.4.0` was already tagged and published from an older commit, so this release
+line carries the current hardened `main` state under fresh package versions:
+canonical Accord packages move to `0.4.1`, while maintained reference packages
+and the Python package move to `0.3.1`.
+
 ### Post-`v0.4.0` release-pipeline polish
 
 The `v0.4.0` tag was pushed with all 18 packages already on the npm registry. The following changes landed on `main` after the tag to make the publish workflows reproducible from `workflow_dispatch` going forward:
@@ -20,6 +29,8 @@ The `v0.4.0` tag was pushed with all 18 packages already on the npm registry. Th
 - **publish-npm.yml / publish-pypi.yml** — re-enabled `workflow_dispatch:` so the publish pipelines can be re-run manually after fixes without re-pushing a tag. (PR #60)
 - **publish-pypi.yml** — added `packages-dir: packages/ergo-agent-py/dist` to the `pypa/gh-action-pypi-publish` step. The action runs in a Docker container that ignores the job-level `defaults.run.working-directory`. (PR #61)
 - **All workspace `package.json` files** — normalized `repository.url` to `git+https://...` form to remove the per-publish `npm auto-corrected` warning.
+- **Release readiness / publish gates** — added a release-readiness CI workflow, npm prepublish gates before any package publish job, CommonJS export smoke coverage, packaged conformance CLI smoke outside the monorepo, Python unit/install smoke coverage, and PR/issue template path coverage. (PR #63)
+- **Pilot and contributor docs** — added P4 pilot runbooks, recorded the first local mock MCP pilot result, refreshed contributor/release docs, and kept all public wording aligned with the default-deny mainnet posture. (PR #63)
 
 ### Examples
 

@@ -7,7 +7,7 @@ This document describes how a new Accord Protocol version reaches public package
 Accord has two version axes:
 
 1. **Protocol object version** — embedded in Accord objects, e.g. `v0`, `v1`. This changes only on breaking schema/object changes.
-2. **SDK/package version** — npm/PyPI semver, e.g. `0.4.0`. This changes when implementation packages change.
+2. **SDK/package version** — npm/PyPI semver, e.g. `0.4.1`. This changes when implementation packages change.
 
 The current status is tracked in [`docs/status.md`](docs/status.md).
 
@@ -16,8 +16,8 @@ The current status is tracked in [`docs/status.md`](docs/status.md).
 | Type | Example | Meaning |
 |---|---|---|
 | Development branch | `feature/...` | Not published |
-| Release candidate | `release/v0.4.0` | Review and CI stage |
-| Public package release | `v0.4.0` tag | npm/PyPI publication if configured |
+| Release candidate | `release/v0.4.1` | Review and CI stage |
+| Public package release | `v0.4.1` tag | npm/PyPI publication if configured |
 | Mainnet-certified release | future | Requires signed external audit manifests |
 
 A release can be public while still being testnet-only. Public package release is not the same as production certification.
@@ -52,12 +52,12 @@ cd packages/ergo-agent-py && python3 -m unittest discover -s tests -v
 ```bash
 git checkout main
 git pull
-git checkout -b release/v0.4.0
+git checkout -b release/v0.4.1
 
 # update versions and docs
 git add -A
-git commit -m "chore(release): v0.4.0"
-git push -u origin release/v0.4.0
+git commit -m "chore(release): v0.4.1"
+git push -u origin release/v0.4.1
 ```
 
 Open a PR. After CI passes and the PR is reviewed:
@@ -65,8 +65,8 @@ Open a PR. After CI passes and the PR is reviewed:
 ```bash
 git checkout main
 git pull
-git tag v0.4.0
-git push origin v0.4.0
+git tag v0.4.1
+git push origin v0.4.1
 ```
 
 ## What the tag should trigger

@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/gateway",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Accord/402 HTTP middleware. Express/Connect-compatible. Turn any HTTP endpoint into a paid, verifiable Accord engagement: 402 challenge with agreement template, replay-protected payment verification, structured error envelope. Rail-agnostic. See specs/ACCORD-004-accord-402.md.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -44,7 +44,7 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

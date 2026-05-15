@@ -1,6 +1,6 @@
 {
   "name": "ergo-agent-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server exposing Ergo blockchain payment tools to AI agents",
   "type": "module",
   "bin": {
@@ -29,8 +29,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@fleet-sdk/core": "^0.7.0",
-    "ergo-agent-pay": "^0.3.0",
-    "ergo-agent-api": "^0.3.0"
+    "ergo-agent-pay": "^0.3.1",
+    "ergo-agent-api": "^0.3.1"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

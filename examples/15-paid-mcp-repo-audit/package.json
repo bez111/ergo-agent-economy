@@ -1,6 +1,6 @@
 {
   "name": "accord-paid-mcp-repo-audit-demo",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "description": "One-command paid-MCP repo-audit demo. Buyer creates an Accord Agreement, issues a Mock-rail payment, calls the seller's MCP tool, the verifier signs a Verification Receipt, the rail emits a Settlement Receipt. End-to-end Accord lifecycle in <10 minutes.",
   "type": "module",
@@ -9,9 +9,9 @@
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0",
-    "@accord-protocol/mcp": "^0.4.0",
-    "@accord-protocol/rails": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1",
+    "@accord-protocol/mcp": "^0.4.1",
+    "@accord-protocol/rails": "^0.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@rosen-bridge/tokens": "^6.0.1",
-    "ergo-agent-api": "*",
-    "ergo-agent-pay": "*",
-    "ergo-agent-rosen": "*",
-    "ergo-agent-scripts": "*",
+    "ergo-agent-api": "^0.3.1",
+    "ergo-agent-pay": "^0.3.1",
+    "ergo-agent-rosen": "^0.3.1",
+    "ergo-agent-scripts": "^0.3.1",
     "express": "^4.19.0"
   },
   "devDependencies": {

@@ -70,7 +70,7 @@ async function runHandshake(probe: McpStdioProbe, checks: ConformanceCheck[]): P
     const result = await probe.request("initialize", {
       protocolVersion: "2024-11-05",
       capabilities: { tools: {} },
-      clientInfo: { name: "accord-conformance", version: "0.4.0" },
+      clientInfo: { name: "accord-conformance", version: "0.4.1" },
     });
     const ok =
       typeof result === "object" &&

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ergo-agent-pay"
-version = "0.3.0"
+version = "0.3.1"
 description = "Python reference SDK for the Ergo rail of Accord Protocol — agent payments, Note operations, LangChain / OpenAI integrations. Mirrors the legacy npm package of the same name; the canonical Python Accord layer will publish later under a different PyPI name."
 readme = "README.md"
 license = { text = "MIT" }

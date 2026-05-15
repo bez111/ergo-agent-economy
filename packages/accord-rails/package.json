@@ -1,6 +1,6 @@
 {
   "name": "@accord-protocol/rails",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Shared Accord rail-adapter interface + a Mock adapter for tests/demos. Rail-specific implementations (Ergo, Rosen, Base, x402) re-export the interface from here. See specs/ACCORD-006-rails.md.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -45,7 +45,7 @@
     "url": "https://github.com/accord-protocol/accord-protocol/issues"
   },
   "dependencies": {
-    "@accord-protocol/core": "^0.4.0"
+    "@accord-protocol/core": "^0.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -55,7 +55,7 @@ for (const [pkgPath, expectedName] of accordPackages) {
   if (!exists(pkgPath)) continue;
   const pkg = readJson(pkgPath);
   assert(pkg.name === expectedName, `${pkgPath}: expected name ${expectedName}, got ${pkg.name}`);
-  assert(pkg.version === '0.4.0', `${pkg.name}: expected version 0.4.0, got ${pkg.version}`);
+  assert(pkg.version === '0.4.1', `${pkg.name}: expected version 0.4.1, got ${pkg.version}`);
   assert(pkg.license === 'MIT', `${pkg.name}: missing MIT license`);
   assert(pkg.publishConfig?.access === 'public', `${pkg.name}: publishConfig.access must be public`);
   assert(pkg.repository?.url?.includes('accord-protocol/accord-protocol'), `${pkg.name}: repository.url should point to accord-protocol/accord-protocol`);
@@ -71,7 +71,7 @@ for (const [pkgPath, expectedName] of referencePackages) {
   if (!exists(pkgPath)) continue;
   const pkg = readJson(pkgPath);
   assert(pkg.name === expectedName, `${pkgPath}: expected name ${expectedName}, got ${pkg.name}`);
-  assert(pkg.version === '0.3.0', `${pkg.name}: expected version 0.3.0, got ${pkg.version}`);
+  assert(pkg.version === '0.3.1', `${pkg.name}: expected version 0.3.1, got ${pkg.version}`);
   assert(pkg.license === 'MIT', `${pkg.name}: missing MIT license`);
   assert(pkg.publishConfig?.access === 'public', `${pkg.name}: publishConfig.access must be public`);
   assert(pkg.repository?.directory, `${pkg.name}: repository.directory missing`);
@@ -80,9 +80,9 @@ for (const [pkgPath, expectedName] of referencePackages) {
 }
 
 const pyproject = read('packages/ergo-agent-py/pyproject.toml');
-assert(pyproject.includes('version = "0.3.0"'), 'Python pyproject.toml must remain version 0.3.0 for reference rail release');
+assert(pyproject.includes('version = "0.3.1"'), 'Python pyproject.toml must remain version 0.3.1 for reference rail release');
 const pyInit = read('packages/ergo-agent-py/ergo_agent_pay/__init__.py');
-assert(pyInit.includes('__version__ = "0.3.0"'), 'Python __init__.py must remain version 0.3.0');
+assert(pyInit.includes('__version__ = "0.3.1"'), 'Python __init__.py must remain version 0.3.1');
 assert(exists('LICENSE'), 'root LICENSE file must exist');
 assert(exists('scripts/check-cjs-exports.mjs'), 'CommonJS export smoke script must exist');
 assert(exists('.github/ISSUE_TEMPLATE/release_work.md'), 'release-work issue template must exist');
@@ -270,7 +270,7 @@ const security = read('SECURITY.md');
 assert(security.includes('NOT CERTIFIED FOR MAINNET'), 'SECURITY.md must include NOT CERTIFIED FOR MAINNET');
 
 const changelog = read('CHANGELOG.md');
-assert(changelog.includes('## [0.4.0]'), 'CHANGELOG.md must contain a v0.4.0 release entry before tag');
+assert(changelog.includes('## [0.4.1]'), 'CHANGELOG.md must contain a v0.4.1 release entry before tag');
 
 const publishNpm = read('.github/workflows/publish-npm.yml');
 assert(publishNpm.includes('workflow_dispatch'), 'publish-npm.yml should allow manual workflow_dispatch reruns after publish fixes');
