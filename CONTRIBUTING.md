@@ -53,6 +53,7 @@ Run the smallest relevant set first, then broaden before review:
 ```bash
 npm install --include=optional
 npm run build --workspaces --if-present
+npm run cjs:check
 npm run typecheck --workspaces --if-present
 npm test --workspaces --if-present
 npm run release:check

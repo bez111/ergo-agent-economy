@@ -56,6 +56,7 @@ Acceptance criteria:
 - `npm run build` succeeds;
 - `npm test` succeeds from the repository root;
 - `npm run typecheck` succeeds;
+- `npm run cjs:check` succeeds after build;
 - `npm run release:check` succeeds;
 - `npm run release:preflight -- --allow-branch --pack` succeeds on a clean pushed PR branch;
 - `npm run site:check` succeeds;

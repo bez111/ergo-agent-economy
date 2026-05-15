@@ -84,11 +84,13 @@ assert(pyproject.includes('version = "0.3.0"'), 'Python pyproject.toml must rema
 const pyInit = read('packages/ergo-agent-py/ergo_agent_pay/__init__.py');
 assert(pyInit.includes('__version__ = "0.3.0"'), 'Python __init__.py must remain version 0.3.0');
 assert(exists('LICENSE'), 'root LICENSE file must exist');
+assert(exists('scripts/check-cjs-exports.mjs'), 'CommonJS export smoke script must exist');
 assert(exists('.github/ISSUE_TEMPLATE/release_work.md'), 'release-work issue template must exist');
 
 const rootPkg = readJson('package.json');
 assert(rootPkg.workspaces?.includes('examples/15-paid-mcp-repo-audit'), 'examples/15-paid-mcp-repo-audit must remain a tested workspace demo');
 assert(rootPkg.workspaces?.includes('examples/16-paid-mcp-ergo-testnet'), 'examples/16-paid-mcp-ergo-testnet must remain a tested workspace demo');
+assert(rootPkg.scripts?.['cjs:check'] === 'node scripts/check-cjs-exports.mjs', 'package.json must expose npm run cjs:check');
 assert(rootPkg.scripts?.['release:preflight'] === 'node scripts/release-preflight.mjs', 'package.json must expose npm run release:preflight');
 assert(rootPkg.scripts?.['release:preflight:pack'] === 'node scripts/release-preflight.mjs --pack', 'package.json must expose npm run release:preflight:pack');
 const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
@@ -164,6 +166,7 @@ assert(status.includes('mainnetAllowed: true'), 'docs/status.md must describe th
 
 const contributing = read('CONTRIBUTING.md');
 assert(contributing.includes('NOT CERTIFIED FOR MAINNET'), 'CONTRIBUTING.md must preserve the mainnet warning');
+assert(contributing.includes('npm run cjs:check'), 'CONTRIBUTING.md must document cjs:check');
 assert(contributing.includes('npm run release:check'), 'CONTRIBUTING.md must document release:check');
 assert(contributing.includes('npm run release:preflight -- --allow-branch --pack'), 'CONTRIBUTING.md must document branch release preflight');
 assert(!contributing.includes('Every example must work on Ergo testnet with real API calls'), 'CONTRIBUTING.md must not contain stale Ergo-only example guidance');
@@ -183,6 +186,7 @@ assert(packageMatrix.includes('ergo-agent-pay` Python'), 'docs/PACKAGE_MATRIX.md
 assert(packageMatrix.includes('NOT') || packageMatrix.includes('Not certified'), 'docs/PACKAGE_MATRIX.md must preserve a conservative mainnet posture');
 
 const releaseChecklist = read('docs/RELEASE-CHECKLIST.md');
+assert(releaseChecklist.includes('npm run cjs:check'), 'docs/RELEASE-CHECKLIST.md must document cjs:check');
 assert(releaseChecklist.includes('npm run release:preflight -- --allow-branch --pack'), 'docs/RELEASE-CHECKLIST.md must document PR-branch pack smoke');
 assert(releaseChecklist.includes('npm run release:preflight:pack'), 'docs/RELEASE-CHECKLIST.md must document main-branch pack smoke');
 assert(releaseChecklist.includes('installs all 18 packages into a fresh temporary project'), 'docs/RELEASE-CHECKLIST.md must describe install-in-tempdir package smoke');
@@ -272,6 +276,12 @@ assert(publishNpm.includes('already on npm; skipping.'), 'publish-npm.yml manual
 assert(publishNpm.includes('- ergo-agent-pay') && publishNpm.includes('- ergo-agent-scripts') && publishNpm.includes('- agentpay-base'), 'accord-conformance publish job should depend on legacy foundation packages');
 assert(publishNpm.includes('npm test -w ergo-agent-cli'), 'ergo-agent-cli publish job should run tests');
 assert(publishNpm.includes('npm test -w ergo-agent-mcp'), 'ergo-agent-mcp publish job should run tests');
+const releaseReadinessWorkflow = read('.github/workflows/ci-release-readiness.yml');
+assert(releaseReadinessWorkflow.includes('npm run cjs:check'), 'ci-release-readiness.yml must run CommonJS export smoke after build');
+assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readiness.yml must run when CONTRIBUTING.md changes');
+const releasePreflight = read('scripts/release-preflight.mjs');
+assert(releasePreflight.includes('npm", ["run", "cjs:check"]'), 'release-preflight must run npm run cjs:check');
+assert(releasePreflight.includes('CommonJS export smoke'), 'release-preflight must name the CommonJS export smoke gate');
 
 function collectMainnetAllowed(value, locations = [], pathParts = []) {
   if (Array.isArray(value)) {

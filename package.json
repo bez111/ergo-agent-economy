@@ -38,6 +38,7 @@
     "build": "npm run build --workspaces --if-present",
     "test": "npm run build && npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "cjs:check": "node scripts/check-cjs-exports.mjs",
     "protocol:check": "node scripts/check-protocol-hardening.mjs",
     "audit:check": "node scripts/check-audit-readiness.mjs",
     "audit:handoff": "node scripts/audit-handoff.mjs",
