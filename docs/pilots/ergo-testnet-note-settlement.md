@@ -43,6 +43,16 @@ npm run dev
 | Settlement Receipt | `mode: "note_redeemed"`, testnet tx id and box id |
 | Conformance | current repo conformance remains passing |
 
+## Evidence To Capture
+
+- Full Agreement JSON and `agreement_hash`.
+- Full Verification Receipt JSON and `receipt_id`.
+- Full Settlement Receipt JSON with `tx.tx_id` and `tx.box_id`.
+- Reserve creation tx id, Reserve box id, Note issuance tx id, Note box id,
+  and settlement redemption tx id.
+- Ergo testnet explorer links for the Reserve, Note, and settlement tx.
+- Conformance output showing the current achieved level.
+
 ## Rollback Plan
 
 - Stop issuing Notes from the Reserve after the first failure.

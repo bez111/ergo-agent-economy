@@ -31,6 +31,14 @@ npm run dev -w accord-paid-mcp-repo-audit-demo
 | Settlement Receipt | settled mock payment id |
 | Conformance | L0-L4 still passes for the repo |
 
+## Evidence To Capture
+
+- Full Agreement JSON and `agreement_hash`.
+- Full Verification Receipt JSON and `receipt_id`.
+- Full Settlement Receipt JSON and `settlement_id`.
+- Terminal transcript showing the paid MCP demo exited 0.
+- Conformance output showing the current achieved level.
+
 ## Rollback Plan
 
 No funds or external services are used. If the pilot fails, keep the failing

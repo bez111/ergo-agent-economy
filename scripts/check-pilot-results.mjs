@@ -127,7 +127,15 @@ if (!fs.existsSync(readmePath)) {
 
     if (target && fs.existsSync(path.join(root, target))) {
       const runbook = fs.readFileSync(path.join(root, target), 'utf8');
-      for (const heading of ['Goal', 'Scenario', 'Preflight', 'Expected Receipts', 'Rollback Plan', 'Pass Criteria']) {
+      for (const heading of [
+        'Goal',
+        'Scenario',
+        'Preflight',
+        'Expected Receipts',
+        'Evidence To Capture',
+        'Rollback Plan',
+        'Pass Criteria',
+      ]) {
         requireHeading(runbook, target, heading);
       }
       assert(/mainnet/i.test(runbook), `${target} must preserve mainnet safety context`);

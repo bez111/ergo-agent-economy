@@ -31,6 +31,19 @@ npm test -w @accord-protocol/rails-rosen
 | Settlement Receipt | token amount checked against caller-supplied Rosen token registry |
 | Conformance | rail compatibility remains passing against the reference Rosen rail |
 
+## Evidence To Capture
+
+- Full Agreement JSON and `agreement_hash`.
+- Full Verification Receipt JSON and `receipt_id`.
+- Full Settlement Receipt JSON and `settlement_id`.
+- Test TokenMap source, hash, token id, wrapped asset symbol, and decimals.
+- Wrapped-token accounting evidence showing the expected amount and actual
+  Note value agree after decimals normalization.
+- Bridge assumption review naming which Rosen dependency was real, stubbed, or
+  unavailable.
+- Conformance output showing the current achieved level, or the exact reason
+  conformance does not apply to the architectural run.
+
 ## Rollback Plan
 
 - Do not bridge mainnet assets for this pilot.

@@ -30,6 +30,19 @@ npm test -w @accord-protocol/rails-base
 | Settlement Receipt | EVM tx id or Note id tied to the Agreement hash |
 | Conformance | Base rail L2/L3 checks remain passing |
 
+## Evidence To Capture
+
+- Full Agreement JSON and `agreement_hash`.
+- Full Verification Receipt JSON and `receipt_id`.
+- Full Settlement Receipt JSON with EVM tx hash or Note id.
+- Base Sepolia RPC endpoint name, contract address, deployment tx, and bytecode
+  hash.
+- Live testnet transaction link proving reserve, Note, redemption, or refund
+  behaviour for the selected path.
+- Audit-gate output proving the contract remains testnet-only and mainnet
+  default-deny.
+- Conformance output showing the current achieved level or documented failure.
+
 ## Rollback Plan
 
 - Use Base Sepolia only.

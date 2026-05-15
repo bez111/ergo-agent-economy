@@ -29,6 +29,18 @@ npm test -w @accord-protocol/gateway
 | Settlement Receipt | facilitator `payment_id` or equivalent proof id |
 | Conformance | Accord/402 transport checks remain passing |
 
+## Evidence To Capture
+
+- Full Agreement JSON and `agreement_hash`.
+- Full Verification Receipt JSON and `receipt_id`.
+- Full Settlement Receipt JSON with facilitator `payment_id` or tx hash.
+- Redacted HTTP 402 challenge headers, including accepted rail and payment
+  requirements.
+- Redacted retry request headers proving the facilitator proof was supplied.
+- Facilitator verify/settle response with secrets removed.
+- Replay test output showing the same payment proof fails closed.
+- Conformance output showing the current achieved level or documented failure.
+
 ## Rollback Plan
 
 - Use test facilitator credentials or a stub facilitator.

@@ -52,6 +52,9 @@ dated result record in [`results/`](./results/).
 - Do not set dangerous mainnet override flags.
 - Keep `docs/status.md` and `SECURITY.md` authoritative when any runbook
   appears to conflict with safety posture.
+- Keep each runbook's `Evidence To Capture` section explicit enough that a
+  later reviewer can reproduce why the result is `pass`, `fail`, or
+  `inconclusive`.
 - Capture conformance output plus Agreement, Verification Receipt, and
   Settlement Receipt evidence for every completed pilot.
 - Classify every failure as verifier, rail, settlement, wallet, bridge,
