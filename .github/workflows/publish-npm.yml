@@ -34,7 +34,7 @@ permissions:
 # `needs:` enforces the order so a foundation failure aborts dependents.
 
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "24"
 
 jobs:
   prepublish-gates:
@@ -47,6 +47,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
           cache: npm
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build all workspaces
@@ -89,6 +91,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -116,6 +120,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -145,6 +151,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -174,6 +182,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -203,6 +213,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -232,6 +244,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -263,6 +277,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -292,6 +308,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -325,6 +343,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -354,6 +374,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -383,6 +405,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -412,6 +436,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -443,6 +469,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -473,6 +501,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -503,6 +533,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -533,6 +565,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build
@@ -576,6 +610,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
@@ -621,6 +657,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11
       - name: Install
         run: npm install --include=optional
       - name: Build deps
