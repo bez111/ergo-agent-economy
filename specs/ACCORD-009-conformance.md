@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 | Implements in this repo | [`@accord-protocol/conformance`](../packages/accord-conformance/) |
 
@@ -67,9 +67,10 @@ For each rail under test, six checks:
 1. `verifyPayment(happy)` returns `ok=true`
 2. `payment_id` is a non-empty string
 3. `rail.settle()` is implemented and returns a Settlement Receipt
-4. The receipt passes `validateSettlementReceipt`
+4. The receipt passes `validateSettlementReceipt` against the same Agreement,
+   including agreement id/hash, rail, currency, and decimals binding
 5. `receipt.mode` is in `RAIL_MODE_ALLOWLIST[receipt.rail]`
-6. `verifyPayment(garbage)` does not return `ok=true`
+6. `verifyPayment(garbage)` returns a structured `ok=false` result
 
 Run against the four reference rails (`ergo`, `rosen`, `base`, `x402`) by default = 24 checks. Third-party rails are tested via `runL2({ extraRails: [...] })`.
 
@@ -185,7 +186,7 @@ Exit codes: 0 (all requested levels pass), 1 (any fail/inconclusive), 2 (usage e
 
 ## 7. Reference implementation
 
-[`@accord-protocol/conformance`](../packages/accord-conformance/). 42 unit tests covering every level + signing infrastructure. The CLI ships as the package's `bin` entry; runs via `npx accord-conformance` after `npm install`.
+[`@accord-protocol/conformance`](../packages/accord-conformance/). Unit tests cover every level, negative rail/registry mismatch cases, and signing infrastructure. The CLI ships as the package's `bin` entry; runs via `npx accord-conformance` after `npm install`.
 
 ## 8. Open questions (v1 candidates)
 

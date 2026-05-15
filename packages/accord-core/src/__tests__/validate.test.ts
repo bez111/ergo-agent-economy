@@ -6,6 +6,7 @@ import {
   validateSettlementReceipt,
   compareDecimal,
 } from "../validate.js";
+import { accordHashV0 } from "../hash.js";
 import type {
   AccordAgreement,
   AccordVerificationReceipt,
@@ -74,6 +75,10 @@ function minimalSReceipt(agreement_hash: string): AccordSettlementReceipt {
     },
     created_at: "2026-05-07T00:00:20Z",
   };
+}
+
+function agreementHash(agreement: AccordAgreement): string {
+  return "blake2b256:0x" + accordHashV0(agreement);
 }
 
 describe("validateAgreement", () => {
@@ -162,10 +167,37 @@ describe("validateVerificationReceipt", () => {
       method: "verifier_receipt",
       verifier: "verifier://different",
     };
-    const v = minimalVReceipt(hash);
+    const v = minimalVReceipt(agreementHash(ag));
     const r = validateVerificationReceipt(v, { agreement: ag });
     assert.equal(r.ok, false);
     assert.equal(r.problems[0]?.code, "ACCORD_VERIFIER_MISMATCH");
+  });
+
+  it("accepts a receipt bound to the resolved agreement id and hash", () => {
+    const ag = minimalAgreement();
+    const v = minimalVReceipt(agreementHash(ag));
+    v.agreement_id = ag.agreement_id;
+    const r = validateVerificationReceipt(v, { agreement: ag });
+    assert.equal(r.ok, true);
+  });
+
+  it("rejects a receipt bound to a different agreement_id", () => {
+    const ag = minimalAgreement();
+    const v = minimalVReceipt(agreementHash(ag));
+    v.agreement_id = "acc_01HX0DIFFERENTAGREEMENTID";
+    const r = validateVerificationReceipt(v, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(
+      r.problems.some((p) => p.code === "ACCORD_AGREEMENT_MISMATCH"),
+    );
+  });
+
+  it("rejects an agreement_hash that does not match the resolved agreement", () => {
+    const ag = minimalAgreement();
+    const v = minimalVReceipt("blake2b256:0x" + "0".repeat(64));
+    const r = validateVerificationReceipt(v, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.code === "ACCORD_HASH_MISMATCH"));
   });
 
   it("rejects when evidence_required is missing from checks", () => {
@@ -244,12 +276,61 @@ describe("validateSettlementReceipt", () => {
 
   it("rejects amount that exceeds the agreement price", () => {
     const ag = minimalAgreement();
-    const s = minimalSReceipt(hash);
+    const s = minimalSReceipt(agreementHash(ag));
     s.amount = "26"; // agreement price is "25"
     const r = validateSettlementReceipt(s, { agreement: ag });
     assert.equal(r.ok, false);
     assert.ok(
       r.problems.some((p) => p.code === "ACCORD_AMOUNT_EXCEEDS_AGREEMENT"),
+    );
+  });
+
+  it("accepts a receipt bound to the resolved agreement context", () => {
+    const ag = minimalAgreement();
+    const s = minimalSReceipt(agreementHash(ag));
+    const r = validateSettlementReceipt(s, { agreement: ag });
+    assert.equal(r.ok, true);
+  });
+
+  it("rejects a receipt bound to a different agreement_id", () => {
+    const ag = minimalAgreement();
+    const s = minimalSReceipt(agreementHash(ag));
+    s.agreement_id = "acc_01HX0DIFFERENTAGREEMENTID";
+    const r = validateSettlementReceipt(s, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(
+      r.problems.some((p) => p.code === "ACCORD_AGREEMENT_MISMATCH"),
+    );
+  });
+
+  it("rejects an agreement_hash that does not match the resolved agreement", () => {
+    const ag = minimalAgreement();
+    const s = minimalSReceipt("blake2b256:0x" + "0".repeat(64));
+    const r = validateSettlementReceipt(s, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.code === "ACCORD_HASH_MISMATCH"));
+  });
+
+  it("rejects a settlement receipt whose rail differs from the agreement", () => {
+    const ag = minimalAgreement();
+    const s = minimalSReceipt(agreementHash(ag));
+    s.rail = "x402";
+    s.mode = "paid_before_response";
+    delete s.tx.box_id;
+    const r = validateSettlementReceipt(s, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(r.problems.some((p) => p.code === "ACCORD_RAIL_MISMATCH"));
+  });
+
+  it("rejects a settlement receipt whose currency or decimals differ from the agreement", () => {
+    const ag = minimalAgreement();
+    const s = minimalSReceipt(agreementHash(ag));
+    s.currency = "USDC";
+    s.decimals = 6;
+    const r = validateSettlementReceipt(s, { agreement: ag });
+    assert.equal(r.ok, false);
+    assert.ok(
+      r.problems.some((p) => p.code === "ACCORD_CURRENCY_MISMATCH"),
     );
   });
 

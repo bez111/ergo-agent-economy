@@ -10,6 +10,10 @@
 //   * Agreement.created_at is ISO-8601 UTC with `Z`
 //   * Verification Receipt: result==accepted requires no failed checks
 //   * Verification Receipt: evidence_required (Agreement) ⊆ checks (Receipt)
+//   * Verification Receipt: agreement_id/hash match the parent Agreement
+//     when one is supplied
+//   * Settlement Receipt: agreement_id/hash, rail, currency, and decimals
+//     match the parent Agreement when one is supplied
 //   * Settlement Receipt: mode is in the per-rail allow-list
 //   * Settlement Receipt: status==settled requires verification_receipts when
 //     the parent Agreement set verification.required=true
@@ -18,7 +22,8 @@
 //     (other than the `type`/`version` markers)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { AccordError, type AccordErrorCode } from "./errors.js";
+import type { AccordErrorCode } from "./errors.js";
+import { accordHashV0 } from "./hash.js";
 import {
   RAIL_MODE_ALLOWLIST,
   type AccordAgreement,
@@ -55,6 +60,33 @@ function rejectReservedTopLevelNamespace(
         message: "top-level field uses the reserved 'accord_' prefix",
       });
     }
+  }
+}
+
+function expectedAgreementHash(agreement: AccordAgreement): string {
+  return `blake2b256:0x${accordHashV0(agreement)}`;
+}
+
+function validateReceiptAgreementBinding(
+  receipt: { agreement_id: string; agreement_hash: string },
+  agreement: AccordAgreement,
+  problems: ValidationProblem[],
+): void {
+  if (receipt.agreement_id !== agreement.agreement_id) {
+    problems.push({
+      code: "ACCORD_AGREEMENT_MISMATCH",
+      path: "$.agreement_id",
+      message: "receipt agreement_id does not match the resolved Agreement",
+    });
+  }
+
+  const expectedHash = expectedAgreementHash(agreement);
+  if (receipt.agreement_hash !== expectedHash) {
+    problems.push({
+      code: "ACCORD_HASH_MISMATCH",
+      path: "$.agreement_hash",
+      message: "receipt agreement_hash does not match the resolved Agreement hash",
+    });
   }
 }
 
@@ -179,6 +211,8 @@ export function validateVerificationReceipt(
   if (context?.agreement) {
     const ag = context.agreement;
 
+    validateReceiptAgreementBinding(receipt, ag, problems);
+
     if (ag.verification.verifier && ag.verification.verifier !== receipt.verifier.id) {
       problems.push({
         code: "ACCORD_VERIFIER_MISMATCH",
@@ -268,6 +302,27 @@ export function validateSettlementReceipt(
 
   if (context?.agreement) {
     const ag = context.agreement;
+
+    validateReceiptAgreementBinding(receipt, ag, problems);
+
+    if (receipt.rail !== ag.payment.rail) {
+      problems.push({
+        code: "ACCORD_RAIL_MISMATCH",
+        path: "$.rail",
+        message: "settlement rail does not match agreement.payment.rail",
+      });
+    }
+
+    if (
+      receipt.currency !== ag.price.currency ||
+      receipt.decimals !== ag.price.decimals
+    ) {
+      problems.push({
+        code: "ACCORD_CURRENCY_MISMATCH",
+        path: "$.currency",
+        message: "settlement currency/decimals do not match agreement.price",
+      });
+    }
 
     if (
       ag.verification.required &&

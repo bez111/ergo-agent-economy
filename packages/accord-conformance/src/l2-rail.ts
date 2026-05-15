@@ -9,9 +9,10 @@
 //   1. accepts a happy-path payment (verifyPayment returns ok=true)
 //   2. emits a stable payment_id (string, not whitespace)
 //   3. emits a Settlement Receipt that passes core's
-//      validateSettlementReceipt against the same Agreement
+//      validateSettlementReceipt against the same Agreement, including
+//      agreement_id/hash, rail, and currency binding
 //   4. respects the per-rail mode allow-list (RAIL_MODE_ALLOWLIST)
-//   5. rejects an obviously-bad payment (sanity rejection)
+//   5. rejects an obviously-bad payment with a structured ok=false result
 //
 // L2 is a "harness conformance" check — the implementation under test is
 // any rail adapter conforming to AccordRailAdapter from @accord-protocol/
@@ -184,13 +185,11 @@ async function runChecksForRail(
       payment: r.badPayment,
     } as VerifyPaymentInput);
   } catch (err) {
-    // Acceptable if the rail throws on garbage — but pref ok:false. We
-    // count both as "pass" but log the exception path as a detail.
     checks.push({
       id: `${prefix}.verify-payment.rejection`,
       level: "L2",
-      description: `${r.rail}: verifyPayment(garbage) does not return ok=true`,
-      result: "pass",
+      description: `${r.rail}: verifyPayment(garbage) returns structured ok=false`,
+      result: "fail",
       detail: `threw instead of returning structured rejection: ${stringifyError(err)}`,
     });
     return;
@@ -199,7 +198,7 @@ async function runChecksForRail(
   checks.push({
     id: `${prefix}.verify-payment.rejection`,
     level: "L2",
-    description: `${r.rail}: verifyPayment(garbage) does not return ok=true`,
+    description: `${r.rail}: verifyPayment(garbage) returns structured ok=false`,
     result: properlyRejected ? "pass" : "fail",
     detail: properlyRejected
       ? undefined

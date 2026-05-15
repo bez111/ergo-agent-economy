@@ -144,9 +144,9 @@ L2 exercises each of the four reference rails (`rails-ergo`, `rails-rosen`, `rai
 - `verifyPayment(happy)` returns `ok=true`
 - `payment_id` is a non-empty string (suitable for replay protection)
 - `rail.settle()` is implemented and returns a Settlement Receipt
-- The Settlement Receipt passes core's `validateSettlementReceipt`
+- The Settlement Receipt passes core's `validateSettlementReceipt` against the same Agreement id/hash, rail, currency, and decimals
 - `receipt.mode` is in `RAIL_MODE_ALLOWLIST[rail]`
-- `verifyPayment(garbage)` does not return `ok=true`
+- `verifyPayment(garbage)` returns a structured `ok=false` result
 
 A third-party rail can be tested with the same harness by passing it via `runL2({ extraRails: [...] })`.
 

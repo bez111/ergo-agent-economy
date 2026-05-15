@@ -3,7 +3,7 @@
 | Status | Draft |
 |---|---|
 | Version | v0 |
-| Last updated | 2026-05-07 |
+| Last updated | 2026-05-15 |
 | Editors | bez111 |
 | Implements in this repo | [`@accord-protocol/rails`](../packages/accord-rails/), [`@accord-protocol/rails-{ergo,rosen,base,x402}`](../packages/) |
 
@@ -117,7 +117,8 @@ A new rail is conformant when it:
 1. Implements `AccordRailAdapter` — `rail` field + `verifyPayment` (settle / refund optional)
 2. Returns a stable `payment_id` from successful `verifyPayment`
 3. Emits Settlement Receipts whose `mode` is in `RAIL_MODE_ALLOWLIST[receipt.rail]`
-4. Returns receipts that pass `validateSettlementReceipt` from `@accord-protocol/core`
+4. Returns receipts that pass `validateSettlementReceipt` from `@accord-protocol/core`,
+   including binding to the same Agreement id/hash, rail, currency, and decimals
 5. Rejects garbage payments structurally (not via thrown exceptions for typed rejections)
 
 The conformance suite (L2) takes any `AccordRailAdapter` via its `extraRails` option and runs the same six-check probe used against the reference rails. See [ACCORD-009](./ACCORD-009-conformance.md).

@@ -137,6 +137,24 @@ assertIncludes('docs/policy-engine.md', [
   'Replay Boundary',
 ]);
 
+assertIncludes('specs/ACCORD-002-verification-receipt.md', [
+  'ACCORD_AGREEMENT_MISMATCH',
+  'ACCORD_HASH_MISMATCH',
+  'resolved parent Agreement',
+]);
+
+assertIncludes('specs/ACCORD-003-settlement-receipt.md', [
+  'ACCORD_AGREEMENT_MISMATCH',
+  'ACCORD_RAIL_MISMATCH',
+  'ACCORD_CURRENCY_MISMATCH',
+  'resolved parent Agreement',
+]);
+
+assertIncludes('specs/ACCORD-009-conformance.md', [
+  'agreement id/hash',
+  'structured `ok=false`',
+]);
+
 assertIncludes('registry/README.md', [
   'descriptive',
   'not an audit authority',

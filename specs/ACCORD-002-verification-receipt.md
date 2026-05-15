@@ -180,7 +180,8 @@ Verifying:
 A v0 implementation MUST reject a Verification Receipt that:
 
 1. Fails schema validation.
-2. References an `agreement_id` it cannot resolve when one is required by context.
+2. References an `agreement_id` it cannot resolve, or whose `agreement_id`
+   differs from the resolved parent Agreement when one is required by context.
 3. Carries an `agreement_hash` that does not match the resolved Agreement's
    computed hash.
 4. Has `result == "accepted"` while any element of `checks` has `result == "fail"`.
@@ -226,12 +227,17 @@ invalid-agreement-hash-algorithm.json       — must be rejected
 invalid-reserved-accord-field.json          — must be rejected
 ```
 
+Agreement-id and agreement-hash mismatch checks are context-dependent; the
+reference validator and conformance suite exercise them against a resolved
+parent Agreement.
+
 ## 9. Error codes
 
 | Code | Meaning |
 |---|---|
 | `ACCORD_INVALID_SCHEMA` | Receipt fails schema validation. |
 | `ACCORD_INVALID_SIGNATURE` | Signature does not verify against the named public key. |
+| `ACCORD_AGREEMENT_MISMATCH` | `agreement_id` does not match the resolved Agreement. |
 | `ACCORD_VERIFIER_MISMATCH` | `verifier.id` does not match the parent Agreement. |
 | `ACCORD_HASH_MISMATCH` | `agreement_hash` does not match the resolved Agreement. |
 | `ACCORD_RESULT_INCONSISTENT` | `result == "accepted"` while a required check failed. |

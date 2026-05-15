@@ -159,18 +159,22 @@ display its hex prefix.
 A v0 implementation MUST reject a Settlement Receipt that:
 
 1. Fails schema validation.
-2. Carries an `agreement_hash` that does not match the resolved Agreement's
+2. References an `agreement_id` that differs from the resolved parent Agreement.
+3. Carries an `agreement_hash` that does not match the resolved Agreement's
    computed hash.
-3. Has a `mode` that is not in the allow-list for its `rail`.
-4. Has `status: "settled"` while the parent Agreement set
+4. Has a `rail` that differs from the parent Agreement's `payment.rail`.
+5. Has `currency` or `decimals` that differ from the parent Agreement's
+   `price.currency` or `price.decimals`.
+6. Has a `mode` that is not in the allow-list for its `rail`.
+7. Has `status: "settled"` while the parent Agreement set
    `verification.required: true` and `verification_receipts` is empty.
-5. Has `amount > price.amount` from the parent Agreement.
-6. Has `status: "partial"` without a referenced Verification Receipt whose
+8. Has `amount > price.amount` from the parent Agreement.
+9. Has `status: "partial"` without a referenced Verification Receipt whose
    `result == "partial"`.
-7. Has a `tx.tx_id` whose format does not match the rail (e.g. Ergo tx_id
+10. Has a `tx.tx_id` whose format does not match the rail (e.g. Ergo tx_id
    must be 64 hex chars; EVM tx_id must be 0x + 64 hex chars).
-8. Has `created_at` before the parent Agreement's `created_at`.
-9. Carries a top-level extension field whose key starts with `accord_`.
+11. Has `created_at` before the parent Agreement's `created_at`.
+12. Carries a top-level extension field whose key starts with `accord_`.
 
 A v0 implementation SHOULD verify the rail-side claim (re-fetch the tx from
 the rail and confirm `box_id` / `tx_id` exist with the claimed effect) before
@@ -236,13 +240,20 @@ invalid-reserved-accord-field.json       — must be rejected
 invalid-no-verification-when-required.json — must be rejected
 ```
 
+Agreement-id, agreement-hash, rail, and currency mismatch checks are
+context-dependent; the reference validator and L2 conformance suite exercise
+them against a resolved parent Agreement.
+
 ## 10. Error codes
 
 | Code | Meaning |
 |---|---|
 | `ACCORD_INVALID_SCHEMA` | Receipt fails schema validation. |
+| `ACCORD_AGREEMENT_MISMATCH` | `agreement_id` does not match the resolved Agreement. |
 | `ACCORD_HASH_MISMATCH` | `agreement_hash` does not match the resolved Agreement. |
 | `ACCORD_MODE_INVALID_FOR_RAIL` | `mode` is not in the allow-list for `rail`. |
+| `ACCORD_RAIL_MISMATCH` | `rail` does not match the parent Agreement's `payment.rail`. |
+| `ACCORD_CURRENCY_MISMATCH` | `currency` or `decimals` does not match the parent Agreement's price. |
 | `ACCORD_VERIFICATION_REQUIRED` | `status: settled` but no Verification Receipt was referenced when one was required. |
 | `ACCORD_AMOUNT_EXCEEDS_AGREEMENT` | `amount > price.amount`. |
 | `ACCORD_TX_FORMAT_INVALID` | `tx.tx_id` does not match the rail's tx-id format. |
