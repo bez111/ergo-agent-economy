@@ -18,6 +18,7 @@ npm install --include=optional
 npm run build
 npm run typecheck
 npm test -w accord-paid-mcp-ergo-testnet-demo
+npm run preflight -w accord-paid-mcp-ergo-testnet-demo -- --reserve-setup
 npm run release:check
 ```
 
@@ -27,7 +28,9 @@ Create testnet wallets with [`../testnet-wallet-setup.md`](../testnet-wallet-set
 
 ```bash
 cd examples/16-paid-mcp-ergo-testnet
+npm run preflight -- --reserve-setup
 npm run setup:reserve
+npm run preflight
 npm run dev
 ```
 

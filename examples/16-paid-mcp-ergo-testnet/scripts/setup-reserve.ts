@@ -18,14 +18,9 @@ import { buildBuyerAgent, loadTestnetConfigFromEnv } from "../common/setup.js"
 const TOTAL_RESERVE_VALUE = "0.1 ERG" // backs ~100 demo Notes at 0.001 ERG each
 
 async function main() {
-  const cfg = loadTestnetConfigFromEnv()
-
   // Reserve setup intentionally does NOT require ACCORD_DEMO_RESERVE_BOX_ID
-  // to be present yet — that's what we're producing. We bypass the
-  // env-required check by calling buildBuyerAgent with a fake box id.
-  if (!process.env.ACCORD_DEMO_RESERVE_BOX_ID) {
-    process.env.ACCORD_DEMO_RESERVE_BOX_ID = "0".repeat(64)
-  }
+  // to be present yet — that's what we're producing.
+  const cfg = loadTestnetConfigFromEnv({ requireReserveBoxId: false })
 
   const agent = buildBuyerAgent(cfg)
 

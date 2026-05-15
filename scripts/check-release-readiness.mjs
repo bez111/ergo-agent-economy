@@ -95,6 +95,7 @@ assert(rootPkg.scripts?.['release:preflight'] === 'node scripts/release-prefligh
 assert(rootPkg.scripts?.['release:preflight:pack'] === 'node scripts/release-preflight.mjs --pack', 'package.json must expose npm run release:preflight:pack');
 assert(rootPkg.scripts?.['pilots:check'] === 'node scripts/check-pilot-results.mjs', 'package.json must expose npm run pilots:check');
 const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
+assert(example16Pkg.scripts?.preflight === 'tsx scripts/preflight.ts', 'example 16 workspace must expose npm run preflight');
 assert(example16Pkg.scripts?.typecheck === 'tsc --noEmit', 'example 16 workspace must expose npm run typecheck');
 assert(Boolean(example16Pkg.scripts?.test), 'example 16 workspace must expose npm test');
 
@@ -164,6 +165,10 @@ assert(mockPilotResult.includes('Achieved: L4'), 'mock pilot result must include
 assert(mockPilotResult.includes('does not certify mainnet use'), 'mock pilot result must preserve the mainnet warning');
 const example16Readme = read('examples/16-paid-mcp-ergo-testnet/README.md');
 assert(example16Readme.includes('docs/testnet-wallet-setup.md'), 'example 16 must link the testnet wallet setup guide');
+assert(example16Readme.includes('npm run preflight -- --reserve-setup'), 'example 16 must document reserve setup preflight');
+assert(example16Readme.includes('common/setup.ts` still contains the placeholder signer'), 'example 16 must document signer preflight');
+const testnetWalletSetup = read('docs/testnet-wallet-setup.md');
+assert(testnetWalletSetup.includes('npm run preflight -- --reserve-setup'), 'testnet wallet setup guide must mention example 16 reserve preflight');
 
 const status = read('docs/status.md');
 assert(status.includes('NOT CERTIFIED FOR MAINNET'), 'docs/status.md must include NOT CERTIFIED FOR MAINNET');

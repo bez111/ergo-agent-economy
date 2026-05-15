@@ -65,10 +65,14 @@ This path is slower but gives the clearest audit trail for a first pilot.
 For example 16, create `examples/16-paid-mcp-ergo-testnet/.env`:
 
 ```ini
-ACCORD_DEMO_BUYER_ADDR=9f...
-ACCORD_DEMO_SELLER_ADDR=9g...
+ACCORD_DEMO_BUYER_ADDR=<buyer testnet address>
+ACCORD_DEMO_SELLER_ADDR=<seller testnet address>
 ACCORD_DEMO_RESERVE_BOX_ID=<64 hex reserve box id>
 ```
+
+Example 16 loads this file automatically. Run
+`npm run preflight -- --reserve-setup` before creating the Reserve, then add
+`ACCORD_DEMO_RESERVE_BOX_ID` and run `npm run preflight` before the full demo.
 
 Never add `.env`, mnemonics, private keys, or signed transaction payloads to
 git.

@@ -24,7 +24,7 @@ You need a buyer wallet and a seller wallet, both with testnet ERG.
 1. Install [Nautilus](https://github.com/capt-nemo429/nautilus-wallet) browser extension.
 2. Create two wallets — name them `accord-demo-buyer` and `accord-demo-seller`.
 3. Fund the buyer with ~0.2 testnet ERG from the [testnet faucet](https://testnet.ergoplatform.com/faucet).
-4. Copy both addresses (`9f...`) — you'll paste them into `.env`.
+4. Copy both testnet addresses — you'll paste them into `.env`.
 
 **Alternative paths:** see [`docs/testnet-wallet-setup.md`](../../docs/testnet-wallet-setup.md) for sigma-rust HD wallet and Minotaur CLI walkthroughs.
 
@@ -40,11 +40,19 @@ For a process-bound signer bridge, use [`ergo-agent-server`](../../packages/ergo
 
 ### 3. Create a Reserve (one-time)
 
-The Reserve backs every Note the buyer issues. Run:
+The Reserve backs every Note the buyer issues. First create `.env` at the
+example root with the two addresses:
+
+```ini
+ACCORD_DEMO_BUYER_ADDR=<buyer testnet address>
+ACCORD_DEMO_SELLER_ADDR=<seller testnet address>
+```
+
+The example scripts load this `.env` automatically. Then run the reserve setup
+preflight and create the Reserve:
 
 ```bash
-ACCORD_DEMO_BUYER_ADDR=9f... \
-ACCORD_DEMO_SELLER_ADDR=9g... \
+npm run preflight -- --reserve-setup
 npm run setup:reserve
 ```
 
@@ -58,18 +66,29 @@ The first output's `boxId` is your Reserve box id. Paste it into `.env`.
 
 ### 4. .env
 
-Create `.env` at the example root:
+Add the Reserve box id to `.env`:
 
 ```ini
-ACCORD_DEMO_BUYER_ADDR=9f...
-ACCORD_DEMO_SELLER_ADDR=9g...
+ACCORD_DEMO_BUYER_ADDR=<buyer testnet address>
+ACCORD_DEMO_SELLER_ADDR=<seller testnet address>
 ACCORD_DEMO_RESERVE_BOX_ID=<64 hex from step 3>
 ```
+
+Before running the on-chain demo, verify the environment and signer wiring:
+
+```bash
+npm run preflight
+```
+
+The preflight checks required env vars, placeholder values, buyer/seller
+separation, Reserve box-id shape, disabled mainnet-danger flags, and whether
+`common/setup.ts` still contains the placeholder signer.
 
 ## Run
 
 ```bash
 npm install        # installs @accord-protocol/* + ergo-agent-pay from workspace
+npm run preflight
 npm run dev
 ```
 

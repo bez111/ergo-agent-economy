@@ -5,6 +5,7 @@
   "description": "End-to-end paid-MCP demo on Ergo testnet — buyer creates a real Note via ergo-agent-pay, seller's @accord-protocol/rails-ergo verifies and redeems it on-chain. The non-mock counterpart of example 15.",
   "type": "module",
   "scripts": {
+    "preflight": "tsx scripts/preflight.ts",
     "setup:reserve": "tsx scripts/setup-reserve.ts",
     "dev": "tsx run-demo.ts",
     "typecheck": "tsc --noEmit",

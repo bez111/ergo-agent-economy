@@ -9,6 +9,7 @@
 
 import { ErgoAgentPay } from "ergo-agent-pay"
 import type { SignerFn } from "ergo-agent-pay"
+import { loadExampleEnvFile, requiredTestnetEnvNames } from "./env.js"
 
 export interface TestnetConfig {
   buyerAddress: string
@@ -28,20 +29,20 @@ export interface TestnetConfig {
  * one path; the README walks through three (Nautilus extension,
  * Minotaur CLI, sigma-rust HD wallet).
  */
-export function loadTestnetConfigFromEnv(): TestnetConfig {
-  const required = [
-    "ACCORD_DEMO_BUYER_ADDR",
-    "ACCORD_DEMO_SELLER_ADDR",
-    "ACCORD_DEMO_RESERVE_BOX_ID",
-  ] as const
+export function loadTestnetConfigFromEnv(
+  opts: { requireReserveBoxId?: boolean } = {},
+): TestnetConfig {
+  loadExampleEnvFile()
 
+  const requireReserveBoxId = opts.requireReserveBoxId ?? true
+  const required = requiredTestnetEnvNames({ requireReserveBoxId })
   const missing = required.filter((k) => !process.env[k])
   if (missing.length > 0) {
     throw new Error(
       [
         `Missing env: ${missing.join(", ")}`,
         ``,
-        `Set these in a .env file at the repo root, then re-run.`,
+        `Set these in examples/16-paid-mcp-ergo-testnet/.env, then re-run.`,
         `See examples/16-paid-mcp-ergo-testnet/README.md → "Setup" for`,
         `how to create the buyer wallet, seller wallet, and one-time Reserve.`,
       ].join("\n"),
@@ -62,7 +63,7 @@ export function loadTestnetConfigFromEnv(): TestnetConfig {
     buyerSigner: placeholderSigner,
     sellerAddress: process.env.ACCORD_DEMO_SELLER_ADDR!,
     sellerSigner: placeholderSigner,
-    reserveBoxId: process.env.ACCORD_DEMO_RESERVE_BOX_ID!,
+    reserveBoxId: process.env.ACCORD_DEMO_RESERVE_BOX_ID ?? "0".repeat(64),
   }
 }
 
