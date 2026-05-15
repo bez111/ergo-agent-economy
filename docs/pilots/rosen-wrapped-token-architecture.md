@@ -20,6 +20,7 @@ npm run build -w ergo-agent-rosen
 npm test -w ergo-agent-rosen
 npm run build -w @accord-protocol/rails-rosen
 npm test -w @accord-protocol/rails-rosen
+npm run pilots:rosen:stub
 ```
 
 ## Expected Receipts

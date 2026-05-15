@@ -44,6 +44,7 @@
     "audit:handoff": "node scripts/audit-handoff.mjs",
     "pilots:check": "node scripts/check-pilot-results.mjs",
     "pilots:todo": "node scripts/list-pilot-blockers.mjs",
+    "pilots:rosen:stub": "node scripts/run-rosen-stub-pilot.mjs",
     "pilots:x402:stub": "node scripts/run-x402-stub-pilot.mjs",
     "npm:publish-status": "node scripts/check-npm-publish-status.mjs",
     "release:check": "node scripts/check-release-readiness.mjs",
