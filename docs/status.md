@@ -158,7 +158,7 @@ Full example inventory: [`docs/EXAMPLE_MODES.md`](./EXAMPLE_MODES.md).
 | Item | State |
 |---|---|
 | Publish workflows | Present; `npm run release:check` verifies the package matrix before tag |
-| Local release preflight | `npm run release:preflight -- --allow-branch --pack` can smoke a pushed PR branch; `npm run release:preflight:pack` is the final main-branch pack/install/conformance-CLI smoke |
+| Local release preflight | `npm run release:preflight -- --allow-branch --pack` can smoke a pushed PR branch, including Python tests; `npm run release:preflight:pack` is the final main-branch pack/install/conformance-CLI smoke |
 | Package matrix | [`docs/PACKAGE_MATRIX.md`](./PACKAGE_MATRIX.md) tracks install status, rail scope, and mainnet posture |
 | `NPM_TOKEN` GitHub secret | Configure before release |
 | PyPI Trusted Publishing | Configure before release |

@@ -83,7 +83,7 @@ npm run release:preflight -- --allow-branch
 npm run release:preflight -- --allow-branch --pack
 ```
 
-Expected: all gates pass. The `--pack` run additionally builds every npm tarball, installs all 18 packages into a fresh temporary project, imports the 10 canonical `@accord-protocol/*` packages, and runs the packaged `accord-conformance` CLI from outside the repository root.
+Expected: all gates pass, including the Python reference package tests. The `--pack` run additionally builds every npm tarball, installs all 18 packages into a fresh temporary project, imports the 10 canonical `@accord-protocol/*` packages, and runs the packaged `accord-conformance` CLI from outside the repository root.
 
 For the final tag candidate on `main`, run from repo root:
 

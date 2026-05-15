@@ -16,16 +16,17 @@
 //   6. `npm run build --workspaces` clean
 //   7. CommonJS export smoke for packages that advertise require() support
 //   8. `npm test --workspaces` (expect 653+ TS tests pass)
-//   9. Conformance L0+L1+L2+L3+L4 PASS (Achieved: L4)
-//  10. Fixture-hash drift check
-//  11. End-to-end demo (paid-MCP repo-audit)
-//  12. accord-conformance keygen + sign + verify round-trip
-//  13. MCP-stdio probe against the bundled stub
-//  14. `npm pack` for every @accord-protocol/* package (opt-in via --pack)
-//  15. install-in-tempdir smoke for all 18 workspace tarballs —
+//   9. Python reference package unittest suite
+//  10. Conformance L0+L1+L2+L3+L4 PASS (Achieved: L4)
+//  11. Fixture-hash drift check
+//  12. End-to-end demo (paid-MCP repo-audit)
+//  13. accord-conformance keygen + sign + verify round-trip
+//  14. MCP-stdio probe against the bundled stub
+//  15. `npm pack` for every @accord-protocol/* package (opt-in via --pack)
+//  16. install-in-tempdir smoke for all 18 workspace tarballs —
 //      installs them into one fresh project, imports each canonical Accord package,
 //      and runs the packaged accord-conformance CLI from outside the repo root
-//      (opt-in via --pack — depends on gate 14's output)
+//      (opt-in via --pack — depends on gate 15's output)
 //
 // Usage:
 //   node scripts/release-preflight.mjs                       # run gates 1-12 on main
@@ -229,7 +230,19 @@ gate("08 test --workspaces (expect ≥653 pass, 0 fail)", () => {
   return pass(`${total} tests, 0 fails`);
 });
 
-gate("09 conformance L0+L1+L2+L3+L4 (Achieved: L4)", () => {
+gate("09 Python reference package tests", () => {
+  const r = run(
+    process.env.PYTHON ?? "python3",
+    ["-m", "unittest", "discover", "-s", "tests", "-v"],
+    { cwd: path.join(REPO_ROOT, "packages", "ergo-agent-py") },
+  );
+  const output = `${r.stdout}\n${r.stderr}`;
+  if (r.status !== 0) return fail(`exit ${r.status}: ${output.slice(-700)}`);
+  const testCount = output.match(/Ran (\d+) tests/)?.[1];
+  return pass(`${testCount ?? "Python"} tests OK`);
+});
+
+gate("10 conformance L0+L1+L2+L3+L4 (Achieved: L4)", () => {
   const r = run("node", [
     "packages/accord-conformance/dist/cli.js",
     "run",
@@ -243,14 +256,14 @@ gate("09 conformance L0+L1+L2+L3+L4 (Achieved: L4)", () => {
   return pass("Achieved: L4");
 });
 
-gate("10 fixture-hash drift", () => {
+gate("11 fixture-hash drift", () => {
   const r = run("node", ["scripts/derive-fixture-hashes.mjs", "--check"]);
   return r.status === 0
     ? pass("0 drift")
     : fail(`exit ${r.status}: ${r.stdout}`);
 });
 
-gate("11 end-to-end demo", () => {
+gate("12 end-to-end demo", () => {
   const r = run("npm", ["run", "dev", "-w", "accord-paid-mcp-repo-audit-demo"]);
   if (r.status !== 0) return fail(`exit ${r.status}: ${r.stdout.slice(-500)}`);
   if (!r.stdout.includes("Settlement Receipt")) {
@@ -259,7 +272,7 @@ gate("11 end-to-end demo", () => {
   return pass("full lifecycle, both receipts emitted");
 });
 
-gate("12 keygen + sign + verify round-trip", () => {
+gate("13 keygen + sign + verify round-trip", () => {
   const kg = run("node", ["packages/accord-conformance/dist/cli.js", "keygen"]);
   const priv = kg.stdout.match(/private:\s+(0x[0-9a-f]+)/)?.[1];
   if (!priv) return fail(`keygen did not emit a private key`);
@@ -290,7 +303,7 @@ gate("12 keygen + sign + verify round-trip", () => {
   }
 });
 
-gate("13 MCP-stdio probe against bundled stub", () => {
+gate("14 MCP-stdio probe against bundled stub", () => {
   const r = run("node", [
     "packages/accord-conformance/dist/cli.js",
     "run",
@@ -310,7 +323,7 @@ gate("13 MCP-stdio probe against bundled stub", () => {
 let PACK_TARBALL_DIR = null;
 
 if (RUN_PACK) {
-  gate("14 npm pack every workspace package (10 Accord + 8 legacy)", () => {
+  gate("15 npm pack every workspace package (10 Accord + 8 legacy)", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "accord-pack-"));
     PACK_TARBALL_DIR = tmp;
     const allPackages = [...ACCORD_PACKAGES, ...LEGACY_PACKAGES];
@@ -330,8 +343,8 @@ if (RUN_PACK) {
       : fail(`got ${tarballs.length}, expected ${allPackages.length}`);
   });
 
-  gate("15 install-in-tempdir smoke for all 18 workspace packages", () => {
-    if (!PACK_TARBALL_DIR) return fail("gate 14 did not produce tarballs");
+  gate("16 install-in-tempdir smoke for all 18 workspace packages", () => {
+    if (!PACK_TARBALL_DIR) return fail("gate 15 did not produce tarballs");
     const allTarballs = fs
       .readdirSync(PACK_TARBALL_DIR)
       .filter((f) => f.endsWith(".tgz"));

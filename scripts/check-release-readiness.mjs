@@ -189,6 +189,7 @@ const releaseChecklist = read('docs/RELEASE-CHECKLIST.md');
 assert(releaseChecklist.includes('npm run cjs:check'), 'docs/RELEASE-CHECKLIST.md must document cjs:check');
 assert(releaseChecklist.includes('npm run release:preflight -- --allow-branch --pack'), 'docs/RELEASE-CHECKLIST.md must document PR-branch pack smoke');
 assert(releaseChecklist.includes('npm run release:preflight:pack'), 'docs/RELEASE-CHECKLIST.md must document main-branch pack smoke');
+assert(releaseChecklist.includes('including the Python reference package tests'), 'docs/RELEASE-CHECKLIST.md must state release preflight includes Python tests');
 assert(releaseChecklist.includes('installs all 18 packages into a fresh temporary project'), 'docs/RELEASE-CHECKLIST.md must describe install-in-tempdir package smoke');
 assert(releaseChecklist.includes('runs the packaged `accord-conformance` CLI from outside the repository root'), 'docs/RELEASE-CHECKLIST.md must describe packaged conformance CLI smoke');
 
@@ -283,6 +284,7 @@ assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readine
 const releasePreflight = read('scripts/release-preflight.mjs');
 assert(releasePreflight.includes('npm", ["run", "cjs:check"]'), 'release-preflight must run npm run cjs:check');
 assert(releasePreflight.includes('CommonJS export smoke'), 'release-preflight must name the CommonJS export smoke gate');
+assert(releasePreflight.includes('Python reference package tests'), 'release-preflight must run Python reference package tests');
 assert(releasePreflight.includes('packaged conformance L4'), 'release-preflight must run packaged conformance CLI smoke');
 
 function collectMainnetAllowed(value, locations = [], pathParts = []) {
