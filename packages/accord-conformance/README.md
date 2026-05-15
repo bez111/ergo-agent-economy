@@ -221,7 +221,7 @@ Missing pinned sidecars are reported as `inconclusive` (not `fail`) — the impl
 
 ## Current limits
 
-- L1 / L2 transport / rail tests — planned as PR-018 / PR-019 scope.
+- L1 / L2 transport / rail tests — planned transport/rail conformance scope.
 - A network-mode CLI (`--target https://provider.example`) — for L0 the implementation under test is a directory of schemas + fixtures, not a live endpoint. L1 / L2 will introduce HTTP / MCP probing.
 - Conformance-result signing. The result JSON is plain text today; v1 may add an issuer signature so the registry can verify provenance.
 

@@ -120,7 +120,7 @@ The interface is intentionally tiny — two methods.
 ## What's NOT in this package
 
 - Rail adapter implementations (Ergo / Rosen / Base / x402) → `@accord-protocol/rails-*`
-- x402 compatibility shim — that's `@accord-protocol/x402` (PR-016 in the open-source roadmap)
+- x402 compatibility shim — use the rail adapter package for current x402 integrations.
 - A bundled JSON parser — bring your own (`express.json()`, `body-parser`, etc.). The middleware only reads headers and `req.body`.
 - Conformance tests → `@accord-protocol/conformance`
 

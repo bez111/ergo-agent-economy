@@ -133,6 +133,29 @@ for (const [docPath, banned] of [
   assert(!read(docPath).includes(banned), `${docPath} must not include legacy mainnet-ready wording: ${banned}`);
 }
 
+const stalePrWording = /\b(?:PR-\d+|PR\s*#\d+|PR#\d+|this PR)\b/i;
+const publicReadmeDocs = [
+  'README.md',
+  'SECURITY.md',
+  'docs/api-reference.md',
+  'docs/canonical-json.md',
+  'docs/EXAMPLE_MODES.md',
+  'docs/PACKAGE_MATRIX.md',
+  'docs/status.md',
+  ...fs.readdirSync(path.join(root, 'packages'), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => `packages/${entry.name}/README.md`)
+    .filter(exists),
+  ...fs.readdirSync(path.join(root, 'examples'), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => `examples/${entry.name}/README.md`)
+    .filter(exists),
+];
+
+for (const docPath of publicReadmeDocs) {
+  assert(!stalePrWording.test(read(docPath)), `${docPath} must not include stale PR-number wording`);
+}
+
 const security = read('SECURITY.md');
 assert(security.includes('NOT CERTIFIED FOR MAINNET'), 'SECURITY.md must include NOT CERTIFIED FOR MAINNET');
 

@@ -134,7 +134,7 @@ have no newlines):
 ```
 
 The fixed test vector for this example, with the resulting `accord_hash_v0`,
-will land alongside `@accord-protocol/core` in PR-008.
+ships in the conformance fixtures alongside `@accord-protocol/core`.
 
 ## 4. Signing receipts (ACCORD-002 §5)
 

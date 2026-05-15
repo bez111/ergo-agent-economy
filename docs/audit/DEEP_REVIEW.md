@@ -5,8 +5,8 @@ document complements [`PRE_AUDIT_FINDINGS.md`](PRE_AUDIT_FINDINGS.md) with
 deeper line-by-line findings against the contracts in
 `packages/ergo-agent-scripts/data/sources/`, the inline acceptance
 predicates in `packages/ergo-agent-scripts/data/predicates.json`, and the
-SDK-side audit/safety glue introduced in PR #10. Source of truth is
-`commit d0cd95...` on `main`.
+SDK-side audit/safety glue. Source of truth is `commit d0cd95...` on
+`main`.
 
 A production mainnet release still requires an external auditor with
 ErgoScript / sigma-state experience to sign
@@ -641,8 +641,8 @@ the audit log so the auditor doesn't need to redo this analysis.
 ### Should-fix before any mainnet promotion
 
 5. **C-001** — keep `task_hash_v0` `mainnetAllowed: false` permanently
-   (or replace with a receiver-bound v0). Already done at manifest level
-   in PR #10; lock it in by making the SDK never default to it.
+   (or replace with a receiver-bound v0). Already done at manifest level;
+   lock it in by making the SDK never default to it.
 6. **H-003** — auditor confirms `holder == reserve.R4` semantics or
    redesigns ChainCash note transfer.
 7. **H-001** — separate testnet / mainnet ChainCash reserve trees, or
@@ -664,9 +664,9 @@ the audit log so the auditor doesn't need to redo this analysis.
 ## Out of scope of this review
 
 * Cryptographic verification of the @fleet-sdk/compiler output. The
-  recompile-and-diff CI gate (PR #8) catches drift but does not prove
-  the compiler is correct. An interpreter test with sigmastate-jvm or
-  sigma-rust would close this gap.
+  recompile-and-diff CI gate catches drift but does not prove the compiler
+  is correct. An interpreter test with sigmastate-jvm or sigma-rust would
+  close this gap.
 * Audit of `chaincash_note_v0` AvlTree history-tree structure for
   collision resistance. Requires knowledge of the ChainCash tree schema
   beyond what is in this repo.
@@ -684,8 +684,7 @@ test:
 
 * Single normative hash (BLAKE2b-256) across TS, Python, MCP, with
   cross-language golden vectors.
-* Two-gate mainnet safety: box-shape gate (PR #2) AND audit-identity
-  gate (PR #10).
+* Two-gate mainnet safety: box-shape gate and audit-identity gate.
 * `dangerously*` naming on bypass surfaces and raw builders.
 * `encodeSigmaCollByte` enforces the v0 length cap.
 * Manifest carries source hash AND post-template source hash AND tree
