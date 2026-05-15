@@ -27,7 +27,7 @@ release surfaces change.
 | P1 Audit readiness | Complete for pre-audit | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
 | P2 Protocol hardening | Complete for v0 draft | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
 | P3 Developer experience | Complete for public review | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, contributor templates, public README wording cleanup, and release-readiness CI committed |
-| P4 Testnet pilots | Started | pilot matrix, result template, testnet wallet setup, per-rail rollback plans, and first local mock pilot result committed; external testnet pilot evidence still pending |
+| P4 Testnet pilots | Started | pilot matrix, result template, testnet wallet setup, per-rail rollback plans, first local mock pilot result, and machine-checked completed/pending pilot status committed; external testnet pilot evidence still pending |
 | P5 Controlled mainnet launch | Blocked by design | requires external audit reports and signed manifests with exact `mainnetAllowed: true` entries |
 
 Immediate remaining work toward `1.0.0`:
