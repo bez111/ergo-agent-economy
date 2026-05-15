@@ -11,6 +11,7 @@ This document explains the intended role of Accord Protocol GitHub Actions workf
 | Conformance CI | Run Accord conformance checks |
 | Python CI | Test Python reference package |
 | Demo CI | Ensure examples still run or compile |
+| Release readiness CI | Run root typecheck plus `release:check`, `audit:check`, and `site:check` |
 | Publish workflows | Publish npm/PyPI packages after a release tag |
 
 ## Merge expectations
@@ -18,6 +19,7 @@ This document explains the intended role of Accord Protocol GitHub Actions workf
 For changes touching protocol, security, schemas, rails, or release files:
 
 - relevant CI should pass;
+- release readiness CI should pass when docs, examples, package metadata, scripts, or site assets change;
 - conformance should pass when object shape changes;
 - `docs/status.md` must stay accurate;
 - `SECURITY.md` must be updated if risk posture changes;

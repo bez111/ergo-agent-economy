@@ -1,0 +1,59 @@
+name: Release readiness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "examples/**"
+      - "packages/**"
+      - "scripts/**"
+      - "site/**"
+      - ".github/workflows/ci-release-readiness.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "SECURITY.md"
+      - "README.md"
+      - "CHANGELOG.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "examples/**"
+      - "packages/**"
+      - "scripts/**"
+      - "site/**"
+      - ".github/workflows/ci-release-readiness.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "SECURITY.md"
+      - "README.md"
+      - "CHANGELOG.md"
+
+jobs:
+  release-readiness:
+    name: Typecheck and release gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install workspace
+        run: npm install --include=optional
+
+      - name: Typecheck all workspaces
+        run: npm run typecheck
+
+      - name: Release readiness check
+        run: npm run release:check
+
+      - name: Audit readiness check
+        run: npm run audit:check
+
+      - name: Site metadata check
+        run: npm run site:check
