@@ -1,9 +1,18 @@
 # ChainCash Integration Guide
 
-[ChainCash](https://github.com/ChainCashLabs/chaincash) is the production implementation
-of the Reserve + Note + Tracker stack — live on Ergo mainnet.
+[ChainCash](https://github.com/ChainCashLabs/chaincash) is an external
+implementation of the Reserve + Note + Tracker design space that informed the
+Ergo reference rail.
 
-This guide shows how to use `ergo-agent-pay` with real ChainCash contracts.
+This guide is a legacy integration note for `ergo-agent-pay`. It is not a
+mainnet launch guide and does not override [`docs/status.md`](./status.md) or
+[`SECURITY.md`](../SECURITY.md). In this repository, ChainCash/Basis scripts and
+related Accord rail adapters remain reference / research / draft-pre-audit
+material until signed audit manifests explicitly allow a mainnet artifact.
+
+Use testnet or local development flows by default. Do not use real funds unless
+the exact script hash you are using is externally audited, signed in the
+relevant manifest, and marked `mainnetAllowed: true`.
 
 ---
 
@@ -47,7 +56,7 @@ const RESERVE_SCRIPT = `{
 
 ```kotlin
 // In a Kotlin/Scala project:
-val ctx = RestApiErgoClient.create(nodeUrl, NetworkType.MAINNET, "", explorerUrl)
+val ctx = RestApiErgoClient.create(nodeUrl, NetworkType.TESTNET, "", explorerUrl)
 ctx.execute { blockchainContext ->
   val contract = blockchainContext.compileContract(
     ConstantsBuilder.create().item("issuerKey", issuerGroupElement).build(),
@@ -62,12 +71,13 @@ ctx.execute { blockchainContext ->
 
 ## Using compiled scripts with ergo-agent-pay
 
-Once you have compiled `ergoTree` hex from ChainCash:
+Once you have compiled `ergoTree` hex from ChainCash for a testnet or audited
+environment:
 
 ```typescript
 import { ErgoAgentPay } from "ergo-agent-pay"
 
-const agent = new ErgoAgentPay({ address, network: "mainnet", signer })
+const agent = new ErgoAgentPay({ address, network: "testnet", signer })
 
 // Deploy Reserve with ChainCash script
 const reserve = await agent.createReserve({
@@ -106,15 +116,18 @@ GitHub: https://github.com/ChainCashLabs/chaincash/tree/master/contracts
 
 ## Mainnet ChainCash box IDs
 
-> Live data — verify on https://explorer.ergoplatform.com
+Mainnet references are intentionally omitted from this guide. Treat any
+mainnet box id, tree, or tracker reference as out of scope for Accord until the
+audit manifests in this repository contain signed evidence for that exact
+artifact.
 
-The ChainCash protocol maintains a canonical Tracker box on mainnet.
-Query the explorer for the latest Tracker box ID before issuing Notes.
+For testnet experiments, query the relevant testnet explorer or your own node
+for the current Tracker box before issuing Notes.
 
 ```typescript
-// Find current ChainCash tracker on mainnet
+// Find current testnet tracker
 const trackerBoxes = await fetch(
-  "https://api.ergoplatform.com/api/v1/boxes/unspent/byErgoTree/" + CHAINCASH_TRACKER_ERGOTREE
+  TESTNET_EXPLORER_URL + "/api/v1/boxes/unspent/byErgoTree/" + CHAINCASH_TRACKER_ERGOTREE
 ).then(r => r.json())
 const trackerBoxId = trackerBoxes.items[0].boxId
 ```

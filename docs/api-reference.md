@@ -1,6 +1,17 @@
 # ergo-agent-pay — API Reference
 
-TypeScript SDK for autonomous AI agent payments on Ergo.
+Legacy TypeScript reference SDK for autonomous AI agent payments on Ergo.
+
+This document covers the `ergo-agent-pay` `0.3.x` reference line. New Accord
+integrations should start with the canonical `@accord-protocol/*` packages in
+the [`package matrix`](./PACKAGE_MATRIX.md). `ergo-agent-pay` remains useful for
+Ergo rail experiments and downstream compatibility, but it is not a mainnet
+certification layer.
+
+Mainnet status is controlled by [`docs/status.md`](./status.md) and
+[`SECURITY.md`](../SECURITY.md). Use testnet by default. Do not use real funds
+unless the relevant signed audit manifests explicitly mark the exact scripts as
+`mainnetAllowed: true`.
 
 ```bash
 npm install ergo-agent-pay
@@ -26,7 +37,7 @@ const agent = new ErgoAgentPay(config: ErgoAgentPayConfig)
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `address` | `string` | ✅ | Ergo address of the agent |
-| `network` | `"mainnet" \| "testnet"` | — | Default: `"mainnet"` |
+| `network` | `"mainnet" \| "testnet"` | — | Legacy default: `"mainnet"`. Set `"testnet"` explicitly unless signed audit manifests allow your exact mainnet scripts. |
 | `signer` | `SignerFn` | — | `(unsignedTx) => Promise<SignedTx>`. If omitted, returns unsigned TX |
 | `policy` | `PolicyConfig` | — | Spend limits and approval hooks |
 | `nodeUrl` | `string` | — | Custom API node URL. Defaults to public Ergo API |
