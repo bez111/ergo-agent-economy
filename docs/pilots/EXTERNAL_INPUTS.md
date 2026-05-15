@@ -58,6 +58,10 @@ from this pilot.
 
 ## x402 Facilitator Integration
 
+Local stub evidence is archived in
+[`results/2026-05-15-x402-stub-facilitator-integration.md`](./results/2026-05-15-x402-stub-facilitator-integration.md).
+The inputs below are only required for a live facilitator rerun.
+
 Needed before running:
 
 - test facilitator credentials or a local stub facilitator;

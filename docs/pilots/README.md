@@ -33,6 +33,7 @@ cannot be produced by repository code alone.
 |---|---|---|
 | Mock Accord/MCP paid tool | Pass | [`results/2026-05-15-mock-mcp-paid-tool.md`](./results/2026-05-15-mock-mcp-paid-tool.md) |
 | Ergo testnet Note settlement | Inconclusive | [`results/2026-05-15-sage-ergo-testnet-note-settlement.md`](./results/2026-05-15-sage-ergo-testnet-note-settlement.md) |
+| x402 facilitator integration | Pass | [`results/2026-05-15-x402-stub-facilitator-integration.md`](./results/2026-05-15-x402-stub-facilitator-integration.md) |
 
 ## Pending Pilots
 
@@ -44,7 +45,6 @@ dated result record in [`results/`](./results/).
 |---|---|
 | Rosen wrapped-token architecture | Test TokenMap evidence, wrapped-token accounting evidence, bridge assumption review, and conformance output |
 | Base Sepolia contract rail | Base Sepolia contract address, live testnet transaction evidence, audit-gate result, and conformance output |
-| x402 facilitator integration | Test facilitator or stub proof, HTTP payment flow transcript, facilitator failure classification, and conformance output |
 
 ## Shared Rules
 
