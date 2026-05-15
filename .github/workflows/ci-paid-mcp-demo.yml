@@ -5,9 +5,12 @@ on:
     branches: [main]
     paths:
       - "examples/15-paid-mcp-repo-audit/**"
+      - "examples/16-paid-mcp-ergo-testnet/**"
       - "packages/accord-core/**"
       - "packages/accord-mcp/**"
       - "packages/accord-rails/**"
+      - "packages/accord-rails-ergo/**"
+      - "packages/ergo-agent-pay/**"
       - ".github/workflows/ci-paid-mcp-demo.yml"
       - "package.json"
       - "package-lock.json"
@@ -15,9 +18,12 @@ on:
     branches: [main]
     paths:
       - "examples/15-paid-mcp-repo-audit/**"
+      - "examples/16-paid-mcp-ergo-testnet/**"
       - "packages/accord-core/**"
       - "packages/accord-mcp/**"
       - "packages/accord-rails/**"
+      - "packages/accord-rails-ergo/**"
+      - "packages/ergo-agent-pay/**"
       - ".github/workflows/ci-paid-mcp-demo.yml"
       - "package.json"
       - "package-lock.json"
@@ -38,15 +44,22 @@ jobs:
       - name: Install workspace
         run: npm install --include=optional
 
-      - name: Build accord-core / accord-mcp / accord-rails (demo depends on dists)
+      - name: Build demo dependencies
         run: |
           npm run build -w @accord-protocol/core
           npm run build -w @accord-protocol/mcp
           npm run build -w @accord-protocol/rails
+          npm run build -w @accord-protocol/rails-ergo
+          npm run build -w ergo-agent-pay
 
-      - name: Test demo
+      - name: Test mock paid-MCP demo
         run: npm test -w accord-paid-mcp-repo-audit-demo
 
-      # Run the actual end-to-end driver. Fails CI if the lifecycle breaks.
-      - name: Run demo CLI
+      - name: Test Ergo testnet paid-MCP demo shape
+        run: |
+          npm run typecheck -w accord-paid-mcp-ergo-testnet-demo
+          npm test -w accord-paid-mcp-ergo-testnet-demo
+
+      # Run the actual mock end-to-end driver. Fails CI if the lifecycle breaks.
+      - name: Run mock demo CLI
         run: npm run dev -w accord-paid-mcp-repo-audit-demo

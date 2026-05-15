@@ -84,6 +84,13 @@ assert(pyproject.includes('version = "0.3.0"'), 'Python pyproject.toml must rema
 const pyInit = read('packages/ergo-agent-py/ergo_agent_pay/__init__.py');
 assert(pyInit.includes('__version__ = "0.3.0"'), 'Python __init__.py must remain version 0.3.0');
 
+const rootPkg = readJson('package.json');
+assert(rootPkg.workspaces?.includes('examples/15-paid-mcp-repo-audit'), 'examples/15-paid-mcp-repo-audit must remain a tested workspace demo');
+assert(rootPkg.workspaces?.includes('examples/16-paid-mcp-ergo-testnet'), 'examples/16-paid-mcp-ergo-testnet must remain a tested workspace demo');
+const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
+assert(example16Pkg.scripts?.typecheck === 'tsc --noEmit', 'example 16 workspace must expose npm run typecheck');
+assert(Boolean(example16Pkg.scripts?.test), 'example 16 workspace must expose npm test');
+
 const status = read('docs/status.md');
 assert(status.includes('NOT CERTIFIED FOR MAINNET'), 'docs/status.md must include NOT CERTIFIED FOR MAINNET');
 assert(status.includes('mainnetAllowed: true'), 'docs/status.md must describe the mainnetAllowed audit gate');

@@ -7,6 +7,7 @@
   "scripts": {
     "setup:reserve": "tsx scripts/setup-reserve.ts",
     "dev": "tsx run-demo.ts",
+    "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts"
   },
   "dependencies": {

@@ -31,7 +31,8 @@
     "packages/agentpay-base",
     "packages/accord-conformance",
     "packages/accord-buyer-policy",
-    "examples/15-paid-mcp-repo-audit"
+    "examples/15-paid-mcp-repo-audit",
+    "examples/16-paid-mcp-ergo-testnet"
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",

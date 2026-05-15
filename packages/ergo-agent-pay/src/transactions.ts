@@ -25,7 +25,7 @@ export function parseAmount(amount: bigint | string | number): bigint {
   // "0.001 ERG" or "0.001erg"
   const ergMatch = str.match(/^([0-9.]+)\s*ERG?$/i);
   if (ergMatch && ergMatch[1]) {
-    const [whole, frac = ""] = ergMatch[1].split(".");
+    const [whole = "0", frac = ""] = ergMatch[1].split(".");
     const fracPadded = frac.padEnd(9, "0").slice(0, 9);
     return BigInt(whole) * NANOERG_PER_ERG + BigInt(fracPadded);
   }

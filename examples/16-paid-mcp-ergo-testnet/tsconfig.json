@@ -10,6 +10,14 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@accord-protocol/core": ["../../packages/accord-core/src/index.ts"],
+      "@accord-protocol/mcp": ["../../packages/accord-mcp/src/index.ts"],
+      "@accord-protocol/rails": ["../../packages/accord-rails/src/index.ts"],
+      "@accord-protocol/rails-ergo": ["../../packages/accord-rails-ergo/src/index.ts"],
+      "ergo-agent-pay": ["../../packages/ergo-agent-pay/src/index.ts"]
+    },
     "noEmit": true
   },
   "include": ["**/*.ts"],
