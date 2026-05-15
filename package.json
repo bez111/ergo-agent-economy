@@ -43,6 +43,7 @@
     "audit:check": "node scripts/check-audit-readiness.mjs",
     "audit:handoff": "node scripts/audit-handoff.mjs",
     "pilots:check": "node scripts/check-pilot-results.mjs",
+    "npm:publish-status": "node scripts/check-npm-publish-status.mjs",
     "release:check": "node scripts/check-release-readiness.mjs",
     "release:preflight": "node scripts/release-preflight.mjs",
     "release:preflight:pack": "node scripts/release-preflight.mjs --pack",

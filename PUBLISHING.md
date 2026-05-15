@@ -49,10 +49,33 @@ Before any public release:
 
 ## npm setup
 
-1. Create or use an npm account.
-2. Create an Automation token.
+Preferred path: configure npm Trusted Publishing for every public npm package.
+This avoids long-lived write tokens in GitHub Actions and uses OIDC from the
+authorized workflow instead.
+
+For each package on npmjs.com:
+
+1. Open the package settings.
+2. Add a Trusted Publisher for GitHub Actions.
+3. Use owner `accord-protocol`, repository `accord-protocol`, and workflow
+   filename `publish-npm.yml`.
+4. Leave environment blank unless the workflow is updated to use a protected
+   GitHub environment.
+
+Fallback token path:
+
+1. Create or use an npm account that is an owner or maintainer for every
+   package being published.
+2. Create a granular access token with publish access and bypass-2FA enabled,
+   or an Automation token if the npm account/org policy still supports it.
 3. Add it to GitHub Actions secrets as `NPM_TOKEN`.
-4. Confirm that each public package uses the correct `name`, `version`, `license`, `repository`, and `publishConfig.access`.
+4. Confirm that each public package uses the correct `name`, `version`,
+   `license`, `repository`, and `publishConfig.access`.
+
+If GitHub Actions fails with an npm `E404` during `npm publish` while `npm view`
+shows older versions of the same package, treat it as an npm authentication or
+package permission problem first. The token may authenticate but still lack
+publish rights for the `@accord-protocol` scope or legacy package names.
 
 For scoped packages, ensure:
 
@@ -78,6 +101,12 @@ Configure a trusted publisher for:
 ## Publishing flow
 
 Do not publish directly from an unreviewed local workspace.
+
+Before tagging, check the public npm registry state:
+
+```bash
+npm run npm:publish-status
+```
 
 Recommended flow:
 

@@ -48,19 +48,27 @@ A public package release is **not** production certification. Accord remains tes
 
 - `ergo-agent-pay`
 
-## Step 1 — create npm access token
+## Step 1 — configure npm publishing
 
-1. Sign in to https://www.npmjs.com/
-2. Settings → Access Tokens → Generate New Token → Automation token.
-3. Ensure it can publish the `@accord-protocol/*` scope and unscoped legacy packages.
-4. Copy the token.
+Preferred: configure npm Trusted Publishing for every npm package with:
+
+- owner: `accord-protocol`;
+- repository: `accord-protocol`;
+- workflow filename: `publish-npm.yml`.
+
+Fallback: create a granular npm token with publish access and bypass-2FA
+enabled, or an Automation token if the npm account/org policy still supports
+it. The npm account behind the token must be able to publish the
+`@accord-protocol/*` scope and unscoped legacy packages.
 
 ## Step 2 — add `NPM_TOKEN` repo secret
+
+Skip this step only if every npm package is configured for Trusted Publishing.
 
 1. Go to `https://github.com/accord-protocol/accord-protocol/settings/secrets/actions`.
 2. New repository secret.
 3. Name: `NPM_TOKEN`.
-4. Value: the npm automation token.
+4. Value: the npm publish token.
 
 ## Step 3 — configure PyPI Trusted Publishing
 
@@ -146,6 +154,8 @@ The tag triggers:
 ## Step 6 — verify publishes
 
 ```bash
+npm run npm:publish-status
+
 npm view @accord-protocol/core version
 npm view @accord-protocol/mcp version
 npm view @accord-protocol/gateway version

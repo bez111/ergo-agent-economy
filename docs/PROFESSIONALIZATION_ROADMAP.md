@@ -35,6 +35,7 @@ Immediate remaining work toward `1.0.0`:
 - execute the remaining P4 pilot runbooks and archive dated result records when external testnet credentials and facilitator access are available;
 - keep Rosen example 11 out of the root workspace until external TokenMap dependencies are suitable for clean CI;
 - turn deterministic pilot failures into tests or tracked issues;
+- configure npm package publish authority through Trusted Publishing or a publish-capable token before rerunning the `v0.4.1` npm workflow;
 - obtain external audit reports and signed manifest updates before any P5 mainnet promotion.
 
 ## Phase P0 - Repository stabilization

@@ -6,6 +6,10 @@ on:
       - "v*"          # triggers on: git tag v0.4.1 && git push --tags
   workflow_dispatch:  # manual re-run from Actions UI (used to verify green CI after fixes)
 
+permissions:
+  contents: read
+  id-token: write # Allows npm Trusted Publishing when packages are configured for this workflow.
+
 # Two scopes published by this workflow:
 #
 #   Legacy `ergo-agent-*` / `agentpay-base` packages (currently at 0.3.1).
@@ -61,6 +65,17 @@ jobs:
         run: npm run pilots:check
       - name: Site metadata check
         run: npm run site:check
+      - name: npm publish status
+        run: npm run npm:publish-status
+      - name: npm token probe
+        run: |
+          if npm whoami --registry=https://registry.npmjs.org; then
+            echo "NPM_TOKEN authenticates. Publish jobs still require package/org publish rights."
+          else
+            echo "::warning::NPM_TOKEN did not authenticate with npm. If npm Trusted Publishing is configured for every package, npm publish may still work via OIDC; otherwise publish jobs will fail."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   # ── Legacy: foundation ──────────────────────────────────────────────────────
 

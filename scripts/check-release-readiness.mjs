@@ -94,6 +94,7 @@ assert(rootPkg.scripts?.['cjs:check'] === 'node scripts/check-cjs-exports.mjs', 
 assert(rootPkg.scripts?.['release:preflight'] === 'node scripts/release-preflight.mjs', 'package.json must expose npm run release:preflight');
 assert(rootPkg.scripts?.['release:preflight:pack'] === 'node scripts/release-preflight.mjs --pack', 'package.json must expose npm run release:preflight:pack');
 assert(rootPkg.scripts?.['pilots:check'] === 'node scripts/check-pilot-results.mjs', 'package.json must expose npm run pilots:check');
+assert(rootPkg.scripts?.['npm:publish-status'] === 'node scripts/check-npm-publish-status.mjs', 'package.json must expose npm run npm:publish-status');
 const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
 assert(example16Pkg.scripts?.preflight === 'tsx scripts/preflight.ts', 'example 16 workspace must expose npm run preflight');
 assert(example16Pkg.scripts?.typecheck === 'tsc --noEmit', 'example 16 workspace must expose npm run typecheck');
@@ -102,6 +103,7 @@ assert(Boolean(example16Pkg.scripts?.test), 'example 16 workspace must expose np
 const pilotDocs = [
   'docs/testnet-wallet-setup.md',
   'docs/pilots/README.md',
+  'docs/pilots/EXTERNAL_INPUTS.md',
   'docs/pilots/result-template.md',
   'docs/pilots/mock-mcp-paid-tool.md',
   'docs/pilots/ergo-testnet-note-settlement.md',
@@ -118,6 +120,7 @@ assert(
   'docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md must preserve the completed mock pilot result',
 );
 assert(exists('scripts/check-pilot-results.mjs'), 'scripts/check-pilot-results.mjs must exist for P4 pilot result readiness');
+assert(exists('scripts/check-npm-publish-status.mjs'), 'scripts/check-npm-publish-status.mjs must exist for npm publish diagnostics');
 
 function assertLocalMarkdownLinks(docPath) {
   const dir = path.dirname(docPath);
@@ -158,7 +161,11 @@ assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must l
 assert(pilotReadme.includes('npm run pilots:check'), 'docs/pilots/README.md must document npm run pilots:check');
 assert(pilotReadme.includes('check also reports current P4 progress'), 'docs/pilots/README.md must describe the P4 progress check');
 assert(pilotReadme.includes('## Pending Pilots'), 'docs/pilots/README.md must track pending P4 pilots');
+assert(pilotReadme.includes('EXTERNAL_INPUTS.md'), 'docs/pilots/README.md must link external pilot inputs');
 assert(pilotReadme.includes('results/2026-05-15-mock-mcp-paid-tool.md'), 'docs/pilots/README.md must link the completed mock pilot result');
+const externalInputs = read('docs/pilots/EXTERNAL_INPUTS.md');
+assert(externalInputs.includes('Do not mark a pilot as complete'), 'external inputs doc must forbid fake pilot completion');
+assert(externalInputs.includes('AUDITED_ERGOTREES.json') && externalInputs.includes('AUDITED_CONTRACTS.json'), 'external inputs doc must cover signed manifest inputs');
 const mockPilotResult = read('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md');
 assert(mockPilotResult.includes('| Result | `pass` |'), 'mock pilot result must record pass status');
 assert(mockPilotResult.includes('Achieved: L4'), 'mock pilot result must include conformance L4 evidence');
@@ -197,11 +204,18 @@ assert(packageMatrix.includes('NOT') || packageMatrix.includes('Not certified'),
 
 const releaseChecklist = read('docs/RELEASE-CHECKLIST.md');
 assert(releaseChecklist.includes('npm run cjs:check'), 'docs/RELEASE-CHECKLIST.md must document cjs:check');
+assert(releaseChecklist.includes('npm run npm:publish-status'), 'docs/RELEASE-CHECKLIST.md must document npm publish status check');
+assert(releaseChecklist.includes('Trusted Publishing'), 'docs/RELEASE-CHECKLIST.md must document npm Trusted Publishing setup');
 assert(releaseChecklist.includes('npm run release:preflight -- --allow-branch --pack'), 'docs/RELEASE-CHECKLIST.md must document PR-branch pack smoke');
 assert(releaseChecklist.includes('npm run release:preflight:pack'), 'docs/RELEASE-CHECKLIST.md must document main-branch pack smoke');
 assert(releaseChecklist.includes('including the Python reference package tests, venv install smoke, and pilot result checks'), 'docs/RELEASE-CHECKLIST.md must state release preflight includes Python tests, install smoke, and pilot result checks');
 assert(releaseChecklist.includes('installs all 18 packages into a fresh temporary project'), 'docs/RELEASE-CHECKLIST.md must describe install-in-tempdir package smoke');
 assert(releaseChecklist.includes('runs the packaged `accord-conformance` CLI from outside the repository root'), 'docs/RELEASE-CHECKLIST.md must describe packaged conformance CLI smoke');
+
+const publishingGuide = read('PUBLISHING.md');
+assert(publishingGuide.includes('npm run npm:publish-status'), 'PUBLISHING.md must document npm publish status check');
+assert(publishingGuide.includes('Trusted Publishing'), 'PUBLISHING.md must document npm Trusted Publishing');
+assert(publishingGuide.includes('E404'), 'PUBLISHING.md must document npm E404 publish diagnosis');
 
 const exampleModes = read('docs/EXAMPLE_MODES.md');
 for (const entry of fs.readdirSync(path.join(root, 'examples'), { withFileTypes: true })) {
@@ -284,8 +298,11 @@ assert(changelog.includes('## [0.4.1]'), 'CHANGELOG.md must contain a v0.4.1 rel
 
 const publishNpm = read('.github/workflows/publish-npm.yml');
 assert(publishNpm.includes('workflow_dispatch'), 'publish-npm.yml should allow manual workflow_dispatch reruns after publish fixes');
+assert(publishNpm.includes('id-token: write'), 'publish-npm.yml should allow npm Trusted Publishing via OIDC');
 assert(publishNpm.includes('already on npm; skipping.'), 'publish-npm.yml manual reruns must stay idempotent via skip-if-already-published guards');
 assert(publishNpm.includes('prepublish-gates:'), 'publish-npm.yml should run repository-wide prepublish gates before package publish jobs');
+assert(publishNpm.includes('npm run npm:publish-status'), 'publish-npm.yml should report npm publish status before package publish jobs');
+assert(publishNpm.includes('npm token probe'), 'publish-npm.yml should probe NPM_TOKEN authentication before package publish jobs');
 assert(publishNpm.includes('npm run cjs:check'), 'publish-npm.yml prepublish gates should run CommonJS export smoke');
 assert(publishNpm.includes('npm test --workspaces --if-present'), 'publish-npm.yml prepublish gates should run all workspace tests before publishing any package');
 assert(publishNpm.includes('needs: [prepublish-gates]'), 'foundation npm publish jobs should depend on prepublish-gates');
