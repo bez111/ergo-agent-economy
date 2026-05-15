@@ -278,6 +278,10 @@ assert(publishNpm.includes('already on npm; skipping.'), 'publish-npm.yml manual
 assert(publishNpm.includes('- ergo-agent-pay') && publishNpm.includes('- ergo-agent-scripts') && publishNpm.includes('- agentpay-base'), 'accord-conformance publish job should depend on legacy foundation packages');
 assert(publishNpm.includes('npm test -w ergo-agent-cli'), 'ergo-agent-cli publish job should run tests');
 assert(publishNpm.includes('npm test -w ergo-agent-mcp'), 'ergo-agent-mcp publish job should run tests');
+const publishPypi = read('.github/workflows/publish-pypi.yml');
+assert(publishPypi.includes('python -m unittest discover -s tests -v'), 'publish-pypi.yml should run Python unit tests before publishing');
+assert(publishPypi.includes('python -m build'), 'publish-pypi.yml should build the Python distribution');
+assert(publishPypi.includes('twine check dist/*'), 'publish-pypi.yml should validate Python dist metadata before publishing');
 const releaseReadinessWorkflow = read('.github/workflows/ci-release-readiness.yml');
 assert(releaseReadinessWorkflow.includes('npm run cjs:check'), 'ci-release-readiness.yml must run CommonJS export smoke after build');
 assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readiness.yml must run when CONTRIBUTING.md changes');

@@ -11,7 +11,7 @@ A public package release is **not** production certification. Accord remains tes
 | `NPM_TOKEN` secret in repo | Configure before tag | accord-protocol |
 | PyPI Trusted Publishing config | Configure before tag | accord-protocol |
 | `publish-npm.yml` package matrix | Covers 10 `@accord-protocol/*` packages + 8 legacy npm packages | shipped / verify |
-| Publish jobs | 18 npm jobs total; PyPI is separate | shipped / verify |
+| Publish jobs | 18 npm jobs total; PyPI runs unit tests, builds dist, then `twine check` | shipped / verify |
 | Skip-if-already-published guard | Each npm job pre-checks via `npm view` | shipped |
 | Self-conformance gate | L0+L1+L2+L3+L4 before publishing `@accord-protocol/conformance` | shipped |
 | Package versions | Accord packages `0.4.0`; legacy/reference packages `0.3.0`; Python `0.3.0` | by design |
