@@ -291,6 +291,8 @@ assert(publishPypi.includes('pip install dist/*.whl'), 'publish-pypi.yml wheel s
 const releaseReadinessWorkflow = read('.github/workflows/ci-release-readiness.yml');
 assert(releaseReadinessWorkflow.includes('npm run cjs:check'), 'ci-release-readiness.yml must run CommonJS export smoke after build');
 assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readiness.yml must run when CONTRIBUTING.md changes');
+assert(releaseReadinessWorkflow.includes('.github/pull_request_template.md'), 'ci-release-readiness.yml must run when the PR template changes');
+assert(releaseReadinessWorkflow.includes('.github/ISSUE_TEMPLATE/**'), 'ci-release-readiness.yml must run when issue templates change');
 const releasePreflight = read('scripts/release-preflight.mjs');
 assert(releasePreflight.includes('npm", ["run", "cjs:check"]'), 'release-preflight must run npm run cjs:check');
 assert(releasePreflight.includes('CommonJS export smoke'), 'release-preflight must name the CommonJS export smoke gate');
