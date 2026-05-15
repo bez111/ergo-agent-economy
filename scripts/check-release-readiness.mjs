@@ -84,6 +84,7 @@ assert(pyproject.includes('version = "0.3.0"'), 'Python pyproject.toml must rema
 const pyInit = read('packages/ergo-agent-py/ergo_agent_pay/__init__.py');
 assert(pyInit.includes('__version__ = "0.3.0"'), 'Python __init__.py must remain version 0.3.0');
 assert(exists('LICENSE'), 'root LICENSE file must exist');
+assert(exists('.github/ISSUE_TEMPLATE/release_work.md'), 'release-work issue template must exist');
 
 const rootPkg = readJson('package.json');
 assert(rootPkg.workspaces?.includes('examples/15-paid-mcp-repo-audit'), 'examples/15-paid-mcp-repo-audit must remain a tested workspace demo');
@@ -161,6 +162,19 @@ const status = read('docs/status.md');
 assert(status.includes('NOT CERTIFIED FOR MAINNET'), 'docs/status.md must include NOT CERTIFIED FOR MAINNET');
 assert(status.includes('mainnetAllowed: true'), 'docs/status.md must describe the mainnetAllowed audit gate');
 
+const contributing = read('CONTRIBUTING.md');
+assert(contributing.includes('NOT CERTIFIED FOR MAINNET'), 'CONTRIBUTING.md must preserve the mainnet warning');
+assert(contributing.includes('npm run release:check'), 'CONTRIBUTING.md must document release:check');
+assert(contributing.includes('npm run release:preflight -- --allow-branch --pack'), 'CONTRIBUTING.md must document branch release preflight');
+assert(!contributing.includes('Every example must work on Ergo testnet with real API calls'), 'CONTRIBUTING.md must not contain stale Ergo-only example guidance');
+
+const pullRequestTemplate = read('.github/pull_request_template.md');
+assert(pullRequestTemplate.includes('npm run release:check'), 'pull request template must prompt for release:check when relevant');
+assert(pullRequestTemplate.includes('npm run release:preflight -- --allow-branch --pack'), 'pull request template must prompt for branch release preflight when relevant');
+const releaseIssueTemplate = read('.github/ISSUE_TEMPLATE/release_work.md');
+assert(releaseIssueTemplate.includes('No audit manifest is promoted to `mainnetAllowed: true`'), 'release issue template must preserve mainnet safety posture');
+assert(releaseIssueTemplate.includes('npm run release:preflight -- --allow-branch --pack'), 'release issue template must prompt for branch release preflight');
+
 const packageMatrix = read('docs/PACKAGE_MATRIX.md');
 for (const [, expectedName] of [...accordPackages, ...referencePackages]) {
   assert(packageMatrix.includes(expectedName), `docs/PACKAGE_MATRIX.md must mention ${expectedName}`);
@@ -207,6 +221,7 @@ for (const [docPath, banned] of [
 const stalePrWording = /\b(?:PR-\d+|PR\s*#\d+|PR#\d+|this PR)\b/i;
 const publicReadmeDocs = [
   'README.md',
+  'CONTRIBUTING.md',
   'SECURITY.md',
   'docs/api-reference.md',
   'docs/canonical-json.md',
@@ -230,6 +245,7 @@ for (const docPath of publicReadmeDocs) {
 
 const markdownDocs = [
   'README.md',
+  'CONTRIBUTING.md',
   'SECURITY.md',
   'CHANGELOG.md',
   'PUBLISHING.md',
