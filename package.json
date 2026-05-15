@@ -42,6 +42,7 @@
     "protocol:check": "node scripts/check-protocol-hardening.mjs",
     "audit:check": "node scripts/check-audit-readiness.mjs",
     "audit:handoff": "node scripts/audit-handoff.mjs",
+    "pilots:check": "node scripts/check-pilot-results.mjs",
     "release:check": "node scripts/check-release-readiness.mjs",
     "release:preflight": "node scripts/release-preflight.mjs",
     "release:preflight:pack": "node scripts/release-preflight.mjs --pack",

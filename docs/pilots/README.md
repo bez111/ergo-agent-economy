@@ -18,6 +18,7 @@ entries.
 | x402 facilitator integration | x402 | Validate facilitator proof handling and Accord receipts around HTTP payment flows | [`x402-facilitator-integration.md`](./x402-facilitator-integration.md) |
 
 Use [`result-template.md`](./result-template.md) for every pilot result.
+Run `npm run pilots:check` before committing a completed result record.
 
 ## Completed Results
 

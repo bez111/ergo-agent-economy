@@ -16,26 +16,26 @@ The guiding rule is simple: ship useful developer infrastructure now, but keep e
 
 ## Current execution state
 
-As of 2026-05-15, the P0-P3 base has been merged to `main`; follow-up
-hardening is staged on `p3-example-ci-hardening`. Commits
-should stay small and reviewable, and each pushed batch should preserve clean
-CI plus a clean local release preflight when release surfaces change.
+As of 2026-05-15, the P0-P3 base and the `v0.4.1` release recovery bump have
+been merged to `main`. Commits should stay small and reviewable, and each
+pushed batch should preserve clean CI plus a clean local release preflight when
+release surfaces change.
 
-| Phase | Current state | Evidence on branch |
+| Phase | Current state | Evidence on `main` |
 |---|---|---|
-| P0 Repository stabilization | Complete on PR branch | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, and branch pack/install/packaged-conformance preflight passed |
-| P1 Audit readiness | Implemented locally | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
-| P2 Protocol hardening | Implemented locally for v0 | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
-| P3 Developer experience | In review | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, contributor templates, public README wording cleanup, and release-readiness CI committed |
+| P0 Repository stabilization | Complete on `main` | root build/test/typecheck path repaired, release preflight aligned, CJS/path/package data fixes committed, final `npm run release:preflight:pack` passed on `main`, and `v0.4.1` is tagged |
+| P1 Audit readiness | Complete for pre-audit | audit docs, audit handoff scripts, manifest checks, and `npm run audit:check` gate committed |
+| P2 Protocol hardening | Complete for v0 draft | schema hardening, receipt parent-binding validation, registry/buyer-policy semantics, and conformance negatives committed |
+| P3 Developer experience | Complete for public review | package matrix, full example-mode matrix, safer legacy/mainnet wording, `noteBoxId` DX, Rosen example cleanup, example 16 CI coverage, contributor templates, public README wording cleanup, and release-readiness CI committed |
 | P4 Testnet pilots | Started | pilot matrix, result template, testnet wallet setup, per-rail rollback plans, and first local mock pilot result committed; external testnet pilot evidence still pending |
 | P5 Controlled mainnet launch | Blocked by design | requires external audit reports and signed manifests with exact `mainnetAllowed: true` entries |
 
-Immediate remaining work before marking the branch ready for review:
+Immediate remaining work toward `1.0.0`:
 
-- rerun the final full verification pass after the last commit in the PR;
 - execute the remaining P4 pilot runbooks and archive dated result records when external testnet credentials and facilitator access are available;
 - keep Rosen example 11 out of the root workspace until external TokenMap dependencies are suitable for clean CI;
-- prepare the PR body with command evidence and the P0-P3 scope boundary.
+- turn deterministic pilot failures into tests or tracked issues;
+- obtain external audit reports and signed manifest updates before any P5 mainnet promotion.
 
 ## Phase P0 - Repository stabilization
 
@@ -223,13 +223,13 @@ Suggested issues:
 
 ## Release train
 
-The next release train should be:
+The next release train should be P4 evidence-driven:
 
-1. Finish P0 fixes locally.
-2. Push the stabilization branch to GitHub.
-3. Open a PR with build, test, typecheck, release-check, site-check, and Python test evidence.
-4. Cut `v0.4.1-rc.1` only after CI and registry credentials are ready.
-5. Promote to `v0.4.1` only after package publishing and conformance packaging are verified from a clean install.
+1. Keep `main` green after each pilot-readiness change.
+2. Archive one dated result record per pilot.
+3. Run `npm run release:preflight:pack` before any new tag.
+4. Cut the next `v0.4.x` patch only when the pilot evidence or release tooling changes justify it.
+5. Defer `v1.0.0` until P0-P4 are complete and external audit evidence can support P5 without weakening the default-deny safety model.
 
 ## Definition of done for this roadmap
 

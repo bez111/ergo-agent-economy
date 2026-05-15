@@ -23,15 +23,16 @@
 //  13. End-to-end demo (paid-MCP repo-audit)
 //  14. accord-conformance keygen + sign + verify round-trip
 //  15. MCP-stdio probe against the bundled stub
-//  16. `npm pack` for every @accord-protocol/* package (opt-in via --pack)
-//  17. install-in-tempdir smoke for all 18 workspace tarballs —
+//  16. Pilot result record validation
+//  17. `npm pack` for every @accord-protocol/* package (opt-in via --pack)
+//  18. install-in-tempdir smoke for all 18 workspace tarballs —
 //      installs them into one fresh project, imports each canonical Accord package,
 //      and runs the packaged accord-conformance CLI from outside the repo root
-//      (opt-in via --pack — depends on gate 16's output)
+//      (opt-in via --pack — depends on gate 17's output)
 //
 // Usage:
-//   node scripts/release-preflight.mjs                       # run gates 1-15 on main
-//   node scripts/release-preflight.mjs --pack                # also run gates 16-17
+//   node scripts/release-preflight.mjs                       # run gates 1-16 on main
+//   node scripts/release-preflight.mjs --pack                # also run gates 17-18
 //   node scripts/release-preflight.mjs --allow-branch --pack # PR branch smoke
 //
 // Exit code 0 iff all gates pass. Designed to be run before
@@ -350,11 +351,18 @@ gate("15 MCP-stdio probe against bundled stub", () => {
   return pass("L1 PASS (4/4 against spawned stub)");
 });
 
-// Tarball cache shared between gates 13 and 14 when --pack is enabled.
+gate("16 pilot result records", () => {
+  const r = run("npm", ["run", "pilots:check"]);
+  return r.status === 0
+    ? pass("pilot result records OK")
+    : fail(`exit ${r.status}: ${(r.stderr || r.stdout).slice(-700)}`);
+});
+
+// Tarball cache shared between pack gates when --pack is enabled.
 let PACK_TARBALL_DIR = null;
 
 if (RUN_PACK) {
-  gate("16 npm pack every workspace package (10 Accord + 8 legacy)", () => {
+  gate("17 npm pack every workspace package (10 Accord + 8 legacy)", () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "accord-pack-"));
     PACK_TARBALL_DIR = tmp;
     const allPackages = [...ACCORD_PACKAGES, ...LEGACY_PACKAGES];
@@ -374,8 +382,8 @@ if (RUN_PACK) {
       : fail(`got ${tarballs.length}, expected ${allPackages.length}`);
   });
 
-  gate("17 install-in-tempdir smoke for all 18 workspace packages", () => {
-    if (!PACK_TARBALL_DIR) return fail("gate 16 did not produce tarballs");
+  gate("18 install-in-tempdir smoke for all 18 workspace packages", () => {
+    if (!PACK_TARBALL_DIR) return fail("gate 17 did not produce tarballs");
     const allTarballs = fs
       .readdirSync(PACK_TARBALL_DIR)
       .filter((f) => f.endsWith(".tgz"));

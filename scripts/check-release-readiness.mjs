@@ -93,6 +93,7 @@ assert(rootPkg.workspaces?.includes('examples/16-paid-mcp-ergo-testnet'), 'examp
 assert(rootPkg.scripts?.['cjs:check'] === 'node scripts/check-cjs-exports.mjs', 'package.json must expose npm run cjs:check');
 assert(rootPkg.scripts?.['release:preflight'] === 'node scripts/release-preflight.mjs', 'package.json must expose npm run release:preflight');
 assert(rootPkg.scripts?.['release:preflight:pack'] === 'node scripts/release-preflight.mjs --pack', 'package.json must expose npm run release:preflight:pack');
+assert(rootPkg.scripts?.['pilots:check'] === 'node scripts/check-pilot-results.mjs', 'package.json must expose npm run pilots:check');
 const example16Pkg = readJson('examples/16-paid-mcp-ergo-testnet/package.json');
 assert(example16Pkg.scripts?.typecheck === 'tsc --noEmit', 'example 16 workspace must expose npm run typecheck');
 assert(Boolean(example16Pkg.scripts?.test), 'example 16 workspace must expose npm test');
@@ -115,6 +116,7 @@ assert(
   exists('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md'),
   'docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md must preserve the completed mock pilot result',
 );
+assert(exists('scripts/check-pilot-results.mjs'), 'scripts/check-pilot-results.mjs must exist for P4 pilot result readiness');
 
 function assertLocalMarkdownLinks(docPath) {
   const dir = path.dirname(docPath);
@@ -152,6 +154,7 @@ for (const pilotDoc of pilotDocs) {
 const pilotReadme = read('docs/pilots/README.md');
 assert(pilotReadme.includes('No pilot in this folder certifies mainnet use'), 'docs/pilots/README.md must preserve mainnet warning');
 assert(pilotReadme.includes('result-template.md'), 'docs/pilots/README.md must link the pilot result template');
+assert(pilotReadme.includes('npm run pilots:check'), 'docs/pilots/README.md must document npm run pilots:check');
 assert(pilotReadme.includes('results/2026-05-15-mock-mcp-paid-tool.md'), 'docs/pilots/README.md must link the completed mock pilot result');
 const mockPilotResult = read('docs/pilots/results/2026-05-15-mock-mcp-paid-tool.md');
 assert(mockPilotResult.includes('| Result | `pass` |'), 'mock pilot result must record pass status');
@@ -189,7 +192,7 @@ const releaseChecklist = read('docs/RELEASE-CHECKLIST.md');
 assert(releaseChecklist.includes('npm run cjs:check'), 'docs/RELEASE-CHECKLIST.md must document cjs:check');
 assert(releaseChecklist.includes('npm run release:preflight -- --allow-branch --pack'), 'docs/RELEASE-CHECKLIST.md must document PR-branch pack smoke');
 assert(releaseChecklist.includes('npm run release:preflight:pack'), 'docs/RELEASE-CHECKLIST.md must document main-branch pack smoke');
-assert(releaseChecklist.includes('including the Python reference package tests and venv install smoke'), 'docs/RELEASE-CHECKLIST.md must state release preflight includes Python tests and install smoke');
+assert(releaseChecklist.includes('including the Python reference package tests, venv install smoke, and pilot result checks'), 'docs/RELEASE-CHECKLIST.md must state release preflight includes Python tests, install smoke, and pilot result checks');
 assert(releaseChecklist.includes('installs all 18 packages into a fresh temporary project'), 'docs/RELEASE-CHECKLIST.md must describe install-in-tempdir package smoke');
 assert(releaseChecklist.includes('runs the packaged `accord-conformance` CLI from outside the repository root'), 'docs/RELEASE-CHECKLIST.md must describe packaged conformance CLI smoke');
 
@@ -290,6 +293,7 @@ assert(publishPypi.includes('Install wheel smoke'), 'publish-pypi.yml should ins
 assert(publishPypi.includes('pip install dist/*.whl'), 'publish-pypi.yml wheel smoke should install the built wheel');
 const releaseReadinessWorkflow = read('.github/workflows/ci-release-readiness.yml');
 assert(releaseReadinessWorkflow.includes('npm run cjs:check'), 'ci-release-readiness.yml must run CommonJS export smoke after build');
+assert(releaseReadinessWorkflow.includes('npm run pilots:check'), 'ci-release-readiness.yml must run pilot result checks');
 assert(releaseReadinessWorkflow.includes('CONTRIBUTING.md'), 'ci-release-readiness.yml must run when CONTRIBUTING.md changes');
 assert(releaseReadinessWorkflow.includes('.github/pull_request_template.md'), 'ci-release-readiness.yml must run when the PR template changes');
 assert(releaseReadinessWorkflow.includes('.github/ISSUE_TEMPLATE/**'), 'ci-release-readiness.yml must run when issue templates change');
@@ -298,6 +302,7 @@ assert(releasePreflight.includes('npm", ["run", "cjs:check"]'), 'release-preflig
 assert(releasePreflight.includes('CommonJS export smoke'), 'release-preflight must name the CommonJS export smoke gate');
 assert(releasePreflight.includes('Python reference package tests'), 'release-preflight must run Python reference package tests');
 assert(releasePreflight.includes('Python package install smoke'), 'release-preflight must run Python package install smoke');
+assert(releasePreflight.includes('npm", ["run", "pilots:check"]'), 'release-preflight must run npm run pilots:check');
 assert(releasePreflight.includes('packaged conformance L4'), 'release-preflight must run packaged conformance CLI smoke');
 
 function collectMainnetAllowed(value, locations = [], pathParts = []) {

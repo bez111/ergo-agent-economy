@@ -67,5 +67,8 @@ jobs:
       - name: Audit readiness check
         run: npm run audit:check
 
+      - name: Pilot result check
+        run: npm run pilots:check
+
       - name: Site metadata check
         run: npm run site:check
